@@ -24,5 +24,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="4nR-3s-lFa">
+            <objects>
+                <viewController storyboardIdentifier="CameraViewController" id="9U1-Xm-tOf" customClass="CameraViewController" customModule="Selfiesteem" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YdZ-pF-SNj"/>
+                        <viewControllerLayoutGuide type="bottom" id="HQq-Cf-3wu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="euY-Ho-Cta">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="trI-8u-eiu">
+                                <rect key="frame" x="197" y="358" width="20" height="20"/>
+                                <animations/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="trI-8u-eiu" firstAttribute="centerX" secondItem="euY-Ho-Cta" secondAttribute="centerX" id="euN-zl-fDy"/>
+                            <constraint firstItem="trI-8u-eiu" firstAttribute="centerY" secondItem="euY-Ho-Cta" secondAttribute="centerY" id="fIX-Ez-q4r"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mEH-L1-3EU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="989" y="321"/>
+        </scene>
     </scenes>
 </document>

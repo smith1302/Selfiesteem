@@ -59,7 +59,7 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
     }
     
     func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
-        continueToMainApp()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func logInViewController(logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
@@ -79,12 +79,13 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
         let email = info["email"] as! String
         if (username.isEmpty || password.isEmpty || email.isEmpty) {
             return false
+            // TODO: Show Error
         }
         return true
     }
     
     func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
-        continueToMainApp()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
@@ -106,9 +107,9 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
     * User is signed up or logged in. Lets take them to the main app
     */
     func continueToMainApp() {
-        //let storyboard = Constants.storyboard
-        //let mainAppVC = storyboard.instantiateViewControllerWithIdentifier("nameOfVCGoesHere")
-        //self.presentViewController(mainAppVC, animated: true, completion: nil)
+        let storyboard = Constants.storyboard
+        let mainAppVC = storyboard.instantiateViewControllerWithIdentifier("CameraViewController")
+        self.presentViewController(mainAppVC, animated: true, completion: nil)
     }
     
     // ----- Mark: Other
