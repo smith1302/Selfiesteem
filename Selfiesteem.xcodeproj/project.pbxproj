@@ -19,6 +19,7 @@
 		F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CAC1BC84F90008864FC /* IntroViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F7110CAF1BC84FBF008864FC /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7110CAE1BC84FBF008864FC /* ParseUI.framework */; settings = {ASSET_TAGS = (); }; };
 		F7110CB21BC85049008864FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CB11BC85049008864FC /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
+		F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2465E1BCC6BB400945180 /* CameraViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		F7110CAC1BC84F90008864FC /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		F7110CAE1BC84FBF008864FC /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		F7110CB11BC85049008864FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F7A2465E1BCC6BB400945180 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 		F7110CB31BC8515F008864FC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F7A2465D1BCC6B8700945180 /* Camera */,
 				F7110CB51BC85178008864FC /* LoginAndRegistration */,
 			);
 			name = "View Controllers";
@@ -146,6 +149,14 @@
 				F7110CAC1BC84F90008864FC /* IntroViewController.swift */,
 			);
 			name = LoginAndRegistration;
+			sourceTree = "<group>";
+		};
+		F7A2465D1BCC6B8700945180 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				F7A2465E1BCC6BB400945180 /* CameraViewController.swift */,
+			);
+			name = Camera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */,
+				F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				F7110CB21BC85049008864FC /* Constants.swift in Sources */,
 			);
