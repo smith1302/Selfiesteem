@@ -63,8 +63,7 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
     }
     
     func logInViewController(logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
-        print("Failed to login")
-        // TODO: Error Handling
+        ErrorHandler.showAlert("Failed to login.");
     }
     
     func logInViewControllerDidCancelLogIn(logInController: PFLogInViewController) {
@@ -78,8 +77,8 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
         let password = info["password"] as! String
         let email = info["email"] as! String
         if (username.isEmpty || password.isEmpty || email.isEmpty) {
+            ErrorHandler.showAlert("Fiels cannot be empty.");
             return false
-            // TODO: Show Error
         }
         return true
     }
@@ -89,8 +88,7 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
     }
     
     func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
-        print("Failed to signup")
-        // TODO: Error Handling
+        ErrorHandler.showAlert("Failed to signup.");
     }
     
     func signUpViewControllerDidCancelSignUp(signUpController: PFSignUpViewController) {
