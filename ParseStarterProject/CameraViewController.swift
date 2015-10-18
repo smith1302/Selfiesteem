@@ -36,7 +36,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             imagePicker.sourceType = .Camera
             self.presentViewController(imagePicker, animated: true, completion: nil)
         } else {
-            // TODO: ErrorHandler.showMessage("Device does not have a camera")
+            ErrorHandler.showMessage("Device does not have a camera")
         }
     }
     
