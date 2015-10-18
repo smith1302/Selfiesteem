@@ -20,6 +20,7 @@
 		F7110CAF1BC84FBF008864FC /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7110CAE1BC84FBF008864FC /* ParseUI.framework */; settings = {ASSET_TAGS = (); }; };
 		F7110CB21BC85049008864FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CB11BC85049008864FC /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2465E1BCC6BB400945180 /* CameraViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A246641BD33A4000945180 /* ErrorHandler.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		F7110CAE1BC84FBF008864FC /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		F7110CB11BC85049008864FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F7A2465E1BCC6BB400945180 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		F7A246641BD33A4000945180 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 		F7110CB01BC8503B008864FC /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				F7A246641BD33A4000945180 /* ErrorHandler.swift */,
 				F7110CB11BC85049008864FC /* Constants.swift */,
 			);
 			name = Helpers;
@@ -249,6 +252,7 @@
 			files = (
 				F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */,
 				F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */,
+				F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				F7110CB21BC85049008864FC /* Constants.swift in Sources */,
 			);
