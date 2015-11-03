@@ -68,7 +68,9 @@
                             <outletCollection property="gestureRecognizers" destination="FAB-nj-6jI" appends="YES" id="Hnf-Wg-8X0"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="374-cZ-3HD"/>
+                    <navigationItem key="navigationItem" id="374-cZ-3HD">
+                        <barButtonItem key="backBarButtonItem" title="Camera" id="tbU-3y-Um1"/>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="overlayButton" destination="Fc1-7o-sKz" id="IGd-s1-5cV"/>
@@ -94,21 +96,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0Ec-gU-8eE">
-                            <size key="itemSize" width="147" height="147"/>
+                            <size key="itemSize" width="64" height="52"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="GOJ-dl-K9T" customClass="PublicPhotoCollectionViewCell" customModule="Selfiesteem" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="147" height="147"/>
+                                <rect key="frame" x="0.0" y="64" width="64" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="147" height="147"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="64" height="52"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fXc-WV-kd1" customClass="PFImageView">
-                                            <rect key="frame" x="8" y="8" width="131" height="131"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fXc-WV-kd1" customClass="CachedPFImageView" customModule="Selfiesteem" customModuleProvider="target">
+                                            <rect key="frame" x="8" y="8" width="48" height="36"/>
                                             <animations/>
                                         </imageView>
                                     </subviews>
@@ -123,8 +125,7 @@
                                     <constraint firstAttribute="leadingMargin" secondItem="fXc-WV-kd1" secondAttribute="leading" id="oSP-YH-UsT"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="pfImageView" destination="fXc-WV-kd1" id="BB0-SQ-Dev"/>
-                                    <segue destination="9kh-hR-e71" kind="show" id="4lQ-4l-TLj"/>
+                                    <outlet property="pfImageView" destination="fXc-WV-kd1" id="jC8-tt-J9s"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -133,7 +134,9 @@
                             <outlet property="delegate" destination="f1O-NX-5HU" id="9a9-GS-zmq"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Rate Photos" id="mex-2v-6Im"/>
+                    <navigationItem key="navigationItem" title="Rate Photos" id="mex-2v-6Im">
+                        <barButtonItem key="backBarButtonItem" title="Camera" id="Ks0-dg-1yt"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="parseClassName" value="Photos"/>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="pullToRefreshEnabled" value="YES"/>
@@ -142,12 +145,15 @@
                             <integer key="value" value="20"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="9kh-hR-e71" kind="show" identifier="toRatePhotoViewController" id="srd-jZ-dqC"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OT2-XS-KQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1513" y="240"/>
         </scene>
-        <!--Rate Photo View Controller-->
+        <!--Title-->
         <scene sceneID="Imt-6z-QdY">
             <objects>
                 <viewController id="9kh-hR-e71" customClass="RatePhotoViewController" customModule="Selfiesteem" customModuleProvider="target" sceneMemberID="viewController">
@@ -159,27 +165,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6FH-HL-WBT" customClass="PFImageView">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6FH-HL-WBT" customClass="CachedPFImageView" customModule="Selfiesteem" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <animations/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="2ku-qd-ib4" appends="YES" id="toF-sy-dHo"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.037814954188481686" green="0.037814954188481686" blue="0.037814954188481686" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="NVC-Da-spc" firstAttribute="top" secondItem="6FH-HL-WBT" secondAttribute="bottom" id="HmT-lO-XAf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6FH-HL-WBT" secondAttribute="trailing" constant="-20" id="Sx4-yH-BAJ"/>
+                            <constraint firstItem="6FH-HL-WBT" firstAttribute="leading" secondItem="efo-Ey-TnX" secondAttribute="leadingMargin" constant="-20" id="eKj-g0-HTC"/>
+                            <constraint firstItem="6FH-HL-WBT" firstAttribute="top" secondItem="u4M-lL-jom" secondAttribute="bottom" id="jPF-ow-3Mk"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="xnh-xn-dRB"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
-                        <outlet property="pfImageView" destination="6FH-HL-WBT" id="MgZ-25-5Rx"/>
+                        <outlet property="imageView" destination="6FH-HL-WBT" id="AJm-Vl-fBR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="grY-3f-QE4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="2ku-qd-ib4">
+                    <connections>
+                        <action selector="didTapImageView:" destination="9kh-hR-e71" id="oYM-Wf-5gL"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1996" y="240"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WXu-Cn-rdm">
             <objects>
-                <navigationController id="ocz-I0-pQJ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigationViewController" id="ocz-I0-pQJ" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZIp-Tg-YhL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

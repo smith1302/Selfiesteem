@@ -17,6 +17,7 @@ class RatePhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBarHidden = true
         // Either loads it or uses the cached version
         imageView.file = fileToLoad
         imageView.loadInBackground()
@@ -31,7 +32,9 @@ class RatePhotoViewController: UIViewController {
         self.fileToLoad = file
     }
     
-
+    @IBAction func didTapImageView(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
     /*
     // MARK: - Navigation
 

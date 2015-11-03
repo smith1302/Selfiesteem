@@ -15,7 +15,7 @@ private let reuseIdentifier = "Cell"
 class PublicPhotosViewController: PFQueryCollectionViewController {
     
     let insetSize:CGFloat = 0
-    let numCols:CGFloat = 3
+    let numCols:CGFloat = 4
     
     
     required init(coder aDecoder: NSCoder) {
@@ -42,6 +42,8 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = false
+        
         var newFrame = self.collectionView!.frame
         newFrame.size.height = self.view.frame.size.height - 20
         newFrame.origin.y = 20
@@ -70,6 +72,13 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     }
     
     // MARK: UICollectionViewDelegate
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) {
+            self.performSegueWithIdentifier("toRatePhotoViewController", sender: selectedCell)
+        }
+        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+    }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return insetSize

@@ -12,15 +12,17 @@ import ParseUI
 
 class PublicPhotoCollectionViewCell: PFCollectionViewCell {
 
-    @IBOutlet weak var pfImageView: PFImageView!
+    @IBOutlet weak var pfImageView: CachedPFImageView!
     
     func configure(file:PFFile) {
         pfImageView.file = file;
-        pfImageView.loadInBackground()
-        pfImageView.layer.cornerRadius = pfImageView.frame.size.height/3
+        pfImageView.loadInBackground({
+            (image, error) in
+            self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
+        })
         pfImageView.layer.masksToBounds = true
-        pfImageView.layer.borderColor = UIColor(red: 0.706, green: 0.962, blue: 1.000, alpha: 1.000).CGColor
-        pfImageView.layer.borderWidth = 3
+        pfImageView.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.4).CGColor
+        pfImageView.layer.borderWidth = 5
     }
     
     /*

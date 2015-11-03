@@ -22,7 +22,7 @@ class CachedPFImageView : PFImageView {
             if let nonNilFile = newValue, image = Cache.imageCache[nonNilFile] {
                 super.image = image
             }
-            super.file = file
+            super.file = newValue
         }
     }
     
