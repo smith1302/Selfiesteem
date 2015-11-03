@@ -21,13 +21,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = true
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+        super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(animated: Bool) {
         // Immediately show the camera
         self.presentCamera()
+        super.viewDidAppear(animated)
     }
 
     override func didReceiveMemoryWarning() {

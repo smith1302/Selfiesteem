@@ -16,6 +16,9 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     
     func configure(file:PFFile) {
         pfImageView.file = file;
+        // Need to figure out a fix for this. Configure is called before the cell's frame is made. So the imageview frame is wrong thus we cant
+        // set the corner radius properly. Waiting until the load is done works, but the load isnt always triggered if the image is cached.
+        // Need to figure out when to call this method after everything is setup.
         pfImageView.loadInBackground({
             (image, error) in
             self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
