@@ -124,6 +124,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="pfImageView" destination="fXc-WV-kd1" id="BB0-SQ-Dev"/>
+                                    <segue destination="9kh-hR-e71" kind="show" id="4lQ-4l-TLj"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -145,6 +146,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OT2-XS-KQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1513" y="240"/>
+        </scene>
+        <!--Rate Photo View Controller-->
+        <scene sceneID="Imt-6z-QdY">
+            <objects>
+                <viewController id="9kh-hR-e71" customClass="RatePhotoViewController" customModule="Selfiesteem" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="u4M-lL-jom"/>
+                        <viewControllerLayoutGuide type="bottom" id="NVC-Da-spc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="efo-Ey-TnX">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6FH-HL-WBT" customClass="PFImageView">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <animations/>
+                            </imageView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.037814954188481686" green="0.037814954188481686" blue="0.037814954188481686" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="pfImageView" destination="6FH-HL-WBT" id="MgZ-25-5Rx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="grY-3f-QE4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1996" y="240"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WXu-Cn-rdm">

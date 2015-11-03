@@ -89,4 +89,13 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         return CGSizeMake(columnWidth, columnWidth)
     }
     
+    // MARK: Transitions
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let ratePhotoVC = segue.destinationViewController as? RatePhotoViewController, selectedCell = sender as? PublicPhotoCollectionViewCell {
+            let pfImageView = selectedCell.pfImageView
+            ratePhotoVC.setUpWithFile(pfImageView.file)
+        }
+    }
+    
 }
