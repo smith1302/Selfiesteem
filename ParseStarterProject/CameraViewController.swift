@@ -12,6 +12,8 @@ import Parse
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     let imagePicker = UIImagePickerController()
+    let sourceType = UIImagePickerControllerSourceType.Camera
+    @IBOutlet weak var overlayButton: OverlayButton!
     
     // Image upload background thread IDs
     var fileUploadBackgroundTaskID:UIBackgroundTaskIdentifier?
@@ -19,7 +21,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
     
@@ -34,15 +35,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func presentCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
             imagePicker.delegate = self // That way the delegate methods below get called so we know whats going on
-            imagePicker.sourceType = .PhotoLibrary
+            imagePicker.sourceType = sourceType
+            imagePicker.cameraOverlayView = overlayButton
             self.presentViewController(imagePicker, animated: true, completion: nil)
         } else {
             ErrorHandler.showAlert("Device does not have a camera")
         }
     }
-    
 
     // ------- Mark: ImagePickerControllerDelegate
     
@@ -104,6 +105,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         // Return false as default until I finish the above TODO list
         return false
     }
-
-
+    
+    // ---- Mark: IBAction
+    
+    @IBAction func swipeRightAction(sender: AnyObject) {
+        self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
+    }
 }
