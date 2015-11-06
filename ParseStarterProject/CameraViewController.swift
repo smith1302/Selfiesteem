@@ -12,6 +12,8 @@ import Parse
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     let imagePicker = UIImagePickerController()
+    let sourceType = UIImagePickerControllerSourceType.Camera
+    @IBOutlet weak var overlayButton: OverlayButton!
     
     // Image upload background thread IDs
     var fileUploadBackgroundTaskID:UIBackgroundTaskIdentifier?
@@ -19,13 +21,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+        super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(animated: Bool) {
         // Immediately show the camera
         self.presentCamera()
+        super.viewDidAppear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,15 +41,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func presentCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
             imagePicker.delegate = self // That way the delegate methods below get called so we know whats going on
-            imagePicker.sourceType = .PhotoLibrary
+            imagePicker.sourceType = sourceType
+            if sourceType == UIImagePickerControllerSourceType.Camera {
+                imagePicker.cameraOverlayView = overlayButton
+            }
             self.presentViewController(imagePicker, animated: true, completion: nil)
         } else {
             ErrorHandler.showAlert("Device does not have a camera")
         }
     }
-    
 
     // ------- Mark: ImagePickerControllerDelegate
     
@@ -93,17 +102,20 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             // Upload the PFObject
             photoObject.saveInBackgroundWithBlock({
                 (success:Bool, error:NSError?) -> Void in
-                UIApplication.sharedApplication().endBackgroundTask(self.fileUploadBackgroundTaskID!)
+                UIApplication.sharedApplication().endBackgroundTask(self.photoPostBackgroundTaskID!)
                 if error != nil {
                     ErrorHandler.showAlert(error?.description)
                 }
-                // Cache photo on success
             })
         }
         
         // Return false as default until I finish the above TODO list
         return false
     }
-
-
+    
+    // ---- Mark: IBAction
+    
+    @IBAction func swipeRightAction(sender: AnyObject) {
+        self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
+    }
 }

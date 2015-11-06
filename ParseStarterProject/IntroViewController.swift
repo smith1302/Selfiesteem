@@ -106,7 +106,7 @@ class IntroViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
     */
     func continueToMainApp() {
         let storyboard = Constants.storyboard
-        let mainAppVC = storyboard.instantiateViewControllerWithIdentifier("CameraViewController")
+        let mainAppVC = storyboard.instantiateViewControllerWithIdentifier("MainNavigationViewController")
         self.presentViewController(mainAppVC, animated: true, completion: nil)
     }
     
