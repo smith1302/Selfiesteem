@@ -14,6 +14,9 @@ class RatePhotoViewController: UIViewController {
     
     var fileToLoad:PFFile!
     @IBOutlet weak var imageView: CachedPFImageView!
+    @IBOutlet weak var slider: UISlider!
+    @IBOutlet weak var popOverSliderRating: UILabel!
+    @IBOutlet weak var rateButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +24,15 @@ class RatePhotoViewController: UIViewController {
         // Either loads it or uses the cached version
         imageView.file = fileToLoad
         imageView.loadInBackground()
+        // Configure slider
+        slider.continuous = true
+        slider.minimumValue = 1.0
+        slider.maximumValue = 10.0
+        slider.setValue(5, animated: true)
+        slider.layer.cornerRadius = 8
+        popOverSliderRating.hidden = true
+        popOverSliderRating.layer.cornerRadius = 8
+        popOverSliderRating.layer.masksToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,14 +47,27 @@ class RatePhotoViewController: UIViewController {
     @IBAction func didTapImageView(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func sliderValueChanged(sender: AnyObject) {
+        let newStep = round(slider.value)
+        slider.value = newStep
+        print("\(slider.value)")
+        updatePopOverSliderRatingForValue(newStep)
     }
-    */
 
+    @IBAction func sliderDidTouchDown(sender: AnyObject) {
+        popOverSliderRating.hidden = false
+    }
+
+    
+    @IBAction func sliderDidEndEditing(sender: AnyObject) {
+        popOverSliderRating.hidden = true
+    }
+    
+    func updatePopOverSliderRatingForValue(newStep:Float) {
+        let trackRect = slider.trackRectForBounds(slider.bounds)
+        let thumbRect = slider.thumbRectForBounds(slider.bounds, trackRect: trackRect, value: newStep)
+        popOverSliderRating.center = CGPointMake(thumbRect.origin.x+slider.frame.origin.x+popOverSliderRating.frame.size.width/2 - 5, popOverSliderRating.center.y)
+        popOverSliderRating.text = String(Int(newStep))
+    }
 }

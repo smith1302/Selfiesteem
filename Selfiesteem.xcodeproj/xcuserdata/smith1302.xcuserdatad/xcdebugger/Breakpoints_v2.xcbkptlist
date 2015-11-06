@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/RatePhotoViewController.swift"
-            timestampString = "468229063.931455"
+            timestampString = "468542613.871367"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "didTapImageView(_:)"
             landmarkType = "5">
          </BreakpointContent>
