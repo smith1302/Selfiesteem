@@ -17,6 +17,7 @@
 		81BA817B1A49E0E500E65899 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BA817A1A49E0E500E65899 /* SystemConfiguration.framework */; };
 		81BA817F1A49E0F000E65899 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BA817E1A49E0F000E65899 /* libstdc++.6.dylib */; };
 		C6494A061BED3A45004E966D /* HistoryOfImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6494A051BED3A45004E966D /* HistoryOfImagesViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		C6494A091BED6468004E966D /* ImagePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6494A081BED6468004E966D /* ImagePostCell.swift */; settings = {ASSET_TAGS = (); }; };
 		F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CAC1BC84F90008864FC /* IntroViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F7110CAF1BC84FBF008864FC /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7110CAE1BC84FBF008864FC /* ParseUI.framework */; settings = {ASSET_TAGS = (); }; };
 		F7110CB21BC85049008864FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CB11BC85049008864FC /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
@@ -45,6 +46,7 @@
 		81BA817A1A49E0E500E65899 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		81BA817E1A49E0F000E65899 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		C6494A051BED3A45004E966D /* HistoryOfImagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryOfImagesViewController.swift; sourceTree = "<group>"; };
+		C6494A081BED6468004E966D /* ImagePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePostCell.swift; sourceTree = "<group>"; };
 		F7110CAC1BC84F90008864FC /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		F7110CAE1BC84FBF008864FC /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		F7110CB11BC85049008864FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				C6494A051BED3A45004E966D /* HistoryOfImagesViewController.swift */,
+				C6494A081BED6468004E966D /* ImagePostCell.swift */,
 			);
 			name = ImageHistory;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				F71D137F1BE84FFA001B6114 /* OverlayButton.swift in Sources */,
 				C6494A061BED3A45004E966D /* HistoryOfImagesViewController.swift in Sources */,
 				F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */,
+				C6494A091BED6468004E966D /* ImagePostCell.swift in Sources */,
 				F753E2921BE884BB00F89A86 /* Cache.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				F753E2901BE87ED300F89A86 /* RatePhotoViewController.swift in Sources */,

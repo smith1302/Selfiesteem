@@ -1,0 +1,7 @@
+History of Images:
+    - Goes directly to table view of all your current post.
+    - Click on post -> goes directly to Image View of the post with an optional swipe up (similar to snapchat)
+
+Image view of your post:
+    - Swipe up to see all comments
+    - Has an overlay of the image with white text of the comments

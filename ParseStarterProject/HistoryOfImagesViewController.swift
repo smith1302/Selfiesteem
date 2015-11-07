@@ -13,24 +13,27 @@ import ParseUI
 class HistoryOfImagesViewController: PFQueryTableViewController {
     // Initialise the PFQueryTable tableview
     
-    override init(style: UITableViewStyle, className: String!) {
+    override init(style: UITableViewStyle, className: String!)
+    {
         super.init(style: style, className: className)
-
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-        // Configure the PFQueryTableView
-        self.parseClassName = "User"
-        self.textKey = "username"
+        
         self.pullToRefreshEnabled = true
         self.paginationEnabled = false
-        self.objectsPerPage = 20
+        self.objectsPerPage = 25
+        
+        self.parseClassName = "_Users"
     }
+    
+    required init(coder aDecoder:NSCoder)
+    {
+         super.init(coder: aDecoder)!
+        //fatalError("NSCoding not supported")
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+         self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
         // Do any additional setup after loading the view.
     }
 
@@ -39,30 +42,49 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         // Dispose of any resources that can be recreated.
     }
     override func queryForTable() -> PFQuery {
-        
+        let userID = PFUser.currentUser()?.objectId
+        //print(userID!)
+
         var query:PFQuery = PFQuery()
         
-        query = PFQuery(className: "_User")
+        query = PFQuery(className: "Photos")
+        query.whereKey("userID", equalTo: userID!)
 
-        query.orderByAscending("username")
+        //query.orderByAscending("createdAt")
         
         return query
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as? PFTableViewCell
-        
-        if cell == nil {
-            cell = PFTableViewCell()
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> ImagePostCell? {
+        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ImagePostCell!
+        if(cell == nil) {
+            cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         }
-        
-        if let nameEnglish = object?["username"] as? String {
-            cell!.textLabel?.text = nameEnglish
-        }
-        
-        return cell!
-    }
+        if let photoFile = object?["photoFile"] as? PFFile {
+            if let labeltext = object?.objectId! {
+                cell.configure(photoFile, objectId: labeltext)
+            } else {
+                cell.configure(photoFile, objectId: "something")
 
+            }
+        }else {
+            print("Unable to do it")
+        }
+
+        
+        return cell
+    }
+    //Clicked on a cell
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        if let object = self.objects?[indexPath.row] {
+//            let canToggle = User.currentUser()!.toggleFollow(object as? PFUser)
+//            if canToggle {
+//                let cell = tableView.cellForRowAtIndexPath(indexPath) as! FriendCell!
+//                cell.setFollow(!cell.following)
+//            }
+//        }
+         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
 
 
     /*
