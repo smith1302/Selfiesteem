@@ -17,8 +17,8 @@ public class ImagePostCell : PFTableViewCell {
         }
         //Circular image
         self.postImage.layer.cornerRadius = (self.postImage.frame.size.height)/2
+        self.postImage.layer.masksToBounds = true
 
-        
         //postImage = PFImageView(frame: CGRectMake(0, 0, 100, 100))
         postImage.image = UIImage(named: "ActivityIndicator.gif")
         postImage.file = photoFile

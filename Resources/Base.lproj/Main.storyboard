@@ -36,24 +36,24 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="145" id="bOp-bO-716" customClass="ImagePostCell" customModule="Selfiesteem" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="414" height="145"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="130" id="bOp-bO-716" customClass="ImagePostCell" customModule="Selfiesteem" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="414" height="130"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bOp-bO-716" id="PO5-Pv-ZtR">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="144.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="129.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9fd-6F-ycx" customClass="PFImageView">
+                                            <rect key="frame" x="30" y="19" width="89" height="91"/>
+                                            <animations/>
+                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ot-hZ-Alk">
-                                            <rect key="frame" x="179" y="56" width="204" height="21"/>
+                                            <rect key="frame" x="161" y="54" width="204" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9fd-6F-ycx" customClass="PFImageView">
-                                            <rect key="frame" x="29" y="21" width="89" height="91"/>
-                                            <animations/>
-                                        </imageView>
                                     </subviews>
                                     <animations/>
                                 </tableViewCellContentView>
