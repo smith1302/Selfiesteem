@@ -20,6 +20,7 @@
 		F7110CAF1BC84FBF008864FC /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7110CAE1BC84FBF008864FC /* ParseUI.framework */; settings = {ASSET_TAGS = (); }; };
 		F7110CB21BC85049008864FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7110CB11BC85049008864FC /* Constants.swift */; settings = {ASSET_TAGS = (); }; };
 		F71D137F1BE84FFA001B6114 /* OverlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71D137E1BE84FFA001B6114 /* OverlayButton.swift */; settings = {ASSET_TAGS = (); }; };
+		F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */; settings = {ASSET_TAGS = (); }; };
 		F753E2901BE87ED300F89A86 /* RatePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F753E28F1BE87ED300F89A86 /* RatePhotoViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F753E2921BE884BB00F89A86 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F753E2911BE884BB00F89A86 /* Cache.swift */; settings = {ASSET_TAGS = (); }; };
 		F753E2961BE8869300F89A86 /* CachedPFImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F753E2951BE8869300F89A86 /* CachedPFImageView.swift */; settings = {ASSET_TAGS = (); }; };
@@ -27,6 +28,8 @@
 		F75C45561BE818CE00151A24 /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = F75C45551BE818CE00151A24 /* TODO.txt */; settings = {ASSET_TAGS = (); }; };
 		F75C45591BE8197100151A24 /* PublicPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C45581BE8197100151A24 /* PublicPhotosViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F75C455B1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C455A1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		F78C1E151BF564A5007EFBC5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78C1E141BF564A5007EFBC5 /* Photo.swift */; settings = {ASSET_TAGS = (); }; };
+		F78C1E171BF564B0007EFBC5 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78C1E161BF564B0007EFBC5 /* Rating.swift */; settings = {ASSET_TAGS = (); }; };
 		F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2465E1BCC6BB400945180 /* CameraViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A246641BD33A4000945180 /* ErrorHandler.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -47,6 +50,7 @@
 		F7110CAE1BC84FBF008864FC /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		F7110CB11BC85049008864FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F71D137E1BE84FFA001B6114 /* OverlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayButton.swift; sourceTree = "<group>"; };
+		F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRatingTextField.swift; sourceTree = "<group>"; };
 		F753E28F1BE87ED300F89A86 /* RatePhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatePhotoViewController.swift; sourceTree = "<group>"; };
 		F753E2911BE884BB00F89A86 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		F753E2951BE8869300F89A86 /* CachedPFImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedPFImageView.swift; sourceTree = "<group>"; };
@@ -54,6 +58,8 @@
 		F75C45551BE818CE00151A24 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
 		F75C45581BE8197100151A24 /* PublicPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicPhotosViewController.swift; sourceTree = "<group>"; };
 		F75C455A1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		F78C1E141BF564A5007EFBC5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		F78C1E161BF564B0007EFBC5 /* Rating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F7A2465E1BCC6BB400945180 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F7A246641BD33A4000945180 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,6 +170,8 @@
 			isa = PBXGroup;
 			children = (
 				F753E2951BE8869300F89A86 /* CachedPFImageView.swift */,
+				F78C1E141BF564A5007EFBC5 /* Photo.swift */,
+				F78C1E161BF564B0007EFBC5 /* Rating.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -180,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				F753E28F1BE87ED300F89A86 /* RatePhotoViewController.swift */,
+				F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */,
 			);
 			name = RatePhoto;
 			sourceTree = "<group>";
@@ -298,6 +307,9 @@
 				F753E2961BE8869300F89A86 /* CachedPFImageView.swift in Sources */,
 				F75C45591BE8197100151A24 /* PublicPhotosViewController.swift in Sources */,
 				F71D137F1BE84FFA001B6114 /* OverlayButton.swift in Sources */,
+				F78C1E171BF564B0007EFBC5 /* Rating.swift in Sources */,
+				F78C1E151BF564A5007EFBC5 /* Photo.swift in Sources */,
+				F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */,
 				F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */,
 				F753E2921BE884BB00F89A86 /* Cache.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,

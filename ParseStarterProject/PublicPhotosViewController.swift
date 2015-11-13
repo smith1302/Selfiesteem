@@ -64,10 +64,9 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PublicPhotoCollectionViewCell? {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! PublicPhotoCollectionViewCell
-        if let photoFile = object?["photoFile"] as? PFFile {
-            cell.configure(photoFile)
+        if let photo = object as? Photo {
+            cell.configure(photo)
         }
-        
         return cell
     }
     
@@ -102,8 +101,8 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let ratePhotoVC = segue.destinationViewController as? RatePhotoViewController, selectedCell = sender as? PublicPhotoCollectionViewCell {
-            let pfImageView = selectedCell.pfImageView
-            ratePhotoVC.setUpWithFile(pfImageView.file)
+            let photo = selectedCell.photo
+            ratePhotoVC.setUpWithPhoto(photo)
         }
     }
     

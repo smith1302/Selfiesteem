@@ -10,29 +10,44 @@ import UIKit
 import Parse
 import ParseUI
 
-class RatePhotoViewController: UIViewController {
+class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    var fileToLoad:PFFile!
+    let ratingRange:Int = 10
+    var inputBox:UIRatingTextField?
+    var photo:Photo!
     @IBOutlet weak var imageView: CachedPFImageView!
-    @IBOutlet weak var slider: UISlider!
-    @IBOutlet weak var popOverSliderRating: UILabel!
+    @IBOutlet weak var exitButton: UIButton!
+    @IBOutlet weak var numberPicker: UIPickerView!
     @IBOutlet weak var rateButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBarHidden = true
         // Either loads it or uses the cached version
-        imageView.file = fileToLoad
+        imageView.file = photo.photoFile
         imageView.loadInBackground()
-        // Configure slider
-        slider.continuous = true
-        slider.minimumValue = 1.0
-        slider.maximumValue = 10.0
-        slider.setValue(5, animated: true)
-        slider.layer.cornerRadius = 8
-        popOverSliderRating.hidden = true
-        popOverSliderRating.layer.cornerRadius = 8
-        popOverSliderRating.layer.masksToBounds = true
+        // Configure rater
+        numberPicker.delegate = self
+        numberPicker.dataSource = self
+        rateButton.layer.cornerRadius = 8
+        rateButton.layer.borderColor = UIColor.whiteColor().CGColor
+        rateButton.layer.borderWidth = 3
+        rateButton.backgroundColor = UIColor(white: 0.1, alpha: 0.75)
+        rateButton.titleLabel?.textColor = UIColor.whiteColor()
+        // Configure next button
+        let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        nextButton.setImage(image, forState: UIControlState.Normal)
+        nextButton.tintColor = UIColor.whiteColor()
+        nextButton.layer.borderColor = UIColor.blackColor().CGColor
+        nextButton.layer.borderWidth = 1
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        hideNumberPicker()
+        // Configure exit button
+        exitButton.titleLabel?.textAlignment = .Left
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,34 +55,84 @@ class RatePhotoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setUpWithFile(file:PFFile!) {
-        self.fileToLoad = file
+    func setUpWithPhoto(photo:Photo!) {
+        self.photo = photo
     }
     
-    @IBAction func didTapImageView(sender: AnyObject) {
+    func hideNumberPicker() {
+        numberPicker.hidden = true
+        numberPicker.userInteractionEnabled = false
+    }
+    
+    func showInputAtLocation(location:CGPoint) {
+        let textSize:CGFloat = 17
+        let padding:CGFloat = 25
+        if inputBox == nil {
+            inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
+            self.view.addSubview(inputBox!)
+        }
+        let boxHeight = textSize+padding
+        inputBox?.frame = CGRectMake(0, location.y - boxHeight/2, self.view.frame.size.width, boxHeight)
+        inputBox?.becomeFirstResponder()
+    }
+
+    
+    @IBAction func exitClicked(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    @IBAction func sliderValueChanged(sender: AnyObject) {
-        let newStep = round(slider.value)
-        slider.value = newStep
-        print("\(slider.value)")
-        updatePopOverSliderRatingForValue(newStep)
-    }
-
-    @IBAction func sliderDidTouchDown(sender: AnyObject) {
-        popOverSliderRating.hidden = false
-    }
-
-    
-    @IBAction func sliderDidEndEditing(sender: AnyObject) {
-        popOverSliderRating.hidden = true
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
     }
     
-    func updatePopOverSliderRatingForValue(newStep:Float) {
-        let trackRect = slider.trackRectForBounds(slider.bounds)
-        let thumbRect = slider.thumbRectForBounds(slider.bounds, trackRect: trackRect, value: newStep)
-        popOverSliderRating.center = CGPointMake(thumbRect.origin.x+slider.frame.origin.x+popOverSliderRating.frame.size.width/2 - 5, popOverSliderRating.center.y)
-        popOverSliderRating.text = String(Int(newStep))
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return ratingRange
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return String(row)
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        rateButton.setTitle(String(row), forState: .Normal)
+        hideNumberPicker()
+    }
+    
+    @IBAction func didTapImageView(sender: AnyObject) {
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            let location = touch.locationInView(self.view)
+            self.showInputAtLocation(location)
+        }
+    }
+
+    @IBAction func nextButtonClicked(sender: AnyObject) {
+        submitRating()
+    }
+    
+    @IBAction func rateButtonClicked(sender: AnyObject) {
+        numberPicker.userInteractionEnabled = true
+        numberPicker.hidden = false
+    }
+    
+    func submitRating() {
+//        let ratingValue = getRatingValue()
+//        let ratingComment = getRatingComment()
+//        let raterUserID = PFUser.currentUser()?.objectId
+//        let photoID = 1
+    }
+    
+    func getRatingValue() -> Int? {
+        var val:Int?
+        if let rateButtonText = rateButton.titleLabel?.text, rating = Int(rateButtonText) {
+            val = rating
+        }
+        return val
+    }
+    
+    func getRatingComment() -> String? {
+        return inputBox?.text
     }
 }

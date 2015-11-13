@@ -13,6 +13,7 @@ import ParseUI
 class PublicPhotoCollectionViewCell: PFCollectionViewCell {
 
     @IBOutlet weak var pfImageView: CachedPFImageView!
+    var photo:Photo?
     
     // Need this functionality to update the frame as soon as the bound is set to the imageView can calculate the corner radius before rendering
     override var bounds: CGRect {
@@ -21,8 +22,9 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         }
     }
     
-    func configure(file:PFFile) {
-        pfImageView.file = file;
+    func configure(photo:Photo) {
+        self.photo = photo
+        pfImageView.file = photo.photoFile;
         pfImageView.loadInBackground()
         pfImageView.layoutIfNeeded()
         self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
