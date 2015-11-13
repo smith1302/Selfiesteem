@@ -118,4 +118,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func swipeRightAction(sender: AnyObject) {
         self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
     }
+    @IBAction func swipeLeftAction(sender: AnyObject) {
+        self.performSegueWithIdentifier("segueToHistoryOfImagesViewController", sender: nil);
+    }
 }
