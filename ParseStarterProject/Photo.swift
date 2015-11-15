@@ -11,7 +11,6 @@ import Parse
 
 class Photo : PFObject, PFSubclassing  {
     
-    @NSManaged var objectID: String
     @NSManaged var photoFile: PFFile
     
     override class func initialize() {

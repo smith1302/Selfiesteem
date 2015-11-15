@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 
-class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
     
     let ratingRange:Int = 10
     var inputBox:UIRatingTextField?
@@ -30,6 +30,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         // Configure rater
         numberPicker.delegate = self
         numberPicker.dataSource = self
+        numberPicker.selectRow(0, inComponent: 0, animated: true)
         rateButton.layer.cornerRadius = 8
         rateButton.layer.borderColor = UIColor.whiteColor().CGColor
         rateButton.layer.borderWidth = 3
@@ -39,8 +40,6 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         nextButton.setImage(image, forState: UIControlState.Normal)
         nextButton.tintColor = UIColor.whiteColor()
-        nextButton.layer.borderColor = UIColor.blackColor().CGColor
-        nextButton.layer.borderWidth = 1
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,31 +54,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         // Dispose of any resources that can be recreated.
     }
     
-    func setUpWithPhoto(photo:Photo!) {
-        self.photo = photo
-    }
-    
-    func hideNumberPicker() {
-        numberPicker.hidden = true
-        numberPicker.userInteractionEnabled = false
-    }
-    
-    func showInputAtLocation(location:CGPoint) {
-        let textSize:CGFloat = 17
-        let padding:CGFloat = 25
-        if inputBox == nil {
-            inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
-            self.view.addSubview(inputBox!)
-        }
-        let boxHeight = textSize+padding
-        inputBox?.frame = CGRectMake(0, location.y - boxHeight/2, self.view.frame.size.width, boxHeight)
-        inputBox?.becomeFirstResponder()
-    }
-
-    
-    @IBAction func exitClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
-    }
+    // Mark: Picker View Delegate
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -98,7 +73,21 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         hideNumberPicker()
     }
     
+    // Mark: Text field delegate
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Mark: Interactions
+    
+    @IBAction func exitClicked(sender: AnyObject) {
+        leaveView()
+    }
+    
     @IBAction func didTapImageView(sender: AnyObject) {
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -110,6 +99,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
 
     @IBAction func nextButtonClicked(sender: AnyObject) {
         submitRating()
+        leaveView()
     }
     
     @IBAction func rateButtonClicked(sender: AnyObject) {
@@ -117,22 +107,44 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         numberPicker.hidden = false
     }
     
-    func submitRating() {
-//        let ratingValue = getRatingValue()
-//        let ratingComment = getRatingComment()
-//        let raterUserID = PFUser.currentUser()?.objectId
-//        let photoID = 1
+    // Mark: Other
+    
+    func setUpWithPhoto(photo:Photo!) {
+        self.photo = photo
     }
     
-    func getRatingValue() -> Int? {
-        var val:Int?
-        if let rateButtonText = rateButton.titleLabel?.text, rating = Int(rateButtonText) {
-            val = rating
+    func hideNumberPicker() {
+        numberPicker.hidden = true
+        numberPicker.userInteractionEnabled = false
+    }
+    
+    func showInputAtLocation(location:CGPoint) {
+        let textSize:CGFloat = 17
+        let padding:CGFloat = 25
+        if inputBox == nil {
+            inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
+            inputBox?.delegate = self
+            self.view.addSubview(inputBox!)
         }
-        return val
+        let boxHeight = textSize+padding
+        inputBox?.frame = CGRectMake(0, location.y - boxHeight/2, self.view.frame.size.width, boxHeight)
+        inputBox?.becomeFirstResponder()
+    }
+    
+    func submitRating() {
+        Rating.submitRating(getRatingValue(), comment: getRatingComment(), forPhoto: photo)
+    }
+    
+    func getRatingValue() -> Int {
+        let rateButtonText = rateButton.titleLabel!.text!
+        return Int(rateButtonText)!
     }
     
     func getRatingComment() -> String? {
         return inputBox?.text
+    }
+    
+    func leaveView() {
+        self.navigationController?.popViewControllerAnimated(true)
     }
 }

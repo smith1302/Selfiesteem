@@ -48,6 +48,8 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         newFrame.size.height = self.view.frame.size.height - 20
         newFrame.origin.y = 20
         self.collectionView!.frame = newFrame
+        
+        checkForRatingUpdates()
     }
     
     override func viewDidLoad() {
@@ -58,6 +60,15 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Check to see if user has recently rated this photo so we can gray it out
+    func checkForRatingUpdates() {
+        for cell in  self.collectionView!.visibleCells() {
+            if let publicPhotoCollectionViewCell = cell as? PublicPhotoCollectionViewCell {
+                publicPhotoCollectionViewCell.update()
+            }
+        }
     }
     
     // Mark: PFQueryCollectionView Methods
@@ -74,6 +85,9 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) {
+            if let castedCell = selectedCell as? PublicPhotoCollectionViewCell where castedCell.isInactive() {
+                return
+            }
             self.performSegueWithIdentifier("toRatePhotoViewController", sender: selectedCell)
         }
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
