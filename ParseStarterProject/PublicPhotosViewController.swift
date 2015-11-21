@@ -48,6 +48,8 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         newFrame.size.height = self.view.frame.size.height - 20
         newFrame.origin.y = 20
         self.collectionView!.frame = newFrame
+        
+        checkForRatingUpdates()
     }
     
     override func viewDidLoad() {
@@ -60,14 +62,22 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Check to see if user has recently rated this photo so we can gray it out
+    func checkForRatingUpdates() {
+        for cell in  self.collectionView!.visibleCells() {
+            if let publicPhotoCollectionViewCell = cell as? PublicPhotoCollectionViewCell {
+                publicPhotoCollectionViewCell.update()
+            }
+        }
+    }
+    
     // Mark: PFQueryCollectionView Methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PublicPhotoCollectionViewCell? {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! PublicPhotoCollectionViewCell
-        if let photoFile = object?["photoFile"] as? PFFile {
-            cell.configure(photoFile)
+        if let photo = object as? Photo {
+            cell.configure(photo)
         }
-        
         return cell
     }
     
@@ -75,6 +85,9 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) {
+            if let castedCell = selectedCell as? PublicPhotoCollectionViewCell where castedCell.isInactive() {
+                return
+            }
             self.performSegueWithIdentifier("toRatePhotoViewController", sender: selectedCell)
         }
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
@@ -102,8 +115,8 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let ratePhotoVC = segue.destinationViewController as? RatePhotoViewController, selectedCell = sender as? PublicPhotoCollectionViewCell {
-            let pfImageView = selectedCell.pfImageView
-            ratePhotoVC.setUpWithFile(pfImageView.file)
+            let photo = selectedCell.photo
+            ratePhotoVC.setUpWithPhoto(photo)
         }
     }
     

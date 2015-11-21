@@ -6,7 +6,7 @@ class ErrorHandler {
         if error == nil {
             error = "Something went wrong!"
         }
-        let alert = UIAlertView(title: "Oops", message: error, delegate: self, cancelButtonTitle: "Ok")
+        let alert = UIAlertView(title: "Alert", message: error, delegate: self, cancelButtonTitle: "Ok")
         alert.show()
     }
 }
