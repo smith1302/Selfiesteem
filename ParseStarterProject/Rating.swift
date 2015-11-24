@@ -48,6 +48,8 @@ class Rating : PFObject, PFSubclassing {
             (success:Bool, error:NSError?) -> Void in
             if success {
                 ErrorHandler.showAlert("Rating saved successfully")
+                forPhoto.addRating(ratingObject)
+                forPhoto.saveEventually()
             } else {
                 ErrorHandler.showAlert("Rating failed to save...")
             }

@@ -20,6 +20,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var numberPicker: UIPickerView!
     @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    var inputBoxPrevFrame:CGRect?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,10 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         nextButton.setImage(image, forState: UIControlState.Normal)
         nextButton.tintColor = UIColor.whiteColor()
+        
+        // Subscribe to keyboard notifications
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -52,6 +57,31 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Mark: Keyboard changes
+    
+    func keyboardWillShow(notification:NSNotification) {
+        if inputBox == nil {
+            return
+        }
+        let userInfo:NSDictionary = notification.userInfo!
+        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.CGRectValue()
+        let keyboardHeight = keyboardRectangle.height
+        inputBoxPrevFrame = inputBox!.frame
+        inputBox!.frame.origin.y = (view.frame.size.height - keyboardHeight - inputBox!.frame.size.height)
+    }
+    
+    func keyboardWillHide(notification:NSNotification) {
+        if inputBox == nil || inputBoxPrevFrame == nil {
+            return
+        }
+        inputBox!.frame = inputBoxPrevFrame!
+        if inputBox!.text!.isEmpty {
+            inputBox!.removeFromSuperview()
+            inputBox = nil
+        }
     }
     
     // Mark: Picker View Delegate
@@ -80,6 +110,15 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         return true
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let tf = textField as! UIRatingTextField
+        let currentString: NSString = tf.text!
+        let newString: NSString =
+        currentString.stringByReplacingCharactersInRange(range, withString: string)
+        let newStringSize = newString.sizeWithAttributes([NSFontAttributeName:tf.font!]).width
+        return newStringSize <= (tf.frame.size.width - tf.leftTextMargin*2)
+    }
+    
     // Mark: Interactions
     
     @IBAction func exitClicked(sender: AnyObject) {
@@ -93,7 +132,13 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.locationInView(self.view)
-            self.showInputAtLocation(location)
+            // If we click when keyboard is open, close it
+            // If we click when its not open, move input box
+            if let inputBoxAsserted = inputBox where inputBoxAsserted.isFirstResponder() {
+                inputBoxAsserted.resignFirstResponder()
+            } else {
+                self.showInputAtLocation(location)
+            }
         }
     }
 
@@ -119,16 +164,20 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func showInputAtLocation(location:CGPoint) {
+        let inputBoxExists = inputBox != nil
         let textSize:CGFloat = 17
         let padding:CGFloat = 25
-        if inputBox == nil {
+        if !inputBoxExists {
             inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
             inputBox?.delegate = self
             self.view.addSubview(inputBox!)
+            inputBox?.delegate = self
         }
         let boxHeight = textSize+padding
         inputBox?.frame = CGRectMake(0, location.y - boxHeight/2, self.view.frame.size.width, boxHeight)
-        inputBox?.becomeFirstResponder()
+        if !inputBoxExists {
+            inputBox?.becomeFirstResponder()
+        }
     }
     
     func submitRating() {

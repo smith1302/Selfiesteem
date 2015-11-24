@@ -30,10 +30,14 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         //fatalError("NSCoding not supported")
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
+        updateCellSeenStates()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-         self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
         // Do any additional setup after loading the view.
     }
 
@@ -49,8 +53,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
-
-        //query.orderByAscending("createdAt")
+        query.orderByDescending("updatedAt")
         
         return query
     }
@@ -60,13 +63,8 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         if(cell == nil) {
             cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         }
-        if let photoFile = object?["photoFile"] as? PFFile {
-            if let labeltext = object?.objectId! {
-                cell.configure(photoFile, objectId: labeltext)
-            } else {
-                cell.configure(photoFile, objectId: "something")
-
-            }
+        if let photo = object as? Photo {
+            cell.configure(photo)
         }else {
             print("Unable to do it")
         }
@@ -74,27 +72,25 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         return cell
     }
+    
+    func updateCellSeenStates() {
+        for cell in tableView.visibleCells as! [ImagePostCell] {
+            cell.updateSeenState()
+        }
+    }
+    
     //Clicked on a cell
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        if let object = self.objects?[indexPath.row] {
-//            let canToggle = User.currentUser()!.toggleFollow(object as? PFUser)
-//            if canToggle {
-//                let cell = tableView.cellForRowAtIndexPath(indexPath) as! FriendCell!
-//                cell.setFollow(!cell.following)
-//            }
-//        }
-         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
-
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let photoSummaryVC = segue.destinationViewController as? PhotoSummaryViewController, selectedCell = sender as? ImagePostCell {
+            let photo = selectedCell.photo
+            photoSummaryVC.setUpWithPhoto(photo)
+        }
     }
-    */
-
 }

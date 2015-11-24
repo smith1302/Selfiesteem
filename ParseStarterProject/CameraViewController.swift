@@ -87,12 +87,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
                 }
             }
             // Attach the photo to a PFObject
-            let photoObject = PFObject(className: "Photos")
-            photoObject.setObject(photoFile, forKey: "photoFile")
-            photoObject.setObject(PFUser.currentUser()!.objectId!, forKey: "userID")
+            let photo = Photo(className: "Photos", dictionary: nil)
+            photo.photoFile = photoFile
+            photo.userID = PFUser.currentUser()!.objectId!
+            photo.seen = true
             let photoACL = PFACL(user: PFUser.currentUser()!)
             photoACL.setPublicReadAccess(true)
-            photoObject.ACL = photoACL
+            photo.ACL = photoACL
             
             // Make another background thread for uploading the PFObject
             photoPostBackgroundTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
@@ -100,7 +101,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             })
             
             // Upload the PFObject
-            photoObject.saveInBackgroundWithBlock({
+            photo.saveInBackgroundWithBlock({
                 (success:Bool, error:NSError?) -> Void in
                 UIApplication.sharedApplication().endBackgroundTask(self.photoPostBackgroundTaskID!)
                 if error != nil {

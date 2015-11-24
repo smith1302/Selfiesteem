@@ -38,6 +38,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         // ~~~~~ Uncomment when done testing
         //photosQuery.whereKey("userID", notEqualTo: PFUser.currentUser()!.objectId!)
         photosQuery.orderByAscending("ratingCount")
+        photosQuery.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
         return photosQuery
     }
     
@@ -66,7 +67,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     func checkForRatingUpdates() {
         for cell in  self.collectionView!.visibleCells() {
             if let publicPhotoCollectionViewCell = cell as? PublicPhotoCollectionViewCell {
-                publicPhotoCollectionViewCell.update()
+                publicPhotoCollectionViewCell.addRatingLabelIfNeeded()
             }
         }
     }

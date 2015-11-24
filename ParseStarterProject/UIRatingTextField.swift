@@ -16,9 +16,9 @@ class UIRatingTextField: UITextField, UITextFieldDelegate {
         self.leftTextMargin = leftTextMargin
         super.init(frame: CGRectZero)
         backgroundColor = UIColor(white: 0.1, alpha: 0.7)
-        textColor = UIColor(white: 0.8, alpha: 1.000)
+        textColor = UIColor(white: 0.9, alpha: 1.000)
         font = UIFont.systemFontOfSize(textSize)
-        delegate = self
+        //delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -37,12 +37,13 @@ class UIRatingTextField: UITextField, UITextFieldDelegate {
         return newBounds
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let currentString: NSString = textField.text!
-        let newString: NSString =
-        currentString.stringByReplacingCharactersInRange(range, withString: string)
-        let newStringSize = newString.sizeWithAttributes([NSFontAttributeName:textField.font!]).width
-        return newStringSize <= (textField.frame.size.width - leftTextMargin*2)
-    }
+//    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+//        let currentString: NSString = textField.text!
+//        let newString: NSString =
+//        currentString.stringByReplacingCharactersInRange(range, withString: string)
+//        let newStringSize = newString.sizeWithAttributes([NSFontAttributeName:textField.font!]).width
+//        print(newStringSize)
+//        return newStringSize <= (textField.frame.size.width - leftTextMargin*2)
+//    }
 
 }
