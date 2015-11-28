@@ -8,11 +8,31 @@
 
 import UIKit
 import Parse
+import AVFoundation
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+let kPhotoUploadSuccess = "Your selfie has been sent!"
 
-    let imagePicker = UIImagePickerController()
+class CameraViewController: UIViewController, UINavigationControllerDelegate {
+
+    @IBOutlet weak var cameraControlsView: UIView!
+    @IBOutlet weak var bottomRightButton: OverlayButton!
+    @IBOutlet weak var bottomLeftButton: OverlayButton!
+    @IBOutlet weak var cameraButton: CameraButton!
+    @IBOutlet weak var cameraPreview: UIView!
+    
+    let captureSession = AVCaptureSession()
+    var captureDevice : AVCaptureDevice?
+    let stillImageOutput = AVCaptureStillImageOutput()
+    var outputConnection : AVCaptureConnection?
+    let activityIndicator:ActivityIndictator = ActivityIndictator()
     let sourceType = UIImagePickerControllerSourceType.Camera
+    var currentImage:UIImage?
+    
+    // Post Image Controls
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var postImageControlsView: UIView!
+    
     @IBOutlet weak var overlayButton: OverlayButton!
     
     // Image upload background thread IDs
@@ -22,16 +42,59 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.view.frame.offsetInPlace(dx: 0, dy: 20)
+        self.view.addSubview(activityIndicator)
+        // Input
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        let devices = AVCaptureDevice.devices()
+        // Loop through all the capture devices on this phone (front, back, etc)
+        for device in devices {
+            if(device.position == AVCaptureDevicePosition.Front) {
+                captureDevice = device as? AVCaptureDevice
+                if captureDevice != nil {
+                    self.beginCameraSession()
+                }
+            }
+        }
+        
+        // Output
+        stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+        if captureSession.canAddOutput(stillImageOutput) {
+            captureSession.addOutput(stillImageOutput)
+        }
+        if let outputConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
+            self.outputConnection = outputConnection
+            // update the video orientation to the device one
+            let videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.currentDevice().orientation.rawValue)
+            outputConnection.videoOrientation = videoOrientation!
+        }
+        
+        // Configure post image controls
+        let attributedText = NSMutableAttributedString(string: "X", attributes: [
+                        NSFontAttributeName : cancelButton.titleLabel!.font,
+                        NSForegroundColorAttributeName: UIColor.whiteColor(),
+                        NSStrokeColorAttributeName: UIColor(white: 0.2, alpha: 1),
+                        NSStrokeWidthAttributeName: -2
+                        ])
+        cancelButton.titleLabel?.textAlignment = .Left
+        cancelButton.titleLabel?.attributedText = attributedText
+        
+        let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        submitButton.setImage(image, forState: UIControlState.Normal)
+        submitButton.tintColor = UIColor.whiteColor()
+        
+        // Show controls
+        showCameraControls()
     }
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = true
+        UIApplication.sharedApplication().statusBarHidden=true;
         super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(animated: Bool) {
         // Immediately show the camera
-        self.presentCamera()
         super.viewDidAppear(animated)
     }
 
@@ -40,30 +103,53 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         // Dispose of any resources that can be recreated.
     }
     
-    func presentCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            imagePicker.delegate = self // That way the delegate methods below get called so we know whats going on
-            imagePicker.sourceType = sourceType
-            if sourceType == UIImagePickerControllerSourceType.Camera {
-                imagePicker.cameraOverlayView = overlayButton
+    func beginCameraSession() {
+        do {
+            try captureSession.addInput(AVCaptureDeviceInput(device: captureDevice))
+        } catch {
+            print(error)
+        }
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        cameraPreview.layer.addSublayer(previewLayer)
+        previewLayer?.frame = self.view.layer.frame
+    }
+    
+    func configureDevice() {
+        if let device = captureDevice {
+            do {
+                try device.lockForConfiguration()
+            } catch {
+                print(error)
             }
-            self.presentViewController(imagePicker, animated: true, completion: nil)
-        } else {
-            ErrorHandler.showAlert("Device does not have a camera")
+            device.focusMode = .Locked
+            device.unlockForConfiguration()
+        }
+    }
+    
+    func focusTo(focusPoint:CGPoint) {
+        if let device = captureDevice {
+            do {
+                try device.lockForConfiguration()
+                if device.focusPointOfInterestSupported {
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .ContinuousAutoFocus
+                }
+                if device.exposurePointOfInterestSupported {
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = .ContinuousAutoExposure
+                }
+            } catch {
+                print(error)
+            }
         }
     }
 
-    // ------- Mark: ImagePickerControllerDelegate
-    
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.shouldUploadImage(pickedImage)
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let anyTouch = touches.first {
+            let touchPoint = anyTouch.locationInView(self.view)
+            focusTo(touchPoint)
         }
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // ------- Mark: Uploading
@@ -71,6 +157,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     func shouldUploadImage(image:UIImage) ->Bool {
         let imageData = UIImageJPEGRepresentation(image, 0.7)
         if imageData == nil {
+            self.uploadFinished()
             return false
         }
         if let photoFile = PFFile(data: imageData!) {
@@ -104,8 +191,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             photo.saveInBackgroundWithBlock({
                 (success:Bool, error:NSError?) -> Void in
                 UIApplication.sharedApplication().endBackgroundTask(self.photoPostBackgroundTaskID!)
+                self.uploadFinished()
                 if error != nil {
                     ErrorHandler.showAlert(error?.description)
+                } else if success {
+                    MessageHandler.showMessage(kPhotoUploadSuccess)
                 }
             })
         }
@@ -114,8 +204,74 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         return false
     }
     
+    func showCameraControls() {
+        currentImage = nil
+        cameraControlsView.hidden = false
+        hidePostImageControls()
+        if !captureSession.running {
+            captureSession.startRunning()
+        }
+    }
+    
+    func hideCameraControls() {
+        cameraControlsView.hidden = true
+    }
+    
+    func showPostImageControls() {
+        hideCameraControls()
+        postImageControlsView.hidden = false
+    }
+    
+    func hidePostImageControls() {
+        postImageControlsView.hidden = true
+    }
+    
     // ---- Mark: IBAction
     
+
+    @IBAction func cameraBtnClicked(sender: AnyObject) {
+        if outputConnection == nil {
+            ErrorHandler.showAlert("Something went wrong")
+            return
+        }
+        stillImageOutput.captureStillImageAsynchronouslyFromConnection(outputConnection) {
+            (imageDataSampleBuffer, error) -> Void in
+            
+            if error == nil {
+                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
+                
+                if let image = UIImage(data: imageData) {
+                    self.captureSession.stopRunning()
+                    self.view.layer.contents = image
+                    self.currentImage = image
+                    self.showPostImageControls()
+                }
+            }
+            else {
+                NSLog("error while capturing still image: \(error)")
+            }
+        }
+    }
+    
+    func uploadFinished() {
+        activityIndicator.stopAnimating()
+        showCameraControls()
+    }
+    
+    @IBAction func cancelButtonClicked(sender: AnyObject) {
+        showCameraControls()
+    }
+    
+    @IBAction func submitButtonClicked(sender: AnyObject) {
+        if activityIndicator.isAnimating() {
+            return
+        }
+        if let currentImage = currentImage {
+            shouldUploadImage(currentImage)
+            activityIndicator.startAnimating()
+        }
+    }
+   
     @IBAction func swipeRightAction(sender: AnyObject) {
         self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
     }

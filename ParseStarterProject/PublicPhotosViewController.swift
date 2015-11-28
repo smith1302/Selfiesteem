@@ -44,6 +44,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = false
+        UIApplication.sharedApplication().statusBarHidden=false
         
         var newFrame = self.collectionView!.frame
         newFrame.size.height = self.view.frame.size.height - 20

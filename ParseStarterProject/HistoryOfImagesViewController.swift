@@ -33,6 +33,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
+        UIApplication.sharedApplication().statusBarHidden=false
         updateCellSeenStates()
     }
 

@@ -55,11 +55,13 @@ public class ImagePostCell : PFTableViewCell {
         rlView = UIView(frame: CGRectMake(rlViewX, rlViewY, rlViewSize, rlViewSize))
         rlView!.backgroundColor = UIColor.whiteColor()
         rlView!.layer.cornerRadius = rlViewSize/2
+        rlView!.clipsToBounds = true
         rlView!.layer.borderWidth = 3
-        rlView!.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 1).CGColor
+        rlView!.layer.borderColor = UIColor(red: 0.6, green: 0.94, blue: 1.000, alpha: 1).CGColor
         ratingLabel = UILabel(frame: rlView!.bounds)
         ratingLabel!.text = String(photo.averageRating)
-        ratingLabel!.textColor = UIColor(white: 0.2, alpha: 1)
+        ratingLabel!.textColor = UIColor(white: 0.3, alpha: 1)
+        ratingLabel!.backgroundColor = rlView!.backgroundColor
         ratingLabel!.textAlignment = .Center
         ratingLabel!.font = UIFont.boldSystemFontOfSize(rlView!.frame.size.height*0.5)
         rlView?.addSubview(ratingLabel!)

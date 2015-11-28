@@ -21,6 +21,7 @@ class PhotoSummaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.frame.offsetInPlace(dx: 0, dy: 20)
         // Either loads it or uses the cached version
         cachedImageView.file = photo.photoFile
         cachedImageView.loadInBackground()
@@ -36,6 +37,7 @@ class PhotoSummaryViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = true
+        UIApplication.sharedApplication().statusBarHidden=true
     }
 
     override func didReceiveMemoryWarning() {

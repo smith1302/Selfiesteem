@@ -40,6 +40,11 @@
 		F78C1E191BF5AD2F007EFBC5 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78C1E181BF5AD2F007EFBC5 /* User.swift */; };
 		F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2465E1BCC6BB400945180 /* CameraViewController.swift */; };
 		F7A246651BD33A4000945180 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A246641BD33A4000945180 /* ErrorHandler.swift */; };
+		F7B9C8991C078AD3008E84AB /* MessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C8981C078AD3008E84AB /* MessageHandler.swift */; };
+		F7B9C89B1C078E97008E84AB /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C89A1C078E97008E84AB /* CameraButton.swift */; };
+		F7B9C89E1C090899008E84AB /* ActivityIndictator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */; };
+		F7B9C8A01C091C71008E84AB /* NumberPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C89F1C091C71008E84AB /* NumberPickerCell.swift */; };
+		F7B9C8A21C0922B9008E84AB /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C8A11C0922B9008E84AB /* CustomPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +83,11 @@
 		F78C1E181BF5AD2F007EFBC5 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F7A2465E1BCC6BB400945180 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F7A246641BD33A4000945180 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		F7B9C8981C078AD3008E84AB /* MessageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHandler.swift; sourceTree = "<group>"; };
+		F7B9C89A1C078E97008E84AB /* CameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraButton.swift; sourceTree = "<group>"; };
+		F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndictator.swift; sourceTree = "<group>"; };
+		F7B9C89F1C091C71008E84AB /* NumberPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberPickerCell.swift; sourceTree = "<group>"; };
+		F7B9C8A11C0922B9008E84AB /* CustomPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +138,7 @@
 		81BA81471A49DA1800E65899 /* ParseStarterProject */ = {
 			isa = PBXGroup;
 			children = (
+				F7B9C89C1C0907D7008E84AB /* Views */,
 				F7110CB41BC8516A008864FC /* Models */,
 				F7110CB31BC8515F008864FC /* View Controllers */,
 				F7110CB01BC8503B008864FC /* Helpers */,
@@ -175,9 +186,8 @@
 			children = (
 				F7A246641BD33A4000945180 /* ErrorHandler.swift */,
 				F7110CB11BC85049008864FC /* Constants.swift */,
-				F753E2911BE884BB00F89A86 /* Cache.swift */,
 				F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */,
-				F73D2BB21C04328F00EB7799 /* CircleView.swift */,
+				F7B9C8981C078AD3008E84AB /* MessageHandler.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -198,6 +208,7 @@
 		F7110CB41BC8516A008864FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F753E2911BE884BB00F89A86 /* Cache.swift */,
 				F753E2951BE8869300F89A86 /* CachedPFImageView.swift */,
 				F78C1E141BF564A5007EFBC5 /* Photo.swift */,
 				F78C1E161BF564B0007EFBC5 /* Rating.swift */,
@@ -219,6 +230,8 @@
 			children = (
 				F753E28F1BE87ED300F89A86 /* RatePhotoViewController.swift */,
 				F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */,
+				F7B9C89F1C091C71008E84AB /* NumberPickerCell.swift */,
+				F7B9C8A11C0922B9008E84AB /* CustomPickerView.swift */,
 			);
 			name = RatePhoto;
 			sourceTree = "<group>";
@@ -247,8 +260,18 @@
 			children = (
 				F7A2465E1BCC6BB400945180 /* CameraViewController.swift */,
 				F71D137E1BE84FFA001B6114 /* OverlayButton.swift */,
+				F7B9C89A1C078E97008E84AB /* CameraButton.swift */,
 			);
 			name = Camera;
+			sourceTree = "<group>";
+		};
+		F7B9C89C1C0907D7008E84AB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F73D2BB21C04328F00EB7799 /* CircleView.swift */,
+				F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,7 +374,9 @@
 				F73D2BB11C03D3E900EB7799 /* NSDate+Extension.swift in Sources */,
 				F71D137F1BE84FFA001B6114 /* OverlayButton.swift in Sources */,
 				F78C1E171BF564B0007EFBC5 /* Rating.swift in Sources */,
+				F7B9C89B1C078E97008E84AB /* CameraButton.swift in Sources */,
 				F78C1E191BF5AD2F007EFBC5 /* User.swift in Sources */,
+				F7B9C8A01C091C71008E84AB /* NumberPickerCell.swift in Sources */,
 				F78C1E151BF564A5007EFBC5 /* Photo.swift in Sources */,
 				F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */,
 				C6494A061BED3A45004E966D /* HistoryOfImagesViewController.swift in Sources */,
@@ -359,8 +384,11 @@
 				C6494A091BED6468004E966D /* ImagePostCell.swift in Sources */,
 				F753E2921BE884BB00F89A86 /* Cache.swift in Sources */,
 				F7686ADB1C00409800D78CB0 /* PhotoSummaryTableViewController.swift in Sources */,
+				F7B9C8991C078AD3008E84AB /* MessageHandler.swift in Sources */,
+				F7B9C89E1C090899008E84AB /* ActivityIndictator.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				F753E2901BE87ED300F89A86 /* RatePhotoViewController.swift in Sources */,
+				F7B9C8A21C0922B9008E84AB /* CustomPickerView.swift in Sources */,
 				F7686AD51C000CCA00D78CB0 /* PhotoSummaryViewController.swift in Sources */,
 				F7110CB21BC85049008864FC /* Constants.swift in Sources */,
 			);

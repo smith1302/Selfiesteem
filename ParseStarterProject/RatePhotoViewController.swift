@@ -17,14 +17,14 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     var photo:Photo!
     @IBOutlet weak var imageView: CachedPFImageView!
     @IBOutlet weak var exitButton: UIButton!
-    @IBOutlet weak var numberPicker: UIPickerView!
+    @IBOutlet weak var numberPicker: CustomPickerView!
     @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     var inputBoxPrevFrame:CGRect?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBarHidden = true
+        self.view.frame.offsetInPlace(dx: 0, dy: 20)
         // Either loads it or uses the cached version
         imageView.file = photo.photoFile
         imageView.loadInBackground()
@@ -32,15 +32,24 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         numberPicker.delegate = self
         numberPicker.dataSource = self
         numberPicker.selectRow(0, inComponent: 0, animated: true)
+        numberPicker.layer.cornerRadius = numberPicker.frame.size.height/11
         rateButton.layer.cornerRadius = 8
         rateButton.layer.borderColor = UIColor.whiteColor().CGColor
         rateButton.layer.borderWidth = 3
-        rateButton.backgroundColor = UIColor(white: 0.1, alpha: 0.75)
+        rateButton.backgroundColor = UIColor(white: 0.2, alpha: 0.75)
         rateButton.titleLabel?.textColor = UIColor.whiteColor()
         // Configure next button
         let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         nextButton.setImage(image, forState: UIControlState.Normal)
         nextButton.tintColor = UIColor.whiteColor()
+        // Configure exit btn
+        let attributedText = NSMutableAttributedString(string: "X", attributes: [
+            NSFontAttributeName : exitButton.titleLabel!.font,
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSStrokeColorAttributeName: UIColor(white: 0.2, alpha: 1),
+            NSStrokeWidthAttributeName: -2
+            ])
+        exitButton.titleLabel?.attributedText = attributedText
         
         // Subscribe to keyboard notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
@@ -49,6 +58,8 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = true
+        UIApplication.sharedApplication().statusBarHidden=true;
         hideNumberPicker()
         // Configure exit button
         exitButton.titleLabel?.textAlignment = .Left
@@ -98,9 +109,21 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         return String(row)
     }
     
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        var cell:NumberPickerCell? = view as? NumberPickerCell
+        if cell == nil {
+            cell = NumberPickerCell(frame: CGRectMake(0, 0, self.view.frame.size.width, NumberPickerCell.cellHeight))
+        }
+        cell!.label.text = String(row)
+        return cell!
+    }
+    
+    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return NumberPickerCell.cellHeight
+    }
+    
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        rateButton.setTitle(String(row), forState: .Normal)
-        hideNumberPicker()
+        print(row)
     }
     
     // Mark: Text field delegate
@@ -133,9 +156,12 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         if let touch = touches.first {
             let location = touch.locationInView(self.view)
             // If we click when keyboard is open, close it
+            // If we click when numberPicker is open, close it
             // If we click when its not open, move input box
             if let inputBoxAsserted = inputBox where inputBoxAsserted.isFirstResponder() {
                 inputBoxAsserted.resignFirstResponder()
+            } else if !numberPicker.hidden {
+                hideNumberPicker()
             } else {
                 self.showInputAtLocation(location)
             }
@@ -159,6 +185,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func hideNumberPicker() {
+        rateButton.setTitle(String(numberPicker.selectedRowInComponent(0)), forState: .Normal)
         numberPicker.hidden = true
         numberPicker.userInteractionEnabled = false
     }
