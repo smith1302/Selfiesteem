@@ -13,6 +13,7 @@ import ParseUI
 class PublicPhotoCollectionViewCell: PFCollectionViewCell {
 
     @IBOutlet weak var pfImageView: CachedPFImageView!
+    var ratingLabel:UILabel?
     var photo:Photo?
     var activityIndicator:UIActivityIndicatorView?
     var loading:Bool = false
@@ -27,8 +28,7 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     
     func configure(photo:Photo) {
         setBusy()
-        self.loading = true
-        self.alreadyRated = false
+        resetCell()
         self.photo = photo
         pfImageView.file = photo.photoFile;
         pfImageView.loadInBackground({
@@ -39,29 +39,42 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         pfImageView.layoutIfNeeded()
         self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
         pfImageView.layer.masksToBounds = true
-        pfImageView.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.4).CGColor
+        pfImageView.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.7).CGColor
         pfImageView.layer.borderWidth = 5
-        update()
+        addRatingLabelIfNeeded()
+        
+        // Create a new CircleView
+        let createdAt = photo.createdAt!
+        let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
+        let percentage = 1-CGFloat(createdAtSecondsAgo/(-60*60*24))
+        
+        let circleView = CircleView(frame: pfImageView.frame, percent: percentage, color: UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 1))
+        self.addSubview(circleView)
     }
     
-    func update() {
-        goGhostIfNeeded()
+    func resetCell() {
+        self.ratingLabel?.removeFromSuperview()
+        loading = false
+        alreadyRated = false
     }
     
-    func goGhostIfNeeded() {
+    func addRatingLabelIfNeeded() {
+        if alreadyRated {
+            return
+        }
         setBusy()
         let currentUser:User = User.currentUser()!
         currentUser.getRatingForPhoto(photo, callback: {
             (optionalRating:Rating?) in
             if let rating = optionalRating {
                 self.alreadyRated = true
-                let text = UILabel(frame: self.pfImageView.bounds)
-                text.textColor = UIColor.whiteColor()
-                text.textAlignment = .Center
-                text.backgroundColor = UIColor(white: 0, alpha: 0.4)
-                text.font = UIFont.boldSystemFontOfSize(text.frame.size.height*0.5)
-                text.text = String(rating.rating)
-                self.pfImageView.addSubview(text)
+                self.ratingLabel = UILabel(frame: self.pfImageView.bounds)
+                self.ratingLabel!.textColor = UIColor.whiteColor()
+                self.ratingLabel!.textAlignment = .Center
+                self.ratingLabel!.backgroundColor = UIColor(white: 0, alpha: 0.4)
+                self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.4)
+                self.ratingLabel!.text = String(rating.rating)
+                self.pfImageView.addSubview(self.ratingLabel!)
             }
             self.setFree()
         })

@@ -12,6 +12,11 @@ import Parse
 class Photo : PFObject, PFSubclassing  {
     
     @NSManaged var photoFile: PFFile
+    @NSManaged var userID: String
+    @NSManaged var ratings: [Rating]
+    @NSManaged var averageRating: Int
+    @NSManaged var numberOfRatings: Int
+    @NSManaged var seen: Bool // If a new rating on this photo has been seen or not
     
     override class func initialize() {
         struct Static {
@@ -24,6 +29,22 @@ class Photo : PFObject, PFSubclassing  {
     
     static func parseClassName() -> String {
         return "Photos"
+    }
+    
+    func addRating(rating:Rating) {
+        ratings.append(rating)
+        let newNumberOfRatings = numberOfRatings+1
+        let newAverage = (averageRating*numberOfRatings + rating.rating)/newNumberOfRatings
+        averageRating = newAverage
+        numberOfRatings = newNumberOfRatings
+        seen = false
+    }
+    
+    func setSeen() {
+        if !seen {
+            seen = true
+            saveEventually()
+        }
     }
     
 }
