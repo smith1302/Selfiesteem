@@ -46,17 +46,12 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         self.navigationController?.navigationBarHidden = false
         UIApplication.sharedApplication().statusBarHidden=false
         
-        var newFrame = self.collectionView!.frame
-        newFrame.size.height = self.view.frame.size.height - 20
-        newFrame.origin.y = 20
-        self.collectionView!.frame = newFrame
-        
         checkForRatingUpdates()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.backgroundColor = UIColor.whiteColor()
+        self.collectionView!.backgroundColor = UIColor(white: 0.85, alpha: 1)
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,7 +99,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(insetSize, insetSize, insetSize, insetSize)
+        return UIEdgeInsetsMake(insetSize+20, insetSize, insetSize, insetSize)
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -121,5 +116,12 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
             ratePhotoVC.setUpWithPhoto(photo)
         }
     }
+    
+    // MARK: Actions
+    
+    @IBAction func toCamera(sender: AnyObject) {
+        self.performSegueWithIdentifier("returnToCameraRightSegue", sender: self)
+    }
+    
     
 }

@@ -20,7 +20,7 @@ class OverlayButton: UIButton {
         self.layer.cornerRadius = self.frame.size.height/6
         self.layer.borderColor = UIColor.whiteColor().CGColor
         self.layer.borderWidth = 3
-        self.backgroundColor = defaultColor
+        self.backgroundColor = UIColor.clearColor()
     }
 
     /*
@@ -32,11 +32,13 @@ class OverlayButton: UIButton {
     */
     
     func pressed() {
-        self.backgroundColor = selectedColor
+        //self.backgroundColor = selectedColor
+        self.transform = CGAffineTransformMakeScale(1.07, 1.07)
     }
     
     func released() {
-        self.backgroundColor = defaultColor
+        //self.backgroundColor = defaultColor
+        self.transform = CGAffineTransformMakeScale(1, 1)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

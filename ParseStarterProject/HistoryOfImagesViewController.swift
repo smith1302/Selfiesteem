@@ -11,7 +11,10 @@ import Parse
 import ParseUI
 
 class HistoryOfImagesViewController: PFQueryTableViewController {
-    // Initialise the PFQueryTable tableview
+    let kRecentIndex = 0
+    let kBestIndex = 1
+    
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     override init(style: UITableViewStyle, className: String!)
     {
@@ -19,7 +22,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         self.pullToRefreshEnabled = true
         self.paginationEnabled = false
-        self.objectsPerPage = 25
+        self.objectsPerPage = 10
         
         self.parseClassName = "_Users"
     }
@@ -35,10 +38,12 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
         UIApplication.sharedApplication().statusBarHidden=false
         updateCellSeenStates()
+        self.navigationItem.hidesBackButton = true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.backgroundColor = UIColor(white: 0.85, alpha: 1)
         // Do any additional setup after loading the view.
     }
 
@@ -54,7 +59,11 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
-        query.orderByDescending("updatedAt")
+        if segmentControl.selectedSegmentIndex == kRecentIndex {
+            query.orderByDescending("updatedAt")
+        } else {
+            query.orderByDescending("averageRating")
+        }
         
         return query
     }
@@ -84,6 +93,15 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    
+    @IBAction func segmentControlValueChanged(sender: AnyObject) {
+        self.loadObjects()
+    }
+    
+    @IBAction func toCamera(sender: AnyObject) {
+        self.performSegueWithIdentifier("returnToCameraLeftSegue", sender: self)
     }
 
     // MARK: - Navigation

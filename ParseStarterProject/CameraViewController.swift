@@ -27,6 +27,11 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     let activityIndicator:ActivityIndictator = ActivityIndictator()
     let sourceType = UIImagePickerControllerSourceType.Camera
     var currentImage:UIImage?
+    let controlTransitionTime:NSTimeInterval = 0.5
+    
+    // Constraints
+    @IBOutlet weak var CameraControlsBottomContraint: NSLayoutConstraint!
+    @IBOutlet weak var PostImageControlsBottomConstraint: NSLayoutConstraint!
     
     // Post Image Controls
     @IBOutlet weak var cancelButton: UIButton!
@@ -41,6 +46,8 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Since this is the root view, set up some stuff
+        rootViewSetup()
         // Do any additional setup after loading the view.
         self.view.frame.offsetInPlace(dx: 0, dy: 20)
         self.view.addSubview(activityIndicator)
@@ -103,6 +110,10 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func rootViewSetup() {
+        Helper.setUpNavBar(self.navigationController)
+    }
+    
     func beginCameraSession() {
         do {
             try captureSession.addInput(AVCaptureDeviceInput(device: captureDevice))
@@ -154,7 +165,10 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     // ------- Mark: Uploading
     
-    func shouldUploadImage(image:UIImage) ->Bool {
+    func shouldUploadImage(image:UIImage) -> Bool {
+        
+        hidePostImageControls()
+        
         let imageData = UIImageJPEGRepresentation(image, 0.7)
         if imageData == nil {
             self.uploadFinished()
@@ -200,7 +214,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
             })
         }
         
-        // Return false as default until I finish the above TODO list
         return false
     }
     
@@ -211,23 +224,42 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         if !captureSession.running {
             captureSession.startRunning()
         }
+        self.CameraControlsBottomContraint.constant = 0
+        UIView.animateWithDuration(controlTransitionTime, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
     
     func hideCameraControls() {
-        cameraControlsView.hidden = true
+        self.CameraControlsBottomContraint.constant = -self.cameraControlsView.frame.size.height*2
+        UIView.animateWithDuration(controlTransitionTime, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: {
+            (done:Bool) in
+            self.cameraControlsView.hidden = true
+        })
     }
     
     func showPostImageControls() {
         hideCameraControls()
         postImageControlsView.hidden = false
+        self.PostImageControlsBottomConstraint.constant = 0
+        UIView.animateWithDuration(controlTransitionTime, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
     
     func hidePostImageControls() {
-        postImageControlsView.hidden = true
+        self.PostImageControlsBottomConstraint.constant = -self.postImageControlsView.frame.size.height*2
+        UIView.animateWithDuration(controlTransitionTime, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: {
+                (done:Bool) in
+            self.postImageControlsView.hidden = true
+        })
     }
     
     // ---- Mark: IBAction
-    
 
     @IBAction func cameraBtnClicked(sender: AnyObject) {
         if outputConnection == nil {
@@ -273,9 +305,13 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     }
    
     @IBAction func swipeRightAction(sender: AnyObject) {
-        self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
+        self.performSegueWithIdentifier("segueToHistoryOfImagesViewController", sender: nil);
     }
     @IBAction func swipeLeftAction(sender: AnyObject) {
-        self.performSegueWithIdentifier("segueToHistoryOfImagesViewController", sender: nil);
+        self.performSegueWithIdentifier("segueToPublicPhotosViewController", sender: nil);
+    }
+    
+    @IBAction func returnFromSegueActions(sender: UIStoryboardSegue){
+        
     }
 }

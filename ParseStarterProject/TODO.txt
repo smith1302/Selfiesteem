@@ -1,7 +1,11 @@
-History of Images:
-    - Goes directly to table view of all your current post.
-    - Click on post -> goes directly to Image View of the post with an optional swipe up (similar to snapchat)
-
-Image view of your post:
-    - Swipe up to see all comments
-    - Has an overlay of the image with white text of the comments
+Push notification when user gets a new rating
+Add badge icon with number of uread notifications on bottom left buttom of camera view
+Make input box draggable on rate photo view - X
+Make ratings drag button a little darker - X
+Loading indicator after rating - X
+Animate in/out camera controls - X
+Add a "send selfie to be rated" overlay on postimage controls
+make message window transparent - X
+transition from camera using left/right segues - X
+Experiment (on history of images) putting rating circle on right side
+Make recent/best work (history of images)

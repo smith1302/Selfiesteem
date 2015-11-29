@@ -17,6 +17,7 @@ public class ImagePostCell : PFTableViewCell {
     }
     
     func configure(photo:Photo) {
+        self.backgroundColor = UIColor.whiteColor()
         // Reset if cell is reused
         ratingLabel?.removeFromSuperview()
         notification?.removeFromSuperview()
@@ -32,35 +33,25 @@ public class ImagePostCell : PFTableViewCell {
         postImage.loadInBackground()
         postImage.contentMode = .ScaleAspectFill
         postImage.backgroundColor = UIColor.grayColor()
-        postImage.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.7).CGColor
+        postImage.layer.borderColor = Constants.primaryColorWithAlpha(0.5).CGColor
         postImage.layer.borderWidth = 5
         
         // Set up rating label
-//        ratingLabel = UILabel(frame: postImage.bounds)
-//        ratingLabel!.textAlignment = .Center
-//        let attributedText = NSMutableAttributedString(string: String(photo.averageRating), attributes: [
-//            NSFontAttributeName : UIFont.boldSystemFontOfSize(ratingLabel!.frame.size.height*0.5),
-//            NSForegroundColorAttributeName: UIColor.whiteColor(),
-//            NSStrokeColorAttributeName: UIColor(white: 0.3, alpha: 1),
-//            NSStrokeWidthAttributeName: -4
-//            ])
-//        ratingLabel!.attributedText = attributedText
-//        postImage.addSubview(self.ratingLabel!)
-        
         let rlViewSize:CGFloat = 35
-        let circleCornerDist = (postImage.frame.size.width/2)*cos(45)
+        let radius:CGFloat = 1
+        let circleCornerDist = (postImage.frame.size.width/2)*cos(45)*radius
         let circleCornerDistB = circleCornerDist + (rlViewSize/4)*cos(45)
         let rlViewX = postImage.frame.origin.x + postImage.frame.size.width/2 + circleCornerDistB - rlViewSize/2
         let rlViewY = postImage.frame.origin.y + postImage.frame.size.width/2 - circleCornerDistB - rlViewSize/2
         rlView = UIView(frame: CGRectMake(rlViewX, rlViewY, rlViewSize, rlViewSize))
-        rlView!.backgroundColor = UIColor.whiteColor()
+        rlView!.backgroundColor = Constants.primaryColorWithAlpha(0.7) //UIColor.whiteColor()
         rlView!.layer.cornerRadius = rlViewSize/2
         rlView!.clipsToBounds = true
-        rlView!.layer.borderWidth = 3
-        rlView!.layer.borderColor = UIColor(red: 0.6, green: 0.94, blue: 1.000, alpha: 1).CGColor
+        rlView!.layer.borderWidth = 5
+        rlView!.layer.borderColor = Constants.primaryColorWithAlpha(0.7).CGColor
         ratingLabel = UILabel(frame: rlView!.bounds)
         ratingLabel!.text = String(photo.averageRating)
-        ratingLabel!.textColor = UIColor(white: 0.3, alpha: 1)
+        ratingLabel!.textColor = UIColor.whiteColor()//UIColor(white: 0.3, alpha: 1)
         ratingLabel!.backgroundColor = rlView!.backgroundColor
         ratingLabel!.textAlignment = .Center
         ratingLabel!.font = UIFont.boldSystemFontOfSize(rlView!.frame.size.height*0.5)

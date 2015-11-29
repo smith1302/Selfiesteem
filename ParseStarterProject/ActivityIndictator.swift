@@ -13,10 +13,21 @@ class ActivityIndictator: UIView {
     var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
 
     init() {
-        let appFrame = UIScreen.mainScreen().bounds
-        let size:CGFloat = appFrame.size.width/4
+        let frame = UIScreen.mainScreen().bounds
+        let size:CGFloat = frame.size.width/4
         super.init(frame: CGRectMake(0, 0, size, size))
-        self.center = CGPointMake(appFrame.width/2, appFrame.size.height/2)
+        customInit(frame)
+    }
+    
+    override init(frame: CGRect) {
+        let size:CGFloat = frame.size.width/4
+        super.init(frame: CGRectMake(0, 0, size, size))
+        customInit(frame)
+    }
+    
+    func customInit(frame:CGRect) {
+        let size:CGFloat = frame.size.width/4
+        self.center = CGPointMake(frame.width/2, frame.size.height/2)
         self.layer.cornerRadius = size/5
         self.backgroundColor = UIColor(white: 0, alpha: 0.5)
         activityIndicator.frame = self.bounds

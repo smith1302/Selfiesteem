@@ -17,7 +17,7 @@ class CameraButton: UIButton {
     
     func customInit() {
         self.layer.cornerRadius = self.frame.size.height/2
-        let circleView = CircleView(frame: self.bounds, percent: 1, color: UIColor(white: 0.5, alpha: 1))
+        let circleView = CircleView(center: CGPointMake(bounds.size.width/2, bounds.size.height/2), radius: self.frame.size.height/2 * 0.9, percent: 0.0001, color: UIColor(white: 0.5, alpha: 1), width:2.0)
         circleView.userInteractionEnabled = false
         self.addSubview(circleView)
     }
@@ -29,10 +29,12 @@ class CameraButton: UIButton {
     
     func pressed() {
         self.backgroundColor = UIColor(white: 0.9, alpha: 0.8)
+        self.transform = CGAffineTransformMakeScale(1.05, 1.05)
     }
     
     func released() {
         self.backgroundColor = UIColor.whiteColor()
+        self.transform = CGAffineTransformMakeScale(1, 1)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

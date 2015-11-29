@@ -21,6 +21,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var rateButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     var inputBoxPrevFrame:CGRect?
+    let activityIndicator:ActivityIndictator = ActivityIndictator()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,8 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
             NSStrokeWidthAttributeName: -2
             ])
         exitButton.titleLabel?.attributedText = attributedText
+        // Add loading indicator
+        self.view.addSubview(activityIndicator)
         
         // Subscribe to keyboard notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
@@ -191,24 +194,41 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func showInputAtLocation(location:CGPoint) {
-        let inputBoxExists = inputBox != nil
+        if inputBox != nil {
+            return
+        }
         let textSize:CGFloat = 17
         let padding:CGFloat = 25
-        if !inputBoxExists {
-            inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
-            inputBox?.delegate = self
-            self.view.addSubview(inputBox!)
-            inputBox?.delegate = self
-        }
+        inputBox = UIRatingTextField(textSize: textSize, leftTextMargin: 12)
+        inputBox?.delegate = self
+        self.view.addSubview(inputBox!)
+        inputBox?.delegate = self
+        let panGesture = UIPanGestureRecognizer(target: self, action: Selector("panInputBox:"))
+        inputBox!.addGestureRecognizer(panGesture)
         let boxHeight = textSize+padding
         inputBox?.frame = CGRectMake(0, location.y - boxHeight/2, self.view.frame.size.width, boxHeight)
-        if !inputBoxExists {
-            inputBox?.becomeFirstResponder()
+        inputBox?.becomeFirstResponder()
+    }
+    
+    func panInputBox(sender: UIPanGestureRecognizer) {
+        let translation = sender.translationInView(self.view)
+        let newY = sender.view!.center.y + translation.y
+        if newY < sender.view!.frame.size.height/2 {
+            return
         }
+        sender.view!.center = CGPoint(x: sender.view!.center.x, y: newY)
+        sender.setTranslation(CGPointZero, inView: self.view)
     }
     
     func submitRating() {
-        Rating.submitRating(getRatingValue(), comment: getRatingComment(), forPhoto: photo)
+        if activityIndicator.isAnimating() {
+            return
+        }
+        activityIndicator.startAnimating()
+        Rating.submitRating(getRatingValue(), comment: getRatingComment(), forPhoto: photo, callback: {
+            (success:Bool) in
+            self.activityIndicator.stopAnimating()
+        })
     }
     
     func getRatingValue() -> Int {

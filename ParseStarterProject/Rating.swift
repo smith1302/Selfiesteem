@@ -31,9 +31,10 @@ class Rating : PFObject, PFSubclassing {
         return "Ratings"
     }
     
-    class func submitRating(rating:Int, comment:String?, forPhoto:Photo) {
+    class func submitRating(rating:Int, comment:String?, forPhoto:Photo, callback: (Bool)->Void) {
         if User.currentUser() == nil || forPhoto.objectId == nil {
-           ErrorHandler.showAlert("Could not submit rating")
+            ErrorHandler.showAlert("Could not submit rating")
+            callback(false)
             return
         }
         let ratingObject = Rating(className: "Ratings")
@@ -47,11 +48,12 @@ class Rating : PFObject, PFSubclassing {
         ratingObject.saveInBackgroundWithBlock({
             (success:Bool, error:NSError?) -> Void in
             if success {
-                ErrorHandler.showAlert("Rating saved successfully")
                 forPhoto.addRating(ratingObject)
                 forPhoto.saveEventually()
+                callback(true)
             } else {
                 ErrorHandler.showAlert("Rating failed to save...")
+                callback(false)
             }
             ratingObject.successfulSave = success
         })
