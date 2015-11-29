@@ -51,7 +51,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.backgroundColor = UIColor(white: 0.85, alpha: 1)
+        self.collectionView!.backgroundColor = UIColor.whiteColor()
     }
     
     override func didReceiveMemoryWarning() {
