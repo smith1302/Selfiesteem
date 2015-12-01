@@ -13,24 +13,28 @@ import ParseUI
 class HistoryOfImagesViewController: PFQueryTableViewController {
     let kRecentIndex = 0
     let kBestIndex = 1
+    var activityIndictator:ActivityIndictator?
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
     override init(style: UITableViewStyle, className: String!)
     {
         super.init(style: style, className: className)
-        
-        self.pullToRefreshEnabled = true
-        self.paginationEnabled = false
-        self.objectsPerPage = 10
-        
-        self.parseClassName = "_Users"
+        customInit()
     }
     
     required init(coder aDecoder:NSCoder)
     {
-         super.init(coder: aDecoder)!
-        //fatalError("NSCoding not supported")
+        super.init(coder: aDecoder)!
+        customInit()
+    }
+    
+    func customInit() {
+        self.pullToRefreshEnabled = true
+        self.paginationEnabled = true
+        self.parseClassName = "_Users"
+        self.objectsPerPage = 6
+        self.loadingViewEnabled = false
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -39,6 +43,22 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         UIApplication.sharedApplication().statusBarHidden=false
         updateCellSeenStates()
         self.navigationItem.hidesBackButton = true
+    }
+    
+    override func objectsWillLoad() {
+        if activityIndictator != nil {
+            return
+        }
+        super.objectsWillLoad()
+        activityIndictator = ActivityIndictator()
+        activityIndictator?.startAnimating()
+        self.tableView.addSubview(activityIndictator!)
+    }
+    
+    override func objectsDidLoad(error: NSError?) {
+        super.objectsDidLoad(error)
+        self.activityIndictator?.removeFromSuperview()
+        self.activityIndictator = nil
     }
 
     override func viewDidLoad() {
@@ -59,6 +79,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
+        query.limit=6
         if segmentControl.selectedSegmentIndex == kRecentIndex {
             query.orderByDescending("updatedAt")
         } else {
@@ -67,32 +88,85 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         return query
     }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> ImagePostCell? {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ImagePostCell!
-        if(cell == nil) {
-            cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+    
+    override func objectAtIndexPath(indexPath: NSIndexPath?) -> PFObject? {
+        if self.objects?.count != 0 {
+            return super.objectAtIndexPath(indexPath)
         }
-        if let photo = object as? Photo {
-            cell.configure(photo)
-        }else {
-            print("Unable to do it")
+        return PFObject(className: "Users")
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.objects?.count != 0 {
+            return super.tableView(tableView, numberOfRowsInSection: section)
         }
+       return 1
+    }
 
-        
-        return cell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell? {
+        if object?.objectId != nil {
+            var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ImagePostCell!
+            if(cell == nil) {
+                cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            }
+            if let photo = object as? Photo {
+                cell.configure(photo)
+            }else {
+                print("Unable to do it")
+            }
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as! PFTableViewCell
+            cell.textLabel!.text = "You haven't taken any selfies yet..."
+            return cell
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row < self.objects?.count {
+            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        } else {
+            return 50
+        }
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            if let photo = self.objects![indexPath.row] as? Photo {
+                photo.deleteInBackground()
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            }
+        }
     }
     
     func updateCellSeenStates() {
-        for cell in tableView.visibleCells as! [ImagePostCell] {
-            cell.updateSeenState()
+        for cell in tableView.visibleCells{
+            if let imageCell = cell as? ImagePostCell {
+                imageCell.updateSeenState()
+            }
         }
+    }
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        let minimumTrigger = scrollView.bounds.size.height + 0
+        if scrollView.contentSize.height > minimumTrigger {
+            let distanceFromBottom = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom) - scrollView.contentOffset.y
+            if distanceFromBottom < 0 {
+                self.loadNextPage()
+            }
+        }
+        
     }
     
     //Clicked on a cell
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if indexPath.row < self.objects?.count {
+            performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        } else {
+            super.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+        }
     }
     
     

@@ -192,8 +192,10 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
             photo.photoFile = photoFile
             photo.userID = PFUser.currentUser()!.objectId!
             photo.seen = true
-            let photoACL = PFACL(user: PFUser.currentUser()!)
+            photo.mostRecentRating = NSDate()
+            let photoACL = PFACL(user: User.currentUser()!)
             photoACL.setPublicReadAccess(true)
+            photoACL.setWriteAccess(true, forUser: User.currentUser()!)
             photo.ACL = photoACL
             
             // Make another background thread for uploading the PFObject

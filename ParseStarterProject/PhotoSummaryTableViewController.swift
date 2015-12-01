@@ -51,7 +51,7 @@ class PhotoSummaryTableViewController: PFQueryTableViewController {
         if let photo = photo {
             query = PFQuery(className: "Ratings")
             query.whereKey("photoID", equalTo: photo.objectId!)
-            query.orderByAscending("createdAt")
+            query.orderByDescending("createdAt")
         }
         return query
     }

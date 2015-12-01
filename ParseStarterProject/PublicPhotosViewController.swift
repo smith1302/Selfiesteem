@@ -16,15 +16,20 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     let insetSize:CGFloat = 0
     let numCols:CGFloat = 4
+    var activityIndictator:ActivityIndictator?
     
-    
-    required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder:NSCoder)
+    {
         super.init(coder: aDecoder)!
-        // Configure the PFQueryTableView
-        self.parseClassName = "Photos"
+        customInit()
+    }
+    
+    func customInit() {
         self.pullToRefreshEnabled = true
-        self.paginationEnabled = false
-        self.objectsPerPage = 20
+        self.paginationEnabled = true
+        self.parseClassName = "Photos"
+        self.objectsPerPage = 1
+        self.loadingViewEnabled = false
     }
     
     /*
@@ -52,6 +57,22 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.backgroundColor = UIColor.whiteColor()
+    }
+    
+    override func objectsWillLoad() {
+        if activityIndictator != nil {
+            return
+        }
+        super.objectsWillLoad()
+        activityIndictator = ActivityIndictator()
+        activityIndictator?.startAnimating()
+        self.collectionView!.addSubview(activityIndictator!)
+    }
+    
+    override func objectsDidLoad(error: NSError?) {
+        super.objectsDidLoad(error)
+        self.activityIndictator?.removeFromSuperview()
+        self.activityIndictator = nil
     }
     
     override func didReceiveMemoryWarning() {

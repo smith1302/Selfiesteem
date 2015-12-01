@@ -27,6 +27,7 @@
 		F72D402B1C0AACD500AB1972 /* SeguePopFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D402A1C0AACD500AB1972 /* SeguePopFromRight.swift */; };
 		F72D402D1C0AB0D900AB1972 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D402C1C0AB0D900AB1972 /* SegueFromRight.swift */; };
 		F72D40301C0AB11800AB1972 /* SeguePopFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D402F1C0AB11800AB1972 /* SeguePopFromLeft.swift */; };
+		F72D40331C0D22D900AB1972 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D40321C0D22D900AB1972 /* SettingsViewController.swift */; };
 		F73D2BB11C03D3E900EB7799 /* NSDate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */; };
 		F73D2BB31C04328F00EB7799 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D2BB21C04328F00EB7799 /* CircleView.swift */; };
 		F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */; };
@@ -75,6 +76,7 @@
 		F72D402A1C0AACD500AB1972 /* SeguePopFromRight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeguePopFromRight.swift; sourceTree = "<group>"; };
 		F72D402C1C0AB0D900AB1972 /* SegueFromRight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		F72D402F1C0AB11800AB1972 /* SeguePopFromLeft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeguePopFromLeft.swift; sourceTree = "<group>"; };
+		F72D40321C0D22D900AB1972 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extension.swift"; sourceTree = "<group>"; };
 		F73D2BB21C04328F00EB7799 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRatingTextField.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 		F7110CB31BC8515F008864FC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F72D40311C0D22C200AB1972 /* Settings */,
 				F7686AD31C000C8200D78CB0 /* PhotoSummary */,
 				C6494A071BED3A4E004E966D /* ImageHistory */,
 				F753E28E1BE87EB900F89A86 /* RatePhoto */,
@@ -246,6 +249,14 @@
 				F72D402F1C0AB11800AB1972 /* SeguePopFromLeft.swift */,
 			);
 			name = Segues;
+			sourceTree = "<group>";
+		};
+		F72D40311C0D22C200AB1972 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F72D40321C0D22D900AB1972 /* SettingsViewController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		F753E28E1BE87EB900F89A86 /* RatePhoto */ = {
@@ -389,6 +400,7 @@
 			files = (
 				F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */,
 				F75C455B1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift in Sources */,
+				F72D40331C0D22D900AB1972 /* SettingsViewController.swift in Sources */,
 				F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */,
 				F753E2961BE8869300F89A86 /* CachedPFImageView.swift in Sources */,
 				F7686AD71C003BCD00D78CB0 /* PhotoRatingCell.swift in Sources */,

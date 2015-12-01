@@ -16,6 +16,7 @@ class Photo : PFObject, PFSubclassing  {
     @NSManaged var ratings: [Rating]
     @NSManaged var averageRating: Int
     @NSManaged var numberOfRatings: Int
+    @NSManaged var mostRecentRating: NSDate
     @NSManaged var seen: Bool // If a new rating on this photo has been seen or not
     
     override class func initialize() {
@@ -37,6 +38,7 @@ class Photo : PFObject, PFSubclassing  {
         let newAverage = (averageRating*numberOfRatings + rating.rating)/newNumberOfRatings
         averageRating = newAverage
         numberOfRatings = newNumberOfRatings
+        mostRecentRating = NSDate()
         seen = false
     }
     

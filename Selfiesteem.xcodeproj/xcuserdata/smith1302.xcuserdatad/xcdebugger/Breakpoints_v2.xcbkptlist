@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "468210669.715022"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "queryForCollection()"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "470440768.333571"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,27 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "468210579.200647"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "init(coder:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "470465114.098888"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:object:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "470465114.098888"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/CameraViewController.swift"
-            timestampString = "470463843.560155"
+            timestampString = "470636005.363022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
             landmarkName = "swipeLeftAction(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/CameraViewController.swift"
-            timestampString = "470463843.560155"
+            timestampString = "470636005.363022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "shouldUploadImage(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -266,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/CameraViewController.swift"
-            timestampString = "470463843.560155"
+            timestampString = "470636005.363022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "shouldUploadImage(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -282,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "470465114.098888"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "collectionView(_:layout:sizeForItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -298,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/PublicPhotosViewController.swift"
-            timestampString = "470465114.098888"
+            timestampString = "470618128.355918"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:object:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -410,11 +394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
-            timestampString = "470466661.104266"
+            timestampString = "470640623.196928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -538,11 +522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/CameraViewController.swift"
-            timestampString = "470463843.560155"
+            timestampString = "470636005.363022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
+            startingLineNumber = "319"
+            endingLineNumber = "319"
             landmarkName = "CameraViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -554,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/CameraViewController.swift"
-            timestampString = "470463843.560155"
+            timestampString = "470636005.363022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "cameraBtnClicked(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -682,12 +666,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
-            timestampString = "470466661.104266"
+            timestampString = "470640623.196928"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "toCamera(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseStarterProject/CircleView.swift"
+            timestampString = "470555292.919399"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "init(center:radius:percent:color:width:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
+            timestampString = "470640623.196928"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "tableView(_:commitEditingStyle:forRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
+            timestampString = "470640623.196928"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "tableView(_:commitEditingStyle:forRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
+            timestampString = "470640623.196928"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "tableView(_:heightForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ParseStarterProject/HistoryOfImagesViewController.swift"
+            timestampString = "470640609.000621"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:object:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
