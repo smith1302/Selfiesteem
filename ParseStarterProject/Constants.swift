@@ -4,9 +4,12 @@ import CoreGraphics
 class Constants {
     static let appName = "Selfiesteem"
     static let storyboard = UIStoryboard(name: "Main", bundle: nil) //  Get storyboars singleton instance
-    static let primaryColor = UIColor(netHex: 0x55B34B)
-    static let darkPrimaryColor = UIColor(netHex: 0x4B9E42)
-    static let lightPrimaryColor = UIColor(netHex: 0xABE8A5)
+//    static let primaryColor = UIColor(netHex: 0x55B34B)
+//    static let darkPrimaryColor = UIColor(netHex: 0x4B9E42)
+//    static let lightPrimaryColor = UIColor(netHex: 0xABE8A5)
+    static let primaryColor = UIColor(netHex: 0x56E38C)
+    static let darkPrimaryColor = UIColor(netHex: 0x4BC97B)
+    static let lightPrimaryColor = UIColor(netHex: 0x5CFA99)
     static let secondaryColor = UIColor(netHex: 0x84EEFA)
     class func primaryColorWithAlpha(alpha:CGFloat) -> UIColor {
         return UIColor(netHex: 0x55B34B, alpha: alpha)
@@ -44,6 +47,27 @@ extension UIColor {
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
         
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
+    }
+    
+    func lighten(amount:CGFloat) -> UIColor {
+        var fRed : CGFloat = 0
+        var fGreen : CGFloat = 0
+        var fBlue : CGFloat = 0
+        var fAlpha: CGFloat = 0
+        if self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha) {
+            let iRed = fRed * 255.0*amount
+            let iGreen = fGreen * 255.0*amount
+            let iBlue = fBlue * 255.0*amount
+            let iAlpha = fAlpha * 255.0
+            return self.dynamicType.init(red: CGFloat(iRed) / 255.0, green: CGFloat(iGreen) / 255.0, blue: CGFloat(iBlue) / 255.0, alpha: iAlpha)
+        } else {
+            // Could not extract RGBA components:
+            return self
+        }
+    }
+    
+    func darken(amount:CGFloat) -> UIColor {
+        return self.lighten(1+amount)
     }
 }
 
