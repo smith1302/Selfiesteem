@@ -117,7 +117,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         if cell == nil {
             cell = NumberPickerCell(frame: CGRectMake(0, 0, self.view.frame.size.width, NumberPickerCell.cellHeight))
         }
-        cell!.label.text = String(row)
+        cell!.label.text = String(row+1)
         return cell!
     }
     
@@ -213,7 +213,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     func panInputBox(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(self.view)
         let newY = sender.view!.center.y + translation.y
-        if newY < sender.view!.frame.size.height/2 {
+        if newY < sender.view!.frame.size.height/2 + 70 || newY > self.view.frame.size.height-sender.view!.frame.size.height - 60 {
             return
         }
         sender.view!.center = CGPoint(x: sender.view!.center.x, y: newY)

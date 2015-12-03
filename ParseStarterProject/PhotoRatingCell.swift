@@ -32,6 +32,10 @@ class PhotoRatingCell: PFTableViewCell {
             DateLabel.text = readableDate
         }
         self.backgroundColor = UIColor(white: 1, alpha: 0)
+        
+        if !rating.seen {
+            User.currentUser()!.readRating(rating)
+        }
     }
     
     /*

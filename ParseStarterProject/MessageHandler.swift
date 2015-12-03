@@ -16,6 +16,11 @@ class MessageHandler {
     static let height:CGFloat = 30
     static let animateDur:NSTimeInterval = 0.4
     
+    class func easyAlert(title: String, message: String) {
+        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "Ok")
+        alert.show()
+    }
+    
     static func showMessage(text:String, withDuration:NSTimeInterval) {
         
         if errorWindow == nil {

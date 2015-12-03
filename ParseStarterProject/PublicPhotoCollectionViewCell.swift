@@ -89,7 +89,7 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         if busyStates > 1 {
             return
         }
-        activityIndicator = ActivityIndictator(frame: self.contentView.frame)
+        activityIndicator = ActivityIndictator(frame: self.contentView.bounds)
         activityIndicator!.startAnimating()
         self.contentView.addSubview(activityIndicator!)
     }

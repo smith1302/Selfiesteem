@@ -13,7 +13,6 @@ class SeguePopFromRight: UIStoryboardSegue {
     
     override func perform() {
         let src: UIViewController = self.sourceViewController
-        let dst: UIViewController = self.destinationViewController
         let transition: CATransition = CATransition()
         let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         transition.duration = 0.25

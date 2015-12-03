@@ -43,7 +43,6 @@ class PhotoSummaryViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         // Mark any notifications as seen
-        photo.setSeen()
     }
 
     override func didReceiveMemoryWarning() {

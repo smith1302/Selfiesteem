@@ -1,9 +1,11 @@
 import UIKit
+import CoreGraphics
 
 class Constants {
     static let appName = "Selfiesteem"
     static let storyboard = UIStoryboard(name: "Main", bundle: nil) //  Get storyboars singleton instance
     static let primaryColor = UIColor(netHex: 0x55B34B)
+    static let darkPrimaryColor = UIColor(netHex: 0x4B9E42)
     static let lightPrimaryColor = UIColor(netHex: 0xABE8A5)
     static let secondaryColor = UIColor(netHex: 0x84EEFA)
     class func primaryColorWithAlpha(alpha:CGFloat) -> UIColor {
@@ -42,5 +44,17 @@ extension UIColor {
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
         
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
+    }
+}
+
+extension String {
+    func hasWhitespace() -> Bool {
+        let whitespace = NSCharacterSet.whitespaceCharacterSet()
+        let range = self.rangeOfCharacterFromSet(whitespace)
+        return range != nil
+    }
+    
+    func stripWhitespace() -> String {
+        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
 }

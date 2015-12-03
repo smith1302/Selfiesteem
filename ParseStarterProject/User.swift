@@ -3,6 +3,7 @@ import Parse
 class User : PFUser {
     
     private var ratingsHistory:[String:Rating]?
+    @NSManaged var unreadRatings: Int // So we dont have to load all the user's photos and child ratings just to get read state
     
     override class func initialize() {
         struct Static {
@@ -42,6 +43,45 @@ class User : PFUser {
             self.ratingsHistory = [String:Rating]()
         }
         ratingsHistory![photoID] = rating
+    }
+    
+    func readRating(rating:Rating) {
+        if unreadRatings > 0 {
+            unreadRatings--
+            saveEventually()
+        }
+        rating.setSeen()
+    }
+    
+    func unreadRatings(callback:(Int)->Void) {
+        let query = Rating.query()
+        if query == nil {
+            callback(0)
+            return
+        }
+        query?.whereKey("forUserID", equalTo: objectId!)
+        query?.whereKey("seen", equalTo: false)
+        query?.findObjectsInBackgroundWithBlock({
+            (objects:[PFObject]?, error:NSError?) in
+            if objects == nil {
+                callback(0)
+                return
+            }
+            callback(objects!.count)
+        })
+    }
+    
+    class func increaseUnreadRatingForUserWithID(id:String) {
+        // Get user with ID, then increase their unread ratings
+        let query = User.query()
+        query?.whereKey("objectId", equalTo: id)
+        query?.getFirstObjectInBackgroundWithBlock({
+            (object:PFObject?, error:NSError?) in
+            if let user = object as? User {
+                user.unreadRatings++
+                user.saveEventually()
+            }
+        })
     }
     
     private func getRatingsHistoryFromParse(callback:(Void)->Void) {

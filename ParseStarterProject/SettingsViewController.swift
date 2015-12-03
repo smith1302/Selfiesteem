@@ -11,12 +11,15 @@ import UIKit
 class SettingsViewController: UIViewController {
     
     var activityIndictator:ActivityIndictator?
-
+    @IBOutlet weak var logoutButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndictator = ActivityIndictator()
         activityIndictator!.stopAnimating()
         self.view.addSubview(activityIndictator!)
+        
+        logoutButton.backgroundColor = Constants.primaryColor
         // Do any additional setup after loading the view.
     }
 
@@ -34,7 +37,9 @@ class SettingsViewController: UIViewController {
     func goToLogin() {
         let storyboard = Constants.storyboard
         let mainAppVC = storyboard.instantiateViewControllerWithIdentifier("IntroViewController")
-        self.presentViewController(mainAppVC, animated: true, completion: nil)
+        self.presentViewController(mainAppVC, animated: true, completion: {
+            self.activityIndictator?.stopAnimating()
+        })
     }
 
     /*

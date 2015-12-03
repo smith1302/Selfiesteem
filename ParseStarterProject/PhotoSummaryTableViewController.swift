@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 
-class PhotoSummaryTableViewController: PFQueryTableViewController {
+class PhotoSummaryTableViewController: CustomPFQueryTableViewController {
     // Initialise the PFQueryTable tableview
     
     var photo:Photo?
@@ -46,6 +46,7 @@ class PhotoSummaryTableViewController: PFQueryTableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     override func queryForTable() -> PFQuery {
         var query:PFQuery = PFQuery()
         if let photo = photo {

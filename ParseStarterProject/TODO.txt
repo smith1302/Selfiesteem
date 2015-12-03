@@ -13,10 +13,14 @@ Add table in parse for photo (most recent rating timestamp) and use that to sort
 Swipe to delete selfie - X
 Settings page to logout - X
 Default "none yet" cell for history of images - X
+Push notification when user gets a new rating - X
+Add badge icon with number of uread notifications on bottom left buttom of camera view - X
+Stop input box from being dragged onto controls - X
 
 For public photos, make a "popular" selfies section
-Push notification when user gets a new rating
-Add badge icon with number of uread notifications on bottom left buttom of camera view
+Upload your own photo
+Make login look better
+Remove lines in PhotoSummary ratings
 
 Maybe:
 Add a "send selfie to be rated" overlay on postimage controls

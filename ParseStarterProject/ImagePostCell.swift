@@ -8,10 +8,11 @@ public class ImagePostCell : PFTableViewCell {
     @IBOutlet var postImage: PFImageView!
     @IBOutlet weak var ratingCountLabel: UILabel!
     @IBOutlet weak var rLabel: UILabel!
-    var ratingLabel:UILabel?
     var notification:UIView?
+    var circleView:CircleView?
     var rlView:UIView?
     var photo:Photo?
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: "Cell")
         print("Generic Cell Initialization Done")
@@ -20,7 +21,6 @@ public class ImagePostCell : PFTableViewCell {
     func configure(photo:Photo) {
         self.backgroundColor = UIColor.whiteColor()
         // Reset if cell is reused
-        ratingLabel?.removeFromSuperview()
         notification?.removeFromSuperview()
         // Configure cell
         self.photo = photo
@@ -43,49 +43,33 @@ public class ImagePostCell : PFTableViewCell {
         let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24)) 
         if percentage <= 1 {
             let circleWidth:CGFloat = 4
-            let circleView = CircleView(center:postImage.center, radius:postImage.frame.size.width/2+circleWidth, percent: percentage, color: Constants.primaryColorWithAlpha(0.7), width: circleWidth)
-            self.addSubview(circleView)
+            circleView?.removeFromSuperview()
+            circleView = CircleView(center:postImage.center, radius:postImage.frame.size.width/2+circleWidth, percent: percentage, color: Constants.primaryColorWithAlpha(0.7), width: circleWidth)
+            self.addSubview(circleView!)
         }
-        
-        // Set up rating label
-//        let rlViewSize:CGFloat = 35
-//        let radius:CGFloat = 1
-//        let circleCornerDist = (postImage.frame.size.width/2)*cos(45)*radius
-//        let circleCornerDistB = circleCornerDist + (rlViewSize/4)*cos(45)
-//        let rlViewX = postImage.frame.origin.x + postImage.frame.size.width/2 + circleCornerDistB - rlViewSize/2
-//        let rlViewY = postImage.frame.origin.y + postImage.frame.size.width/2 - circleCornerDistB - rlViewSize/2
-//        rlView = UIView(frame: CGRectMake(rlViewX, rlViewY, rlViewSize, rlViewSize))
-//        rlView!.backgroundColor = Constants.primaryColorWithAlpha(0.7) //UIColor.whiteColor()
-//        rlView!.layer.cornerRadius = rlViewSize/2
-//        rlView!.clipsToBounds = true
-//        rlView!.layer.borderWidth = 5
-//        rlView!.layer.borderColor = Constants.primaryColorWithAlpha(0.7).CGColor
-//        ratingLabel = UILabel(frame: rlView!.bounds)
-//        ratingLabel!.text = String(photo.averageRating)
-//        ratingLabel!.textColor = UIColor.whiteColor()//UIColor(white: 0.3, alpha: 1)
-//        ratingLabel!.backgroundColor = rlView!.backgroundColor
-//        ratingLabel!.textAlignment = .Center
-//        ratingLabel!.font = UIFont.boldSystemFontOfSize(rlView!.frame.size.height*0.5)
-//        rlView?.addSubview(ratingLabel!)
-        //self.addSubview(rlView!)
         
         rLabel.layer.cornerRadius = rLabel.frame.size.height/2
         rLabel.layer.borderColor = Constants.primaryColorWithAlpha(0.5).CGColor //UIColor(white: 0.9, alpha: 1).CGColor
         rLabel.layer.borderWidth = 6
         rLabel.text = String(photo.averageRating)
         
-        if !photo.seen {
-            // Set up seen notifier
-            let notifierSize:CGFloat = 17
-            let x = postImage.frame.origin.x + postImage.frame.size.width - notifierSize/2
-            let y = postImage.frame.origin.y + postImage.frame.size.width/2 - notifierSize/2
-            notification = UIView(frame: CGRectMake(x, y, notifierSize, notifierSize))
-            notification!.backgroundColor = UIColor.orangeColor()
-            notification!.layer.cornerRadius = notifierSize/2
-            notification!.layer.borderWidth = 3
-            notification!.layer.borderColor = UIColor.whiteColor().CGColor
-            self.addSubview(notification!)
-        }
+        photo.hasUnreadRatings({
+            (hasUnread:Bool) in
+            if hasUnread {
+                // Set up seen notifier
+                let notifierSize:CGFloat = 17
+                let x = self.postImage.frame.origin.x + self.postImage.frame.size.width - notifierSize/2
+                let y = self.postImage.frame.origin.y + self.postImage.frame.size.width/2 - notifierSize/2
+                self.notification = UIView(frame: CGRectMake(x, y, notifierSize, notifierSize))
+                self.notification!.backgroundColor = UIColor.orangeColor()
+                self.notification!.layer.cornerRadius = notifierSize/2
+                self.notification!.layer.borderWidth = 3
+                self.notification!.layer.borderColor = UIColor.whiteColor().CGColor
+                self.addSubview(self.notification!)
+            } else {
+                self.notification?.removeFromSuperview()
+            }
+        })
     }
     
     func getDateString(date:NSDate) -> String {
@@ -113,9 +97,12 @@ public class ImagePostCell : PFTableViewCell {
         if photo == nil {
             return
         }
-        if photo!.seen {
-            notification?.removeFromSuperview()
-        }
+        photo!.hasUnreadRatings({
+            (hasUnread:Bool) in
+            if !hasUnread {
+                self.notification?.removeFromSuperview()
+            }
+        })
     }
     
     public override func setSelected(selected: Bool, animated: Bool) {

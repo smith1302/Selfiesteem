@@ -43,6 +43,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         // ~~~~~ Uncomment when done testing
         //photosQuery.whereKey("userID", notEqualTo: PFUser.currentUser()!.objectId!)
         photosQuery.orderByAscending("ratingCount")
+        photosQuery.cachePolicy = PFCachePolicy.CacheThenNetwork
         photosQuery.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
         return photosQuery
     }
@@ -65,14 +66,16 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         }
         super.objectsWillLoad()
         activityIndictator = ActivityIndictator()
+        let mainView = UIApplication.sharedApplication().keyWindow
+        mainView?.addSubview(self.activityIndictator!)
         activityIndictator?.startAnimating()
-        self.collectionView!.addSubview(activityIndictator!)
     }
     
     override func objectsDidLoad(error: NSError?) {
         super.objectsDidLoad(error)
-        self.activityIndictator?.removeFromSuperview()
-        self.activityIndictator = nil
+        activityIndictator?.remove({
+            self.activityIndictator = nil
+        })
     }
     
     override func didReceiveMemoryWarning() {

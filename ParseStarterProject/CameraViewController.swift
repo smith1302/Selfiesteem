@@ -12,33 +12,37 @@ import AVFoundation
 
 let kPhotoUploadSuccess = "Your selfie has been sent!"
 
-class CameraViewController: UIViewController, UINavigationControllerDelegate {
-
+class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCaptureMetadataOutputObjectsDelegate {
+    
     @IBOutlet weak var cameraControlsView: UIView!
     @IBOutlet weak var bottomRightButton: OverlayButton!
-    @IBOutlet weak var bottomLeftButton: OverlayButton!
+    @IBOutlet weak var bottomLeftButton: LeftOverlayButton!
+    @IBOutlet weak var topRightButton: ClickableButton!
     @IBOutlet weak var cameraButton: CameraButton!
     @IBOutlet weak var cameraPreview: UIView!
+    
+    let imagePicker = UIImagePickerController()
+    let sourceType = UIImagePickerControllerSourceType.PhotoLibrary
     
     let captureSession = AVCaptureSession()
     var captureDevice : AVCaptureDevice?
     let stillImageOutput = AVCaptureStillImageOutput()
+    let captureMetadataOutput = AVCaptureMetadataOutput()
     var outputConnection : AVCaptureConnection?
     let activityIndicator:ActivityIndictator = ActivityIndictator()
-    let sourceType = UIImagePickerControllerSourceType.Camera
     var currentImage:UIImage?
     let controlTransitionTime:NSTimeInterval = 0.5
+    var previewLayer:AVCaptureVideoPreviewLayer!
+    var faceDetector:FaceDetectionView?
     
     // Constraints
     @IBOutlet weak var CameraControlsBottomContraint: NSLayoutConstraint!
     @IBOutlet weak var PostImageControlsBottomConstraint: NSLayoutConstraint!
     
     // Post Image Controls
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var cancelButton: ClickableButton!
+    @IBOutlet weak var submitButton: ClickableButton!
     @IBOutlet weak var postImageControlsView: UIView!
-    
-    @IBOutlet weak var overlayButton: OverlayButton!
     
     // Image upload background thread IDs
     var fileUploadBackgroundTaskID:UIBackgroundTaskIdentifier?
@@ -76,6 +80,24 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
             outputConnection.videoOrientation = videoOrientation!
         }
         
+        // Face detection
+        if captureSession.canAddOutput(captureMetadataOutput) {
+            captureSession.addOutput(captureMetadataOutput)
+            // Set delegate and use the default dispatch queue to execute the call back
+            captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+            for type in captureMetadataOutput.availableMetadataObjectTypes {
+                if let assertedType = type as? String where assertedType == AVMetadataObjectTypeFace {
+                    captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]
+                }
+            }
+        }
+        
+        // Initialize FRAME to highlight face
+        faceDetector = FaceDetectionView()
+        view.addSubview(faceDetector!)
+        view.bringSubviewToFront(faceDetector!)
+
+        
         // Configure post image controls
         let attributedText = NSMutableAttributedString(string: "X", attributes: [
                         NSFontAttributeName : cancelButton.titleLabel!.font,
@@ -86,9 +108,17 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         cancelButton.titleLabel?.textAlignment = .Left
         cancelButton.titleLabel?.attributedText = attributedText
         
-        let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        submitButton.setImage(image, forState: UIControlState.Normal)
+        // Submit button
+        let nextImage = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        submitButton.setImage(nextImage, forState: UIControlState.Normal)
         submitButton.tintColor = UIColor.whiteColor()
+        
+        // Upload button
+        let uploadImage = UIImage(named: "Upload.png")
+        topRightButton.setImage(uploadImage, forState: UIControlState.Normal)
+        topRightButton.tintColor = UIColor.whiteColor()
+        topRightButton.backgroundColor = UIColor.clearColor()
+        topRightButton.alpha = 0.8
         
         // Show controls
         showCameraControls()
@@ -97,11 +127,11 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = true
         UIApplication.sharedApplication().statusBarHidden=true;
+        bottomLeftButton.update()
         super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(animated: Bool) {
-        // Immediately show the camera
         super.viewDidAppear(animated)
     }
 
@@ -114,16 +144,42 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         Helper.setUpNavBar(self.navigationController)
     }
     
+    // ------- Mark: ImagePickerControllerDelegate
+    
+    func presentCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            imagePicker.delegate = self // That way the delegate methods below get called so we know whats going on
+            imagePicker.sourceType = sourceType
+            imagePicker.allowsEditing = true
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        } else {
+            ErrorHandler.showAlert("Device does not have a camera")
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.shouldUploadImage(pickedImage)
+        }
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // ------- Mark: AVFoundation camera stuff
+    
     func beginCameraSession() {
         do {
             try captureSession.addInput(AVCaptureDeviceInput(device: captureDevice))
         } catch {
             print(error)
         }
-        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
         cameraPreview.layer.addSublayer(previewLayer)
-        previewLayer?.frame = self.view.layer.frame
+        previewLayer.frame = self.view.layer.frame
     }
     
     func configureDevice() {
@@ -144,12 +200,13 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
                 try device.lockForConfiguration()
                 if device.focusPointOfInterestSupported {
                     device.focusPointOfInterest = focusPoint
-                    device.focusMode = .ContinuousAutoFocus
+                    device.focusMode = .AutoFocus
                 }
-                if device.exposurePointOfInterestSupported {
+                if device.isExposureModeSupported(AVCaptureExposureMode.AutoExpose) {
                     device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = .ContinuousAutoExposure
+                    device.exposureMode = .AutoExpose
                 }
+                device.unlockForConfiguration()
             } catch {
                 print(error)
             }
@@ -157,17 +214,19 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let anyTouch = touches.first {
-            let touchPoint = anyTouch.locationInView(self.view)
-            focusTo(touchPoint)
+        if let touchPoint = touches.first {
+            let screenSize = cameraPreview.bounds.size
+            let focusPoint = CGPoint(x: touchPoint.locationInView(cameraPreview).y / screenSize.height, y: touchPoint.locationInView(cameraPreview).x / screenSize.width)
+            focusTo(focusPoint)
         }
     }
     
     // ------- Mark: Uploading
     
     func shouldUploadImage(image:UIImage) -> Bool {
-        
+        activityIndicator.startAnimating()
         hidePostImageControls()
+        hideCameraControls()
         
         let imageData = UIImageJPEGRepresentation(image, 0.7)
         if imageData == nil {
@@ -191,11 +250,10 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
             let photo = Photo(className: "Photos", dictionary: nil)
             photo.photoFile = photoFile
             photo.userID = PFUser.currentUser()!.objectId!
-            photo.seen = true
             photo.mostRecentRating = NSDate()
             let photoACL = PFACL(user: User.currentUser()!)
             photoACL.setPublicReadAccess(true)
-            photoACL.setWriteAccess(true, forUser: User.currentUser()!)
+            photoACL.setPublicWriteAccess(true)
             photo.ACL = photoACL
             
             // Make another background thread for uploading the PFObject
@@ -261,9 +319,35 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         })
     }
     
+    // ---- Mark: Face detection
+    
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+        
+        // Check if the metadataObjects array is not nil and it contains at least one object.
+        if metadataObjects == nil || metadataObjects.count == 0 {
+            faceDetector?.hide()
+            return
+        }
+        
+        for metadataObject in metadataObjects as! [AVMetadataObject] {
+            if metadataObject.type == AVMetadataObjectTypeFace {
+                let transformedMetadataObject = previewLayer.transformedMetadataObjectForMetadataObject(metadataObject)
+                faceDetector?.showAtFrame(transformedMetadataObject.bounds)
+            }
+        }
+    }
+    
     // ---- Mark: IBAction
+    
+    @IBAction func UploadBtnClicked(sender: AnyObject) {
+        self.presentCamera()
+    }
+    
 
     @IBAction func cameraBtnClicked(sender: AnyObject) {
+        if activityIndicator.isAnimating() {
+            return
+        }
         if outputConnection == nil {
             ErrorHandler.showAlert("Something went wrong")
             return
@@ -302,7 +386,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         }
         if let currentImage = currentImage {
             shouldUploadImage(currentImage)
-            activityIndicator.startAnimating()
         }
     }
    

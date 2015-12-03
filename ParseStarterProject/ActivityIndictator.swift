@@ -8,28 +8,38 @@
 
 import UIKit
 
+enum ActivityIndicatorType {
+    case Full
+    case Box
+}
+
 class ActivityIndictator: UIView {
     
-    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
+    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(0,0,30,30))
 
-    init() {
-        let frame = UIScreen.mainScreen().bounds
-        let size:CGFloat = frame.size.width/4
-        super.init(frame: CGRectMake(0, 0, size, size))
-        customInit(frame)
+    init(type:ActivityIndicatorType, color:UIColor, frame:CGRect) {
+        var loadingFrame:CGRect = frame
+        if type == .Box {
+            var size:CGFloat = frame.size.width/5
+            size = max(40, size)
+            loadingFrame = CGRectMake(0, 0, size, size)
+        }
+        super.init(frame: loadingFrame)
+        customInit(frame, color: color)
     }
     
-    override init(frame: CGRect) {
-        let size:CGFloat = frame.size.width/4
-        super.init(frame: CGRectMake(0, 0, size, size))
-        customInit(frame)
+    convenience init() {
+        self.init(type:ActivityIndicatorType.Box, color:UIColor(white: 0, alpha: 0.5), frame:UIScreen.mainScreen().bounds)
     }
     
-    func customInit(frame:CGRect) {
-        let size:CGFloat = frame.size.width/4
+    convenience override init(frame: CGRect) {
+        self.init(type:ActivityIndicatorType.Box, color:UIColor(white: 0, alpha: 0.5), frame:frame)
+    }
+    
+    func customInit(frame:CGRect, color:UIColor) {
         self.center = CGPointMake(frame.width/2, frame.size.height/2)
-        self.layer.cornerRadius = size/5
-        self.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        self.layer.cornerRadius = self.frame.size.width/2
+        self.backgroundColor = color
         activityIndicator.frame = self.bounds
         self.addSubview(activityIndicator)
         activityIndicator.hidesWhenStopped = true
@@ -38,12 +48,26 @@ class ActivityIndictator: UIView {
     
     func stopAnimating() {
         activityIndicator.stopAnimating()
-        self.hidden = true
+        UIView.animateWithDuration(0.2, animations: {
+            self.hidden = true
+        })
     }
     
     func startAnimating() {
         activityIndicator.startAnimating()
-        self.hidden = false
+        UIView.animateWithDuration(0.2, animations: {
+            self.hidden = false
+        })
+    }
+    
+    func remove(callback:(Void) -> Void) {
+        UIView.animateWithDuration(0.2, animations: {
+                self.alpha = 0
+            }, completion: {
+                (done:Bool) in
+                self.removeFromSuperview()
+                callback()
+        })
     }
     
     func isAnimating() -> Bool {

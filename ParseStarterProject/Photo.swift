@@ -13,11 +13,10 @@ class Photo : PFObject, PFSubclassing  {
     
     @NSManaged var photoFile: PFFile
     @NSManaged var userID: String
-    @NSManaged var ratings: [Rating]
+    @NSManaged var ratings: PFRelation
     @NSManaged var averageRating: Int
     @NSManaged var numberOfRatings: Int
     @NSManaged var mostRecentRating: NSDate
-    @NSManaged var seen: Bool // If a new rating on this photo has been seen or not
     
     override class func initialize() {
         struct Static {
@@ -32,21 +31,36 @@ class Photo : PFObject, PFSubclassing  {
         return "Photos"
     }
     
+    func hasUnreadRatings(callback:(Bool)->Void) {
+        let query = ratings.query()
+        if query == nil {
+            callback(false)
+            return
+        }
+        query!.whereKey("seen", equalTo: false)
+        query!.findObjectsInBackgroundWithBlock({
+            (objects:[PFObject]?, error:NSError?) in
+            if objects == nil || objects?.count < 1 {
+                callback(false)
+                return
+            }
+            callback(true)
+        })
+    }
+    
     func addRating(rating:Rating) {
-        ratings.append(rating)
+        ratings.addObject(rating)
         let newNumberOfRatings = numberOfRatings+1
         let newAverage = (averageRating*numberOfRatings + rating.rating)/newNumberOfRatings
         averageRating = newAverage
         numberOfRatings = newNumberOfRatings
         mostRecentRating = NSDate()
-        seen = false
-    }
-    
-    func setSeen() {
-        if !seen {
-            seen = true
-            saveEventually()
-        }
+        saveEventually({
+            (success:Bool, error:NSError?) in
+            if success {
+                Rating.sendPushToRatingReceiver(self.userID)
+            }
+        })
     }
     
 }

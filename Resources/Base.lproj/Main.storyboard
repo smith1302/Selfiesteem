@@ -191,8 +191,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lN7-xs-cCq">
-                                <rect key="frame" x="0.0" y="681" width="414" height="55"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lN7-xs-cCq">
+                                <rect key="frame" x="0.0" y="680" width="414" height="55"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.50910094895287961" green="0.50910094895287961" blue="0.50910094895287961" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -219,6 +219,9 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="Mqb-cq-nVy"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="logoutButton" destination="lN7-xs-cCq" id="jsl-0e-Efy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qC7-7k-T5C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -371,10 +374,10 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1E-uc-5wX" userLabel="CameraControlView">
-                                <rect key="frame" x="0.0" y="671" width="414" height="65"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0p-AU-I4W" customClass="CameraButton" customModule="Selfiesteem" customModuleProvider="target">
-                                        <rect key="frame" x="167" y="-30" width="80" height="80"/>
+                                        <rect key="frame" x="167" y="577" width="80" height="80"/>
                                         <animations/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -385,8 +388,8 @@
                                             <action selector="cameraBtnClicked:" destination="9U1-Xm-tOf" eventType="touchUpInside" id="2PV-4B-YLF"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1K-MA-jmM" customClass="OverlayButton" customModule="Selfiesteem" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="15" width="35" height="35"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1K-MA-jmM" customClass="LeftOverlayButton" customModule="Selfiesteem" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="622" width="35" height="35"/>
                                         <animations/>
                                         <color key="backgroundColor" red="1" green="0.12442726670245208" blue="0.17121949671641457" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -398,7 +401,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc1-7o-sKz" customClass="OverlayButton" customModule="Selfiesteem" customModuleProvider="target">
-                                        <rect key="frame" x="359" y="15" width="35" height="35"/>
+                                        <rect key="frame" x="354" y="622" width="35" height="35"/>
                                         <animations/>
                                         <color key="backgroundColor" red="1" green="0.11708994419938634" blue="0.10325152551902295" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -408,25 +411,39 @@
                                             <action selector="swipeLeftAction:" destination="9U1-Xm-tOf" eventType="touchUpInside" id="tQq-i8-xEx"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7Y-Kh-QDJ" userLabel="Top Right Button" customClass="ClickableButton" customModule="Selfiesteem" customModuleProvider="target">
+                                        <rect key="frame" x="354" y="15" width="35" height="35"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="h7Y-Kh-QDJ" secondAttribute="height" multiplier="1:1" id="HZK-qU-mbm"/>
+                                        </constraints>
+                                        <state key="normal" image="Upload"/>
+                                        <connections>
+                                            <action selector="UploadBtnClicked:" destination="9U1-Xm-tOf" eventType="touchUpInside" id="Jx3-El-khg"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="e0p-AU-I4W" firstAttribute="bottom" secondItem="t1K-MA-jmM" secondAttribute="bottom" id="16X-Sk-yVn"/>
-                                    <constraint firstItem="t1K-MA-jmM" firstAttribute="top" secondItem="d1E-uc-5wX" secondAttribute="top" constant="15" id="7rW-fa-h98"/>
-                                    <constraint firstAttribute="trailing" secondItem="Fc1-7o-sKz" secondAttribute="trailing" constant="20" id="HNL-DA-T8j"/>
+                                    <constraint firstAttribute="trailing" secondItem="Fc1-7o-sKz" secondAttribute="trailing" constant="25" id="HNL-DA-T8j"/>
                                     <constraint firstAttribute="bottom" secondItem="t1K-MA-jmM" secondAttribute="bottom" constant="15" id="Kfi-wh-0SA"/>
                                     <constraint firstItem="e0p-AU-I4W" firstAttribute="centerX" secondItem="d1E-uc-5wX" secondAttribute="centerX" id="UPZ-xs-7Fe"/>
+                                    <constraint firstItem="h7Y-Kh-QDJ" firstAttribute="width" secondItem="Fc1-7o-sKz" secondAttribute="width" id="VUn-je-kPy"/>
                                     <constraint firstItem="t1K-MA-jmM" firstAttribute="leading" secondItem="d1E-uc-5wX" secondAttribute="leading" constant="20" id="WJw-cw-dic"/>
+                                    <constraint firstItem="h7Y-Kh-QDJ" firstAttribute="top" secondItem="d1E-uc-5wX" secondAttribute="top" constant="15" id="uYS-pM-Aj1"/>
+                                    <constraint firstAttribute="trailing" secondItem="h7Y-Kh-QDJ" secondAttribute="trailing" constant="25" id="x0l-mG-4pY"/>
                                     <constraint firstItem="Fc1-7o-sKz" firstAttribute="height" secondItem="t1K-MA-jmM" secondAttribute="height" id="xVO-s3-MgI"/>
                                     <constraint firstItem="Fc1-7o-sKz" firstAttribute="bottom" secondItem="t1K-MA-jmM" secondAttribute="bottom" id="ywm-1b-msB"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sDg-0d-ytY" userLabel="PostImageControlView">
-                                <rect key="frame" x="0.0" y="671" width="414" height="65"/>
+                                <rect key="frame" x="0.0" y="666" width="414" height="70"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhs-HJ-GSn">
-                                        <rect key="frame" x="25" y="10" width="40" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhs-HJ-GSn" customClass="ClickableButton" customModule="Selfiesteem" customModuleProvider="target">
+                                        <rect key="frame" x="25" y="15" width="40" height="40"/>
                                         <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="3fo-1l-Xfw"/>
@@ -440,8 +457,8 @@
                                             <action selector="cancelButtonClicked:" destination="9U1-Xm-tOf" eventType="touchUpInside" id="ywo-Cy-gnH"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUa-JI-o2o">
-                                        <rect key="frame" x="349" y="10" width="40" height="40"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUa-JI-o2o" customClass="ClickableButton" customModule="Selfiesteem" customModuleProvider="target">
+                                        <rect key="frame" x="349" y="15" width="40" height="40"/>
                                         <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="RUa-JI-o2o" secondAttribute="height" multiplier="1:1" id="F7Y-uI-AeY"/>
@@ -460,6 +477,7 @@
                                     <constraint firstItem="Mhs-HJ-GSn" firstAttribute="leading" secondItem="sDg-0d-ytY" secondAttribute="leading" constant="25" id="1oY-s9-YPt"/>
                                     <constraint firstAttribute="trailing" secondItem="RUa-JI-o2o" secondAttribute="trailing" constant="25" id="Jvs-H2-9aU"/>
                                     <constraint firstAttribute="bottom" secondItem="RUa-JI-o2o" secondAttribute="bottom" constant="15" id="hBB-bE-gDc"/>
+                                    <constraint firstItem="Mhs-HJ-GSn" firstAttribute="top" secondItem="sDg-0d-ytY" secondAttribute="top" constant="15" id="lzT-sD-kP4"/>
                                     <constraint firstAttribute="bottom" secondItem="Mhs-HJ-GSn" secondAttribute="bottom" constant="15" id="o48-ia-1CG"/>
                                 </constraints>
                             </view>
@@ -469,9 +487,9 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="d1E-uc-5wX" firstAttribute="leading" secondItem="euY-Ho-Cta" secondAttribute="leadingMargin" constant="-20" id="2nv-kU-Tb9"/>
+                            <constraint firstItem="d1E-uc-5wX" firstAttribute="top" secondItem="YdZ-pF-SNj" secondAttribute="bottom" id="42T-Qf-RdH"/>
                             <constraint firstItem="HQq-Cf-3wu" firstAttribute="top" secondItem="d1E-uc-5wX" secondAttribute="bottom" id="4bp-Nj-pWr"/>
                             <constraint firstItem="RCj-rH-lkN" firstAttribute="top" secondItem="YdZ-pF-SNj" secondAttribute="bottom" constant="-20" id="6vd-iv-wJu"/>
-                            <constraint firstItem="sDg-0d-ytY" firstAttribute="height" secondItem="d1E-uc-5wX" secondAttribute="height" id="AYV-ML-NWy"/>
                             <constraint firstItem="sDg-0d-ytY" firstAttribute="leading" secondItem="euY-Ho-Cta" secondAttribute="leadingMargin" constant="-20" id="CcQ-Hi-Ceh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="RCj-rH-lkN" secondAttribute="trailing" constant="-20" id="DLA-36-9XQ"/>
                             <constraint firstItem="RCj-rH-lkN" firstAttribute="leading" secondItem="euY-Ho-Cta" secondAttribute="leadingMargin" constant="-20" id="JYB-gX-V0v"/>
@@ -500,6 +518,7 @@
                         <outlet property="cancelButton" destination="Mhs-HJ-GSn" id="W3M-a2-ySF"/>
                         <outlet property="postImageControlsView" destination="sDg-0d-ytY" id="ldV-jy-Xft"/>
                         <outlet property="submitButton" destination="RUa-JI-o2o" id="plb-jd-akl"/>
+                        <outlet property="topRightButton" destination="h7Y-Kh-QDJ" id="OOY-hl-ayn"/>
                         <segue destination="f1O-NX-5HU" kind="show" identifier="segueToPublicPhotosViewController" customClass="SegueFromRight" customModule="Selfiesteem" customModuleProvider="target" id="5NJ-Y4-yo3"/>
                         <segue destination="omp-4m-nV0" kind="show" identifier="segueToHistoryOfImagesViewController" customClass="SegueFromLeft" customModule="Selfiesteem" customModuleProvider="target" id="q9M-Uq-3yo"/>
                     </connections>
@@ -726,5 +745,6 @@
         <image name="Camera" width="32" height="32"/>
         <image name="Next-64" width="64" height="64"/>
         <image name="Settings" width="32" height="32"/>
+        <image name="Upload" width="52" height="51"/>
     </resources>
 </document>

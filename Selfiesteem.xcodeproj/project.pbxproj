@@ -28,6 +28,11 @@
 		F72D402D1C0AB0D900AB1972 /* SegueFromRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D402C1C0AB0D900AB1972 /* SegueFromRight.swift */; };
 		F72D40301C0AB11800AB1972 /* SeguePopFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D402F1C0AB11800AB1972 /* SeguePopFromLeft.swift */; };
 		F72D40331C0D22D900AB1972 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D40321C0D22D900AB1972 /* SettingsViewController.swift */; };
+		F72D40351C0EAB2D00AB1972 /* LeftOverlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D40341C0EAB2D00AB1972 /* LeftOverlayButton.swift */; };
+		F72D40391C0FD94F00AB1972 /* ClickableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D40381C0FD94F00AB1972 /* ClickableButton.swift */; };
+		F72D403B1C10116600AB1972 /* FaceDetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D403A1C10116500AB1972 /* FaceDetectionView.swift */; };
+		F72D403D1C10BBBA00AB1972 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D403C1C10BBBA00AB1972 /* LoginViewController.swift */; };
+		F72D403F1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D403E1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift */; };
 		F73D2BB11C03D3E900EB7799 /* NSDate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */; };
 		F73D2BB31C04328F00EB7799 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D2BB21C04328F00EB7799 /* CircleView.swift */; };
 		F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */; };
@@ -77,6 +82,11 @@
 		F72D402C1C0AB0D900AB1972 /* SegueFromRight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueFromRight.swift; sourceTree = "<group>"; };
 		F72D402F1C0AB11800AB1972 /* SeguePopFromLeft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeguePopFromLeft.swift; sourceTree = "<group>"; };
 		F72D40321C0D22D900AB1972 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F72D40341C0EAB2D00AB1972 /* LeftOverlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftOverlayButton.swift; sourceTree = "<group>"; };
+		F72D40381C0FD94F00AB1972 /* ClickableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClickableButton.swift; sourceTree = "<group>"; };
+		F72D403A1C10116500AB1972 /* FaceDetectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceDetectionView.swift; sourceTree = "<group>"; };
+		F72D403C1C10BBBA00AB1972 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F72D403E1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPFQueryTableViewController.swift; sourceTree = "<group>"; };
 		F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extension.swift"; sourceTree = "<group>"; };
 		F73D2BB21C04328F00EB7799 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		F7401F0C1BF41EBC0012512F /* UIRatingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRatingTextField.swift; sourceTree = "<group>"; };
@@ -202,6 +212,7 @@
 				F73D2BB01C03D3E900EB7799 /* NSDate+Extension.swift */,
 				F7B9C8981C078AD3008E84AB /* MessageHandler.swift */,
 				F72D40261C0A569900AB1972 /* Helper.swift */,
+				F72D403E1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -224,7 +235,6 @@
 			isa = PBXGroup;
 			children = (
 				F753E2911BE884BB00F89A86 /* Cache.swift */,
-				F753E2951BE8869300F89A86 /* CachedPFImageView.swift */,
 				F78C1E141BF564A5007EFBC5 /* Photo.swift */,
 				F78C1E161BF564B0007EFBC5 /* Rating.swift */,
 				F78C1E181BF5AD2F007EFBC5 /* User.swift */,
@@ -235,6 +245,7 @@
 		F7110CB51BC85178008864FC /* LoginAndRegistration */ = {
 			isa = PBXGroup;
 			children = (
+				F72D403C1C10BBBA00AB1972 /* LoginViewController.swift */,
 				F7110CAC1BC84F90008864FC /* IntroViewController.swift */,
 			);
 			name = LoginAndRegistration;
@@ -295,6 +306,9 @@
 				F7A2465E1BCC6BB400945180 /* CameraViewController.swift */,
 				F71D137E1BE84FFA001B6114 /* OverlayButton.swift */,
 				F7B9C89A1C078E97008E84AB /* CameraButton.swift */,
+				F72D40341C0EAB2D00AB1972 /* LeftOverlayButton.swift */,
+				F72D40381C0FD94F00AB1972 /* ClickableButton.swift */,
+				F72D403A1C10116500AB1972 /* FaceDetectionView.swift */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -302,6 +316,7 @@
 		F7B9C89C1C0907D7008E84AB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F753E2951BE8869300F89A86 /* CachedPFImageView.swift */,
 				F73D2BB21C04328F00EB7799 /* CircleView.swift */,
 				F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */,
 			);
@@ -341,6 +356,7 @@
 				TargetAttributes = {
 					81BA81441A49DA1800E65899 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 297DDK36M7;
 					};
 				};
 			};
@@ -401,8 +417,10 @@
 				F7110CAD1BC84F90008864FC /* IntroViewController.swift in Sources */,
 				F75C455B1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift in Sources */,
 				F72D40331C0D22D900AB1972 /* SettingsViewController.swift in Sources */,
+				F72D403D1C10BBBA00AB1972 /* LoginViewController.swift in Sources */,
 				F7A2465F1BCC6BB400945180 /* CameraViewController.swift in Sources */,
 				F753E2961BE8869300F89A86 /* CachedPFImageView.swift in Sources */,
+				F72D40351C0EAB2D00AB1972 /* LeftOverlayButton.swift in Sources */,
 				F7686AD71C003BCD00D78CB0 /* PhotoRatingCell.swift in Sources */,
 				F75C45591BE8197100151A24 /* PublicPhotosViewController.swift in Sources */,
 				F73D2BB31C04328F00EB7799 /* CircleView.swift in Sources */,
@@ -413,7 +431,9 @@
 				F7B9C89B1C078E97008E84AB /* CameraButton.swift in Sources */,
 				F72D402D1C0AB0D900AB1972 /* SegueFromRight.swift in Sources */,
 				F78C1E191BF5AD2F007EFBC5 /* User.swift in Sources */,
+				F72D403F1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift in Sources */,
 				F7B9C8A01C091C71008E84AB /* NumberPickerCell.swift in Sources */,
+				F72D403B1C10116600AB1972 /* FaceDetectionView.swift in Sources */,
 				F78C1E151BF564A5007EFBC5 /* Photo.swift in Sources */,
 				F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */,
 				F72D40271C0A569900AB1972 /* Helper.swift in Sources */,
@@ -422,6 +442,7 @@
 				C6494A091BED6468004E966D /* ImagePostCell.swift in Sources */,
 				F753E2921BE884BB00F89A86 /* Cache.swift in Sources */,
 				F7686ADB1C00409800D78CB0 /* PhotoSummaryTableViewController.swift in Sources */,
+				F72D40391C0FD94F00AB1972 /* ClickableButton.swift in Sources */,
 				F7B9C8991C078AD3008E84AB /* MessageHandler.swift in Sources */,
 				F72D40301C0AB11800AB1972 /* SeguePopFromLeft.swift in Sources */,
 				F7B9C89E1C090899008E84AB /* ActivityIndictator.swift in Sources */,
@@ -466,7 +487,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.parse.Selfiesteem";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.parse.Selfiesteem";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -509,7 +531,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.parse.Selfiesteem";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.parse.Selfiesteem";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -533,6 +556,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -548,6 +572,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

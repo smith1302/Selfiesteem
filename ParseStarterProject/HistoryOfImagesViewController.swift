@@ -10,10 +10,11 @@ import UIKit
 import Parse
 import ParseUI
 
-class HistoryOfImagesViewController: PFQueryTableViewController {
+class HistoryOfImagesViewController: CustomPFQueryTableViewController {
     let kRecentIndex = 0
     let kBestIndex = 1
-    var activityIndictator:ActivityIndictator?
+    var defaultCell:PFTableViewCell?
+    var scrollingHitBottom:Bool = false
     
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
@@ -44,26 +45,10 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         updateCellSeenStates()
         self.navigationItem.hidesBackButton = true
     }
-    
-    override func objectsWillLoad() {
-        if activityIndictator != nil {
-            return
-        }
-        super.objectsWillLoad()
-        activityIndictator = ActivityIndictator()
-        activityIndictator?.startAnimating()
-        self.tableView.addSubview(activityIndictator!)
-    }
-    
-    override func objectsDidLoad(error: NSError?) {
-        super.objectsDidLoad(error)
-        self.activityIndictator?.removeFromSuperview()
-        self.activityIndictator = nil
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundColor = UIColor(white: 0.85, alpha: 1)
+        self.tableView.backgroundColor = UIColor.whiteColor()
         // Do any additional setup after loading the view.
     }
 
@@ -79,7 +64,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
-        query.limit=6
+        query.cachePolicy = PFCachePolicy.CacheThenNetwork
         if segmentControl.selectedSegmentIndex == kRecentIndex {
             query.orderByDescending("updatedAt")
         } else {
@@ -87,6 +72,10 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         }
         
         return query
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
     }
     
     override func objectAtIndexPath(indexPath: NSIndexPath?) -> PFObject? {
@@ -100,7 +89,7 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         if self.objects?.count != 0 {
             return super.tableView(tableView, numberOfRowsInSection: section)
         }
-       return 1
+        return 1
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell? {
@@ -117,9 +106,12 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
             
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as! PFTableViewCell
-            cell.textLabel!.text = "You haven't taken any selfies yet..."
-            return cell
+            defaultCell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as! PFTableViewCell
+            if hasFinishedInitialLoad {
+                defaultCell?.textLabel?.text = "You don't have any selfies yet!"
+            }
+            defaultCell!.textLabel?.textColor = UIColor(white: 0.4, alpha: 1)
+            return defaultCell!
         }
     }
     
@@ -127,16 +119,31 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         if indexPath.row < self.objects?.count {
             return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
         } else {
-            return 50
+            return 55
         }
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            if let photo = self.objects![indexPath.row] as? Photo {
-                photo.deleteInBackground()
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            if let object = objectAtIndexPath(indexPath) {
+                // Delete all ratings associated with it
+                let query = Rating.query()
+                query?.whereKey("photoID", equalTo: object.objectId!)
+                query?.findObjectsInBackgroundWithBlock({
+                    (objects:[PFObject]?, error:NSError?) in
+                    if objects == nil {
+                        return
+                    }
+                    for object in objects! {
+                        object.deleteEventually()
+                    }
+                })
             }
+            removeObjectAtIndexPath(indexPath)
         }
     }
     
@@ -152,8 +159,11 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         let minimumTrigger = scrollView.bounds.size.height + 0
         if scrollView.contentSize.height > minimumTrigger {
             let distanceFromBottom = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom) - scrollView.contentOffset.y
-            if distanceFromBottom < 0 {
+            if distanceFromBottom < 0 && !scrollingHitBottom {
                 self.loadNextPage()
+                scrollingHitBottom = true
+            } else if distanceFromBottom > 10 && scrollingHitBottom {
+                scrollingHitBottom = false
             }
         }
         
