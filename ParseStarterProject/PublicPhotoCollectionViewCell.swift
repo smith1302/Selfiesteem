@@ -15,9 +15,11 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     @IBOutlet weak var pfImageView: CachedPFImageView!
     var ratingLabel:UILabel?
     var photo:Photo?
-    var activityIndicator:UIActivityIndicatorView?
+    var activityIndicator:ActivityIndictator?
     var loading:Bool = false
     var alreadyRated:Bool = false
+    // For every setBusy() call we need a setFree() call.
+    var busyStates:Int = 0
     
     // Need this functionality to update the frame as soon as the bound is set to the imageView can calculate the corner radius before rendering
     override var bounds: CGRect {
@@ -27,6 +29,7 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     }
     
     func configure(photo:Photo) {
+        self.backgroundColor = UIColor.whiteColor()
         setBusy()
         resetCell()
         self.photo = photo
@@ -39,16 +42,17 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         pfImageView.layoutIfNeeded()
         self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
         pfImageView.layer.masksToBounds = true
-        pfImageView.layer.borderColor = UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.7).CGColor
+        pfImageView.layer.borderColor = Constants.primaryColorWithAlpha(0.3).CGColor
         pfImageView.layer.borderWidth = 5
         addRatingLabelIfNeeded()
         
         // Create a new CircleView
         let createdAt = photo.createdAt!
         let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
-        let percentage = 1-CGFloat(createdAtSecondsAgo/(-60*60*24))
+        let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24))
         
-        let circleView = CircleView(frame: pfImageView.frame, percent: percentage, color: UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 1))
+        let circleWidth:CGFloat = 4
+        let circleView = CircleView(center:pfImageView.center, radius:pfImageView.frame.size.width/2+circleWidth, percent: percentage, color: Constants.primaryColorWithAlpha(0.7), width: circleWidth)
         self.addSubview(circleView)
     }
     
@@ -72,7 +76,7 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
                 self.ratingLabel!.textColor = UIColor.whiteColor()
                 self.ratingLabel!.textAlignment = .Center
                 self.ratingLabel!.backgroundColor = UIColor(white: 0, alpha: 0.4)
-                self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.4)
+                self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.35)
                 self.ratingLabel!.text = String(rating.rating)
                 self.pfImageView.addSubview(self.ratingLabel!)
             }
@@ -81,13 +85,21 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     }
     
     func setBusy() {
-        setFree()
-        activityIndicator = UIActivityIndicatorView(frame: self.contentView.frame)
+        busyStates++
+        if busyStates > 1 {
+            return
+        }
+        activityIndicator = ActivityIndictator(frame: self.contentView.bounds)
         activityIndicator!.startAnimating()
         self.contentView.addSubview(activityIndicator!)
     }
     
     func setFree() {
+        busyStates--
+        if busyStates > 0 {
+            return
+        }
+        activityIndicator!.stopAnimating()
         activityIndicator?.removeFromSuperview()
         activityIndicator = nil
     }

@@ -10,24 +10,32 @@ import UIKit
 import Parse
 import ParseUI
 
-class HistoryOfImagesViewController: PFQueryTableViewController {
-    // Initialise the PFQueryTable tableview
+class HistoryOfImagesViewController: CustomPFQueryTableViewController {
+    let kRecentIndex = 0
+    let kBestIndex = 1
+    var defaultCell:PFTableViewCell?
+    var scrollingHitBottom:Bool = false
+    
+    @IBOutlet weak var segmentControl: UISegmentedControl!
     
     override init(style: UITableViewStyle, className: String!)
     {
         super.init(style: style, className: className)
-        
-        self.pullToRefreshEnabled = true
-        self.paginationEnabled = false
-        self.objectsPerPage = 25
-        
-        self.parseClassName = "_Users"
+        customInit()
     }
     
     required init(coder aDecoder:NSCoder)
     {
-         super.init(coder: aDecoder)!
-        //fatalError("NSCoding not supported")
+        super.init(coder: aDecoder)!
+        customInit()
+    }
+    
+    func customInit() {
+        self.pullToRefreshEnabled = true
+        self.paginationEnabled = true
+        self.parseClassName = "_Users"
+        self.objectsPerPage = 6
+        self.loadingViewEnabled = false
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -35,10 +43,12 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         self.navigationController?.navigationBarHidden = false // Sets the Navbar to be seen when loaded
         UIApplication.sharedApplication().statusBarHidden=false
         updateCellSeenStates()
+        self.navigationItem.hidesBackButton = true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.backgroundColor = UIColor.whiteColor()
         // Do any additional setup after loading the view.
     }
 
@@ -54,36 +64,128 @@ class HistoryOfImagesViewController: PFQueryTableViewController {
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
-        query.orderByDescending("updatedAt")
+        query.cachePolicy = PFCachePolicy.CacheThenNetwork
+        if segmentControl.selectedSegmentIndex == kRecentIndex {
+            query.orderByDescending("updatedAt")
+        } else {
+            query.orderByDescending("averageRating")
+        }
         
         return query
     }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> ImagePostCell? {
-        var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ImagePostCell!
-        if(cell == nil) {
-            cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func objectAtIndexPath(indexPath: NSIndexPath?) -> PFObject? {
+        if self.objects?.count != 0 {
+            return super.objectAtIndexPath(indexPath)
         }
-        if let photo = object as? Photo {
-            cell.configure(photo)
-        }else {
-            print("Unable to do it")
+        return PFObject(className: "Users")
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.objects?.count != 0 {
+            return super.tableView(tableView, numberOfRowsInSection: section)
         }
+        return 1
+    }
 
-        
-        return cell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PFTableViewCell? {
+        if object?.objectId != nil {
+            var cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! ImagePostCell!
+            if(cell == nil) {
+                cell = ImagePostCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            }
+            if let photo = object as? Photo {
+                cell.configure(photo)
+            }else {
+                print("Unable to do it")
+            }
+            
+            return cell
+        } else {
+            defaultCell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as! PFTableViewCell
+            if hasFinishedInitialLoad {
+                defaultCell?.textLabel?.text = "You don't have any selfies yet!"
+            }
+            defaultCell!.textLabel?.textColor = UIColor(white: 0.4, alpha: 1)
+            return defaultCell!
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row < self.objects?.count {
+            return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        } else {
+            return 55
+        }
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            if let object = objectAtIndexPath(indexPath) {
+                // Delete all ratings associated with it
+                let query = Rating.query()
+                query?.whereKey("photoID", equalTo: object.objectId!)
+                query?.findObjectsInBackgroundWithBlock({
+                    (objects:[PFObject]?, error:NSError?) in
+                    if objects == nil {
+                        return
+                    }
+                    for object in objects! {
+                        object.deleteEventually()
+                    }
+                })
+            }
+            removeObjectAtIndexPath(indexPath)
+        }
     }
     
     func updateCellSeenStates() {
-        for cell in tableView.visibleCells as! [ImagePostCell] {
-            cell.updateSeenState()
+        for cell in tableView.visibleCells{
+            if let imageCell = cell as? ImagePostCell {
+                imageCell.updateSeenState()
+            }
         }
+    }
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        let minimumTrigger = scrollView.bounds.size.height + 0
+        if scrollView.contentSize.height > minimumTrigger {
+            let distanceFromBottom = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom) - scrollView.contentOffset.y
+            if distanceFromBottom < 0 && !scrollingHitBottom {
+                self.loadNextPage()
+                scrollingHitBottom = true
+            } else if distanceFromBottom > 10 && scrollingHitBottom {
+                scrollingHitBottom = false
+            }
+        }
+        
     }
     
     //Clicked on a cell
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if indexPath.row < self.objects?.count {
+            performSegueWithIdentifier("toPhotoSummaryVC", sender: tableView.cellForRowAtIndexPath(indexPath))
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        } else {
+            super.tableView(tableView, didSelectRowAtIndexPath: indexPath)
+        }
+    }
+    
+    
+    @IBAction func segmentControlValueChanged(sender: AnyObject) {
+        self.loadObjects()
+    }
+    
+    @IBAction func toCamera(sender: AnyObject) {
+        self.performSegueWithIdentifier("returnToCameraLeftSegue", sender: self)
     }
 
     // MARK: - Navigation

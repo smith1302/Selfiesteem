@@ -39,6 +39,11 @@ class PhotoSummaryViewController: UIViewController {
         self.navigationController?.navigationBarHidden = true
         UIApplication.sharedApplication().statusBarHidden=true
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        // Mark any notifications as seen
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -77,8 +82,7 @@ class PhotoSummaryViewController: UIViewController {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if isDraggingView {
             let viewHeight = self.view.frame.size.height
-            // Make it easier to close if already open, and easier to open if already closed
-            let snapToTopThreshold = (ratingsAreOpen) ? viewHeight*4/5 : viewHeight/5
+            let snapToTopThreshold = viewHeight/2
             // If we want to snap it to the top
             if draggableViewHConstraint.constant >= snapToTopThreshold {
                 snapDraggableViewToTop()
@@ -96,8 +100,9 @@ class PhotoSummaryViewController: UIViewController {
     func snapDraggableViewToTop() {
         ratingsAreOpen = true
         self.view.addConstraint(draggableTopLayoutConstraint!)
-        // Mark any notifications as seen
-        photo.setSeen()
+        UIView.animateWithDuration(0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     func snapDraggableViewToBottom() {
@@ -105,6 +110,10 @@ class PhotoSummaryViewController: UIViewController {
         self.view.removeConstraint(draggableTopLayoutConstraint!)
         draggableViewHConstraint.constant = commentsDragButton.frame.size.height
         draggableView.addConstraint(draggableViewHConstraint!)
+        UIView.animateWithDuration(0.3) {
+            self.view.layoutIfNeeded()
+            self.draggableView.layoutIfNeeded()
+        }
     }
     
     /*

@@ -1,39 +1,36 @@
 //
-//  CameraButton.swift
+//  ClickableButton
 //  Selfiesteem
 //
-//  Created by Eric Smith on 11/26/15.
+//  Created by Eric Smith on 11/2/15.
 //  Copyright © 2015 Parse. All rights reserved.
 //
 
 import UIKit
 
-class CameraButton: UIButton {
-
+class ClickableButton: UIButton {
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         customInit()
     }
     
-    func customInit() {
-        self.layer.cornerRadius = self.frame.size.height/2
-        let circleView = CircleView(center: CGPointMake(bounds.size.width/2, bounds.size.height/2), radius: self.frame.size.height/2 * 0.9, percent: 0.0001, color: UIColor(white: 0.5, alpha: 1), width:2.0)
-        circleView.userInteractionEnabled = false
-        self.addSubview(circleView)
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         customInit()
     }
     
+    func customInit() {
+        
+    }
+    
     func pressed() {
-        self.backgroundColor = UIColor(white: 0.9, alpha: 0.8)
-        self.transform = CGAffineTransformMakeScale(1.07, 1.07)
+        //self.backgroundColor = selectedColor
+        self.transform = CGAffineTransformMakeScale(1.15, 1.15)
     }
     
     func released() {
-        self.backgroundColor = UIColor.whiteColor()
+        //self.backgroundColor = defaultColor
         self.transform = CGAffineTransformMakeScale(1, 1)
     }
     
@@ -51,4 +48,5 @@ class CameraButton: UIButton {
         super.touchesCancelled(touches, withEvent: event)
         released()
     }
+    
 }

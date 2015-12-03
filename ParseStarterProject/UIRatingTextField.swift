@@ -16,7 +16,7 @@ class UIRatingTextField: UITextField, UITextFieldDelegate {
         self.leftTextMargin = leftTextMargin
         super.init(frame: CGRectZero)
         backgroundColor = UIColor(white: 0.1, alpha: 0.7)
-        textColor = UIColor(white: 0.9, alpha: 1.000)
+        textColor = UIColor(white: 0.94, alpha: 1.000)
         font = UIFont.systemFontOfSize(textSize)
         //delegate = self
     }

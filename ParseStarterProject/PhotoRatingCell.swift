@@ -23,7 +23,7 @@ class PhotoRatingCell: PFTableViewCell {
         self.rating = rating
         RatingLabel.text = String(rating.rating)
         RatingLabel.layer.cornerRadius = RatingLabel.frame.size.width/2
-        RatingLabel.layer.borderColor = UIColor(white: 0.6, alpha: 1).CGColor
+        RatingLabel.layer.borderColor = Constants.primaryColor.CGColor //UIColor(white: 0.6, alpha: 1).CGColor
         RatingLabel.layer.borderWidth = 5
         let comment = (rating.comment.isEmpty) ? "-" : rating.comment
         CommentLabel.text = comment
@@ -32,6 +32,10 @@ class PhotoRatingCell: PFTableViewCell {
             DateLabel.text = readableDate
         }
         self.backgroundColor = UIColor(white: 1, alpha: 0)
+        
+        if !rating.seen {
+            User.currentUser()!.readRating(rating)
+        }
     }
     
     /*

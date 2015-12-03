@@ -16,15 +16,20 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     
     let insetSize:CGFloat = 0
     let numCols:CGFloat = 4
+    var activityIndictator:ActivityIndictator?
     
-    
-    required init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder:NSCoder)
+    {
         super.init(coder: aDecoder)!
-        // Configure the PFQueryTableView
-        self.parseClassName = "Photos"
+        customInit()
+    }
+    
+    func customInit() {
         self.pullToRefreshEnabled = true
-        self.paginationEnabled = false
-        self.objectsPerPage = 20
+        self.paginationEnabled = true
+        self.parseClassName = "Photos"
+        self.objectsPerPage = 1
+        self.loadingViewEnabled = false
     }
     
     /*
@@ -38,6 +43,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         // ~~~~~ Uncomment when done testing
         //photosQuery.whereKey("userID", notEqualTo: PFUser.currentUser()!.objectId!)
         photosQuery.orderByAscending("ratingCount")
+        photosQuery.cachePolicy = PFCachePolicy.CacheThenNetwork
         photosQuery.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
         return photosQuery
     }
@@ -46,17 +52,30 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         self.navigationController?.navigationBarHidden = false
         UIApplication.sharedApplication().statusBarHidden=false
         
-        var newFrame = self.collectionView!.frame
-        newFrame.size.height = self.view.frame.size.height - 20
-        newFrame.origin.y = 20
-        self.collectionView!.frame = newFrame
-        
         checkForRatingUpdates()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.backgroundColor = UIColor.whiteColor()
+    }
+    
+    override func objectsWillLoad() {
+        if activityIndictator != nil {
+            return
+        }
+        super.objectsWillLoad()
+        activityIndictator = ActivityIndictator()
+        let mainView = UIApplication.sharedApplication().keyWindow
+        mainView?.addSubview(self.activityIndictator!)
+        activityIndictator?.startAnimating()
+    }
+    
+    override func objectsDidLoad(error: NSError?) {
+        super.objectsDidLoad(error)
+        activityIndictator?.remove({
+            self.activityIndictator = nil
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,7 +123,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(insetSize, insetSize, insetSize, insetSize)
+        return UIEdgeInsetsMake(insetSize+20, insetSize, insetSize, insetSize)
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -121,5 +140,12 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
             ratePhotoVC.setUpWithPhoto(photo)
         }
     }
+    
+    // MARK: Actions
+    
+    @IBAction func toCamera(sender: AnyObject) {
+        self.performSegueWithIdentifier("returnToCameraRightSegue", sender: self)
+    }
+    
     
 }
