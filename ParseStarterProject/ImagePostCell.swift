@@ -34,24 +34,20 @@ public class ImagePostCell : PFTableViewCell {
         postImage.loadInBackground()
         postImage.contentMode = .ScaleAspectFill
         postImage.backgroundColor = UIColor.grayColor()
-        postImage.layer.borderColor = Constants.primaryColorWithAlpha(0.3).CGColor
+        postImage.layer.borderColor = UIColor(white: 0.8, alpha: 1).CGColor
         postImage.layer.borderWidth = 5
         
-        // Create a new CircleView
-        let createdAt = photo.createdAt!
-        let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
-        let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24)) 
-        if percentage <= 1 {
-            let circleWidth:CGFloat = 4
-            circleView?.removeFromSuperview()
-            circleView = CircleView(center:postImage.center, radius:postImage.frame.size.width/2+circleWidth, percent: percentage, color: Constants.primaryColorWithAlpha(0.7), width: circleWidth)
-            self.addSubview(circleView!)
-        }
-        
         rLabel.layer.cornerRadius = rLabel.frame.size.height/2
-        rLabel.layer.borderColor = Constants.primaryColorWithAlpha(0.5).CGColor //UIColor(white: 0.9, alpha: 1).CGColor
+        rLabel.layer.borderColor = UIColor(white: 0.85, alpha: 1).CGColor
         rLabel.layer.borderWidth = 6
         rLabel.text = String(photo.averageRating)
+        
+        // Create a new CircleView
+        let percentage = 1.0 - (CGFloat(photo.averageRating)/10.0)
+        let circleWidth:CGFloat = 6
+        circleView?.removeFromSuperview()
+        circleView = CircleView(center:rLabel.center, radius:rLabel.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
+        self.addSubview(circleView!)
         
         photo.hasUnreadRatings({
             (hasUnread:Bool) in

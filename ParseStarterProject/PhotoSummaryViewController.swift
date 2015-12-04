@@ -81,13 +81,18 @@ class PhotoSummaryViewController: UIViewController {
 
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if isDraggingView {
-            let viewHeight = self.view.frame.size.height
-            let snapToTopThreshold = viewHeight/2
+            //let viewHeight = self.view.frame.size.height
+            //let snapToTopThreshold = viewHeight/2
             // If we want to snap it to the top
-            if draggableViewHConstraint.constant >= snapToTopThreshold {
-                snapDraggableViewToTop()
-            } else {
+//            if draggableViewHConstraint.constant >= snapToTopThreshold {
+//                snapDraggableViewToTop()
+//            } else {
+//                snapDraggableViewToBottom()
+//            }
+            if ratingsAreOpen {
                 snapDraggableViewToBottom()
+            } else {
+                snapDraggableViewToTop()
             }
         }
         isDraggingView = false

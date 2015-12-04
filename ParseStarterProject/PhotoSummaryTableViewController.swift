@@ -39,6 +39,7 @@ class PhotoSummaryTableViewController: CustomPFQueryTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.backgroundColor = UIColor(white: 0.2, alpha: 0.85)
     }
     

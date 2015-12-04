@@ -32,7 +32,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         // Configure rater
         numberPicker.delegate = self
         numberPicker.dataSource = self
-        numberPicker.selectRow(0, inComponent: 0, animated: true)
+        numberPicker.selectRow(1, inComponent: 0, animated: true)
         numberPicker.layer.cornerRadius = numberPicker.frame.size.height/11
         rateButton.layer.cornerRadius = 8
         rateButton.layer.borderColor = UIColor.whiteColor().CGColor
@@ -188,7 +188,7 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func hideNumberPicker() {
-        rateButton.setTitle(String(numberPicker.selectedRowInComponent(0)), forState: .Normal)
+        rateButton.setTitle(String(numberPicker.selectedRowInComponent(0)+1), forState: .Normal)
         numberPicker.hidden = true
         numberPicker.userInteractionEnabled = false
     }

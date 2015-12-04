@@ -51,13 +51,13 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = false
         UIApplication.sharedApplication().statusBarHidden=false
-        
         checkForRatingUpdates()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.backgroundColor = UIColor.whiteColor()
+        //self.navigationItem.titleView = Helper.makeNavTitleView()
     }
     
     override func objectsWillLoad() {

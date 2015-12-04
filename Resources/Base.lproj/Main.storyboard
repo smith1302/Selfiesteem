@@ -191,14 +191,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lN7-xs-cCq">
-                                <rect key="frame" x="0.0" y="680" width="414" height="55"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lN7-xs-cCq">
+                                <rect key="frame" x="0.0" y="676" width="414" height="60"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.50910094895287961" green="0.50910094895287961" blue="0.50910094895287961" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="XMR-uS-fo5"/>
+                                    <constraint firstAttribute="height" constant="60" id="XMR-uS-fo5"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
                                 <state key="normal" title="Logout">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -208,7 +208,7 @@
                             </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.7619460598660629" green="0.8901960784313725" blue="0.84100290622008167" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9LI-Gq-tOx" firstAttribute="top" secondItem="lN7-xs-cCq" secondAttribute="bottom" id="U4H-Ap-xPx"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lN7-xs-cCq" secondAttribute="trailing" constant="-20" id="V1y-xL-DMd"/>
@@ -255,14 +255,14 @@
                                             <rect key="frame" x="103" y="13" width="213" height="20"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.67655840968586389" green="0.67655840968586389" blue="0.67655840968586389" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.20611092931937169" green="0.20611092931937169" blue="0.20611092931937169" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Ratings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XeM-YT-wd0">
                                             <rect key="frame" x="103" y="37" width="213" height="18"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" red="0.2483025196335078" green="0.2483025196335078" blue="0.2483025196335078" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.58407640706806285" green="0.58407640706806285" blue="0.58407640706806285" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Rj-hd-QRa">
@@ -376,7 +376,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1E-uc-5wX" userLabel="CameraControlView">
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0p-AU-I4W" customClass="CameraButton" customModule="Selfiesteem" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0p-AU-I4W" customClass="CameraButton" customModule="Selfiesteem" customModuleProvider="target">
                                         <rect key="frame" x="167" y="577" width="80" height="80"/>
                                         <animations/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -562,7 +562,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fXc-WV-kd1" customClass="CachedPFImageView" customModule="Selfiesteem" customModuleProvider="target">
-                                            <rect key="frame" x="13" y="13" width="38" height="26"/>
+                                            <rect key="frame" x="7" y="9" width="48" height="34"/>
                                             <animations/>
                                         </imageView>
                                     </subviews>
@@ -571,10 +571,10 @@
                                 </view>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="topMargin" secondItem="fXc-WV-kd1" secondAttribute="top" constant="-5" id="2qZ-Yd-QUX"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="fXc-WV-kd1" secondAttribute="trailing" constant="5" id="SXv-gc-AFm"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="fXc-WV-kd1" secondAttribute="bottom" constant="5" id="dgp-au-WJi"/>
-                                    <constraint firstAttribute="leadingMargin" secondItem="fXc-WV-kd1" secondAttribute="leading" constant="-5" id="oSP-YH-UsT"/>
+                                    <constraint firstAttribute="topMargin" secondItem="fXc-WV-kd1" secondAttribute="top" constant="-1" id="2qZ-Yd-QUX"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="fXc-WV-kd1" secondAttribute="trailing" constant="1" id="SXv-gc-AFm"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="fXc-WV-kd1" secondAttribute="bottom" constant="1" id="dgp-au-WJi"/>
+                                    <constraint firstAttribute="leadingMargin" secondItem="fXc-WV-kd1" secondAttribute="leading" constant="1" id="oSP-YH-UsT"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="pfImageView" destination="fXc-WV-kd1" id="jC8-tt-J9s"/>

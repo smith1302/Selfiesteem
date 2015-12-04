@@ -42,7 +42,7 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         pfImageView.layoutIfNeeded()
         self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
         pfImageView.layer.masksToBounds = true
-        pfImageView.layer.borderColor = Constants.primaryColorWithAlpha(0.3).CGColor
+        pfImageView.layer.borderColor = UIColor(white: 0.9, alpha: 1).CGColor
         pfImageView.layer.borderWidth = 5
         addRatingLabelIfNeeded()
         
@@ -51,8 +51,8 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
         let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24))
         
-        let circleWidth:CGFloat = 4
-        let circleView = CircleView(center:pfImageView.center, radius:pfImageView.frame.size.width/2+circleWidth, percent: percentage, color: Constants.primaryColorWithAlpha(0.7), width: circleWidth)
+        let circleWidth:CGFloat = 5
+        let circleView = CircleView(center:pfImageView.center, radius:pfImageView.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
         self.addSubview(circleView)
     }
     

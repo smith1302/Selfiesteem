@@ -14,7 +14,7 @@ import ParseUI
 class IntroViewController: LoginViewController {
     
     override func getLogoImage() -> UIImage? {
-        return UIImage(named: "moose-large.png")
+        return UIImage(named: "logo100.fw.png")
     }
     
     /*

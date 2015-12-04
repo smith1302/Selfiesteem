@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         let headLineH:CGFloat = 18
         let headLinePad:CGFloat = 35
-        let headHeight = (self.view.frame.size.height/2 - buttonH)*0.45
+        let headHeight = (self.view.frame.size.height/2 - buttonH)*0.38
         let headWidth:CGFloat = headHeight/220.0 * 216.0
         
         logoView = UIImageView(image: getLogoImage())
@@ -185,17 +185,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let currentUser = User.currentUser()
         if currentUser != nil {
             continueToMainApp()
+        } else {
+            UIView.animateWithDuration(1,
+                delay: 0.2,
+                usingSpringWithDamping: 0.55,
+                initialSpringVelocity: 0.8,
+                options: .CurveEaseInOut,
+                animations: {
+                    self.logoView.transform = CGAffineTransformMakeScale(1, 1)
+                },
+                completion: nil)
         }
-        
-        UIView.animateWithDuration(1,
-            delay: 0.45,
-            usingSpringWithDamping: 0.55,
-            initialSpringVelocity: 0.8,
-            options: .CurveEaseInOut,
-            animations: {
-                self.logoView.transform = CGAffineTransformMakeScale(1, 1)
-            },
-            completion: nil)
     }
     
     func getLogoImage() -> UIImage? {

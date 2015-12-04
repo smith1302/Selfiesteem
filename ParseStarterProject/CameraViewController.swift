@@ -302,6 +302,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func showPostImageControls() {
         hideCameraControls()
+        faceDetector?.hide()
         postImageControlsView.hidden = false
         self.PostImageControlsBottomConstraint.constant = 0
         UIView.animateWithDuration(controlTransitionTime, animations: {
