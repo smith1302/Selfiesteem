@@ -108,11 +108,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         cancelButton.titleLabel?.textAlignment = .Left
         cancelButton.titleLabel?.attributedText = attributedText
         
-        // Submit button
-        let nextImage = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        submitButton.setImage(nextImage, forState: UIControlState.Normal)
-        submitButton.tintColor = UIColor.whiteColor()
-        
         // Upload button
         let uploadImage = UIImage(named: "Upload.png")
         topRightButton.setImage(uploadImage, forState: UIControlState.Normal)
@@ -224,6 +219,20 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     // ------- Mark: Uploading
     
     func shouldUploadImage(image:UIImage) -> Bool {
+        
+        if User.currentUser()!.selfiesToday >= 5 {
+            let lastSelfie = User.currentUser()!.mostRecentSelfie
+            let yesterday = NSDate().addDays(-1)
+            // We posted 5 today
+            if !lastSelfie.isLessThanDate(yesterday) {
+                MessageHandler.easyAlert("Sorry", message: "You can only post 5 selfies in 24 hours")
+                showCameraControls()
+                return false
+            } else {
+                User.currentUser()!.selfiesToday = 0
+            }
+        }
+        
         activityIndicator.startAnimating()
         hidePostImageControls()
         hideCameraControls()
@@ -255,6 +264,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             photoACL.setPublicReadAccess(true)
             photoACL.setPublicWriteAccess(true)
             photo.ACL = photoACL
+            
+            User.currentUser()!.selfiesToday++
+            User.currentUser()!.mostRecentSelfie = NSDate()
+            User.currentUser()!.saveEventually()
             
             // Make another background thread for uploading the PFObject
             photoPostBackgroundTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({

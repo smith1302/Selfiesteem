@@ -65,13 +65,16 @@ class Rating : PFObject, PFSubclassing {
                 forPhoto.addRating(ratingObject)
                 callback(true)
                 User.increaseUnreadRatingForUserWithID(forPhoto.userID)
+                MessageHandler.showMessage("Your rating has been sent!")
+                User.currentUser()!.addRatingToHistory(ratingObject)
             } else {
                 ErrorHandler.showAlert("Rating failed to save.")
                 callback(false)
+                User.currentUser()!.ratingsHistoryCache.removeValueForKey(forPhoto.objectId!)
             }
             ratingObject.successfulSave = success
         })
-        User.currentUser()!.addRatingToHistory(forPhoto.objectId!, rating: ratingObject)
+        User.currentUser()!.ratingsHistoryCache[forPhoto.objectId!] = ratingObject
     }
     
     class func sendPushToRatingReceiver(userID:String) {

@@ -33,7 +33,7 @@ class PhotoRatingCell: PFTableViewCell {
         }
         self.backgroundColor = UIColor(white: 1, alpha: 0)
         
-        let percentage = 1-CGFloat(rating.rating)/10.0
+        let percentage = rating.rating == 10 ? 0.000001 : (1 - (CGFloat(rating.rating)/10.0))
         let circleWidth:CGFloat = 5
         let circleView = CircleView(center:RatingLabel.center, radius:RatingLabel.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
         self.addSubview(circleView)

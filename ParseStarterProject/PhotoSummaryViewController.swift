@@ -9,13 +9,22 @@
 import UIKit
 
 class PhotoSummaryViewController: UIViewController {
+    
+    enum Direction {
+        case Up;
+        case Down;
+        case Still;
+    }
 
     var photo:Photo!
+    @IBOutlet weak var arrowIndicator: UIButton!
     @IBOutlet weak var cachedImageView: CachedPFImageView!
     @IBOutlet weak var commentsDragButton: UIButton!
     @IBOutlet weak var draggableView: UIView!
     @IBOutlet weak var draggableViewHConstraint: NSLayoutConstraint!
     var draggableTopLayoutConstraint: NSLayoutConstraint!
+    var prevDraggingY:CGFloat!
+    var dragDirection:Direction = Direction.Still
     var isDraggingView:Bool = false
     var ratingsAreOpen:Bool = false
     
@@ -29,9 +38,13 @@ class PhotoSummaryViewController: UIViewController {
         commentsDragButton.userInteractionEnabled = false
         draggableTopLayoutConstraint = NSLayoutConstraint(item: draggableView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
         
+        prevDraggingY = draggableView.frame.origin.y
+        
         if let childTableVC = self.childViewControllers.first as? PhotoSummaryTableViewController {
             childTableVC.setUpWithPhoto(photo)
         }
+        
+        setArrowIndicatorImage("Up.png")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -42,7 +55,6 @@ class PhotoSummaryViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        // Mark any notifications as seen
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,6 +68,7 @@ class PhotoSummaryViewController: UIViewController {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
+            dragDirection = .Still
             let absoluteButtonFrame = CGRectMake(draggableView.frame.origin.x, draggableView.frame.origin.y, commentsDragButton.frame.size.width, commentsDragButton.frame.size.height)
             isDraggingView = CGRectContainsPoint(absoluteButtonFrame, touch.locationInView(self.view))
             
@@ -76,11 +89,18 @@ class PhotoSummaryViewController: UIViewController {
             let location = touch.locationInView(self.view)
             self.view.removeConstraint(draggableTopLayoutConstraint!)
             draggableViewHConstraint.constant = max(commentsDragButton.frame.size.height,  self.view.frame.size.height-location.y)
+            if location.y < prevDraggingY {
+                dragDirection = .Up
+            } else if location.y > prevDraggingY {
+                dragDirection = .Down
+            } else {
+                dragDirection = .Still
+            }
+            prevDraggingY = location.y
         }
     }
 
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if isDraggingView {
             //let viewHeight = self.view.frame.size.height
             //let snapToTopThreshold = viewHeight/2
             // If we want to snap it to the top
@@ -89,13 +109,15 @@ class PhotoSummaryViewController: UIViewController {
 //            } else {
 //                snapDraggableViewToBottom()
 //            }
-            if ratingsAreOpen {
-                snapDraggableViewToBottom()
-            } else {
-                snapDraggableViewToTop()
-            }
+        if dragDirection == .Down {
+            snapDraggableViewToBottom()
+        } else if dragDirection == .Up {
+            snapDraggableViewToTop()
+        } else if ratingsAreOpen {
+            snapDraggableViewToBottom()
+        } else {
+            snapDraggableViewToTop()
         }
-        isDraggingView = false
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
@@ -108,6 +130,7 @@ class PhotoSummaryViewController: UIViewController {
         UIView.animateWithDuration(0.3) {
             self.view.layoutIfNeeded()
         }
+        setArrowIndicatorImage("Down.png")
     }
     
     func snapDraggableViewToBottom() {
@@ -119,6 +142,13 @@ class PhotoSummaryViewController: UIViewController {
             self.view.layoutIfNeeded()
             self.draggableView.layoutIfNeeded()
         }
+        setArrowIndicatorImage("Up.png")
+    }
+    
+    func setArrowIndicatorImage(imageName:String) {
+        let img = UIImage(named: imageName)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        arrowIndicator.setImage(img, forState: UIControlState.Normal)
+        arrowIndicator.tintColor = UIColor(white: 0.5, alpha: 1)
     }
     
     /*

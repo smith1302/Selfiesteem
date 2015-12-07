@@ -1,26 +1,11 @@
-Make input box draggable on rate photo view - X
-Make ratings drag button a little darker - X
-Loading indicator after rating - X
-Animate in/out camera controls - X
-make message window transparent - X
-transition from camera using left/right segues - X
-Experiment (on history of images) putting rating circle on right side - X
-Make recent/best work (history of images) - X
-For history, circle view shouldnt show if percentage is negative... - X
-When switching from recent/best show loader - X
-Make standard PFQueryTableVC... loader look better - X
-Add table in parse for photo (most recent rating timestamp) and use that to sort for history - X
-Swipe to delete selfie - X
-Settings page to logout - X
-Default "none yet" cell for history of images - X
-Push notification when user gets a new rating - X
-Add badge icon with number of uread notifications on bottom left buttom of camera view - X
-Stop input box from being dragged onto controls - X
+Remove settings for now - X
+Remove lines in PhotoSummary ratings - X
+Unread notifier doesnt go away - X
+Face detector doesnt go away sometimes
+Cells need to be reset on history - X
+Limit 5 selfies - X
 
-For public photos, make a "popular" selfies section
-Upload your own photo
-Make login look better
-Remove lines in PhotoSummary ratings
+download/share to social media
 
 Maybe:
 Add a "send selfie to be rated" overlay on postimage controls

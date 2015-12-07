@@ -10,10 +10,12 @@ class Constants {
     static let primaryColor = UIColor(netHex: 0x56E38C)
     static let darkPrimaryColor = UIColor(netHex: 0x4BC97B)
     static let lightPrimaryColor = UIColor(netHex: 0x5CFA99)
+    static let superLightPrimaryColor = UIColor(netHex: 0xE3FFEA)
     static let secondaryColor = UIColor(netHex: 0x84EEFA)
     class func primaryColorWithAlpha(alpha:CGFloat) -> UIColor {
         return UIColor(netHex: 0x55B34B, alpha: alpha)
     }
+    static let testMode:Bool = true
 }
 
 extension NSDate {
@@ -80,5 +82,49 @@ extension String {
     
     func stripWhitespace() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+    }
+}
+
+extension NSDate
+{
+    func isGreaterThanDate(dateToCompare : NSDate) -> Bool
+    {
+        //Declare Variables
+        var isGreater = false
+        
+        //Compare Values
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedDescending
+        {
+            isGreater = true
+        }
+        
+        //Return Result
+        return isGreater
+    }
+    
+    
+    func isLessThanDate(dateToCompare : NSDate) -> Bool
+    {
+        //Declare Variables
+        var isLess = false
+        
+        //Compare Values
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedAscending
+        {
+            isLess = true
+        }
+        
+        //Return Result
+        return isLess
+    }
+    
+    
+    func addDays(daysToAdd : Int) -> NSDate
+    {
+        let secondsInDays : NSTimeInterval = Double(daysToAdd) * 60 * 60 * 24
+        let dateWithDaysAdded : NSDate = self.dateByAddingTimeInterval(secondsInDays)
+        
+        //Return Result
+        return dateWithDaysAdded
     }
 }

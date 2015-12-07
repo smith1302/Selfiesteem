@@ -30,7 +30,9 @@ class CustomPFQueryTableViewController: PFQueryTableViewController {
             self.activityIndictator = nil
         })
         if !hasFinishedInitialLoad {
-            loadObjects()
+            if self.objects?.count < 1 {
+                loadObjects()
+            }
             hasFinishedInitialLoad = true
         }
     }

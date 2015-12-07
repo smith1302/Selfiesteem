@@ -15,21 +15,18 @@ private let reuseIdentifier = "Cell"
 class PublicPhotosViewController: PFQueryCollectionViewController {
     
     let insetSize:CGFloat = 0
-    let numCols:CGFloat = 4
+    let numCols:CGFloat = 3
+    var scrollingHitBottom:Bool = false
     var activityIndictator:ActivityIndictator?
     
     required init(coder aDecoder:NSCoder)
     {
         super.init(coder: aDecoder)!
-        customInit()
-    }
-    
-    func customInit() {
+        self.parseClassName = "Photos"
         self.pullToRefreshEnabled = true
         self.paginationEnabled = true
-        self.parseClassName = "Photos"
-        self.objectsPerPage = 1
-        self.loadingViewEnabled = false
+        self.objectsPerPage = UInt(numCols)*3
+        
     }
     
     /*
@@ -38,17 +35,26 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     *   - Does not include our photos.
     */
     override func queryForCollection() -> PFQuery {
-        // Get a list of all photos (besides ours).
-        let photosQuery = PFQuery(className: "Photos")
+        // Get ratings we made less than 24 hours ago
+        let ratingsPreviouslyMade = User.currentUser()!.ratings
+        let ratingsQuery = ratingsPreviouslyMade.query()
+        ratingsQuery?.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
+        
+        let photosQuery = Photo.query()
         // ~~~~~ Uncomment when done testing
-        //photosQuery.whereKey("userID", notEqualTo: PFUser.currentUser()!.objectId!)
-        photosQuery.orderByAscending("ratingCount")
-        photosQuery.cachePolicy = PFCachePolicy.CacheThenNetwork
-        photosQuery.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
-        return photosQuery
+        if !Constants.testMode {
+            photosQuery?.whereKey("userID", notEqualTo: User.currentUser()!.objectId!)
+            photosQuery?.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24))
+        }
+        photosQuery?.orderByAscending("ratingCount")
+        photosQuery?.cachePolicy = PFCachePolicy.CacheElseNetwork
+        photosQuery?.whereKey("objectId", doesNotMatchKey: "photoID", inQuery: ratingsQuery!)
+        photosQuery?.limit = Int(numCols)*8
+        return photosQuery!
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = false
         UIApplication.sharedApplication().statusBarHidden=false
         checkForRatingUpdates()
@@ -92,6 +98,29 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         }
     }
     
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let objectCount = objects.count
+        if section == 0 {
+            return min(objectCount, Int(numCols))
+        } else {
+            return max(objects.count-Int(numCols),0)
+        }
+    }
+    
+    override func objectAtIndexPath(indexPath: NSIndexPath?) -> PFObject? {
+        if indexPath?.section == 1 {
+            let lastIndex = self.objects.count-1
+            let newIndexPath = NSIndexPath(forRow: lastIndex-indexPath!.row, inSection: 1)
+            return super.objectAtIndexPath(newIndexPath)
+        } else {
+            return super.objectAtIndexPath(indexPath)
+        }
+    }
+    
     // Mark: PFQueryCollectionView Methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> PublicPhotoCollectionViewCell? {
@@ -114,6 +143,23 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
     }
     
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            var header = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "Header", forIndexPath: indexPath) as? HeaderView
+            if header == nil {
+                header = HeaderView()
+            }
+            if indexPath.section == 0 {
+                header!.configure("POPULAR")
+            } else {
+                header!.configure("RECENT")
+            }
+            return header!
+        } else {
+            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
+        }
+    }
+    
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return insetSize
     }
@@ -123,7 +169,7 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(insetSize+20, insetSize, insetSize, insetSize)
+        return UIEdgeInsetsMake(insetSize, insetSize, insetSize, insetSize)
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -131,6 +177,21 @@ class PublicPhotosViewController: PFQueryCollectionViewController {
         let columnWidth = screenWidth/self.numCols
         return CGSizeMake(columnWidth, columnWidth)
     }
+    
+    // MARK: Scroll Delegate
+    
+//    override func scrollViewDidScroll(scrollView: UIScrollView) {
+//        let minimumTrigger = scrollView.bounds.size.height + 0
+//        if scrollView.contentSize.height > minimumTrigger {
+//            let distanceFromBottom = scrollView.contentSize.height - (scrollView.bounds.size.height - scrollView.contentInset.bottom) - scrollView.contentOffset.y
+//            if distanceFromBottom < 0 && !scrollingHitBottom {
+//                self.loadNextPage()
+//                scrollingHitBottom = true
+//            } else if distanceFromBottom > 10 && scrollingHitBottom {
+//                scrollingHitBottom = false
+//            }
+//        }
+//    }
     
     // MARK: Transitions
     

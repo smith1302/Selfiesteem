@@ -12,7 +12,7 @@ import ParseUI
 
 class PublicPhotoCollectionViewCell: PFCollectionViewCell {
 
-    @IBOutlet weak var pfImageView: CachedPFImageView!
+    @IBOutlet weak var pfImageView: PublicPhotoImageView!
     var ratingLabel:UILabel?
     var photo:Photo?
     var activityIndicator:ActivityIndictator?
@@ -30,30 +30,26 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
     
     func configure(photo:Photo) {
         self.backgroundColor = UIColor.whiteColor()
-        setBusy()
         resetCell()
         self.photo = photo
         pfImageView.file = photo.photoFile;
-        pfImageView.loadInBackground({
-            (image, error) in
-            self.loading = false
-            self.setFree()
-        })
+        pfImageView.backgroundColor = UIColor.grayColor()
+        pfImageView.loadInBackground()
         pfImageView.layoutIfNeeded()
-        self.pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/2
+        pfImageView.layer.cornerRadius = (self.pfImageView.frame.size.height)/8
         pfImageView.layer.masksToBounds = true
-        pfImageView.layer.borderColor = UIColor(white: 0.9, alpha: 1).CGColor
-        pfImageView.layer.borderWidth = 5
+        pfImageView.layer.borderColor = UIColor(white: 0.9, alpha: 1).CGColor // UIColor(red: 0.834, green: 0.978, blue: 1.000, alpha: 0.43).CGColor //
+        pfImageView.layer.borderWidth = 6
         addRatingLabelIfNeeded()
         
         // Create a new CircleView
-        let createdAt = photo.createdAt!
-        let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
-        let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24))
-        
-        let circleWidth:CGFloat = 5
-        let circleView = CircleView(center:pfImageView.center, radius:pfImageView.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
-        self.addSubview(circleView)
+//        let createdAt = photo.createdAt!
+//        let createdAtSecondsAgo = createdAt.timeIntervalSinceNow
+//        let percentage = CGFloat(createdAtSecondsAgo/(-60*60*24))
+//        
+//        let circleWidth:CGFloat = 5.5
+//        let circleView = CircleView(center:pfImageView.center, radius:pfImageView.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
+//        self.addSubview(circleView)
     }
     
     func resetCell() {
@@ -68,20 +64,33 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         }
         setBusy()
         let currentUser:User = User.currentUser()!
-        currentUser.getRatingForPhoto(photo, callback: {
-            (optionalRating:Rating?) in
-            if let rating = optionalRating {
-                self.alreadyRated = true
-                self.ratingLabel = UILabel(frame: self.pfImageView.bounds)
-                self.ratingLabel!.textColor = UIColor.whiteColor()
-                self.ratingLabel!.textAlignment = .Center
-                self.ratingLabel!.backgroundColor = UIColor(white: 0, alpha: 0.4)
-                self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.35)
-                self.ratingLabel!.text = String(rating.rating)
-                self.pfImageView.addSubview(self.ratingLabel!)
-            }
-            self.setFree()
-        })
+//        currentUser.getRatingForPhoto(photo, callback: {
+//            (optionalRating:Rating?) in
+//            if let rating = optionalRating {
+//                self.alreadyRated = true
+//                self.ratingLabel?.removeFromSuperview()
+//                self.ratingLabel = UILabel(frame: self.pfImageView.bounds)
+//                self.ratingLabel!.textColor = UIColor.whiteColor()
+//                self.ratingLabel!.textAlignment = .Center
+//                self.ratingLabel!.backgroundColor = UIColor(white: 0, alpha: 0.4)
+//                self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.35)
+//                self.ratingLabel!.text = String(rating.rating)
+//                self.pfImageView.addSubview(self.ratingLabel!)
+//            }
+//            self.setFree()
+//        })
+        if let rating = currentUser.ratingsHistoryCache[photo!.objectId!] {
+            self.alreadyRated = true
+            self.ratingLabel?.removeFromSuperview()
+            self.ratingLabel = UILabel(frame: self.pfImageView.bounds)
+            self.ratingLabel!.textColor = UIColor.whiteColor()
+            self.ratingLabel!.textAlignment = .Center
+            self.ratingLabel!.backgroundColor = UIColor(white: 0, alpha: 0.4)
+            self.ratingLabel!.font = UIFont.boldSystemFontOfSize(self.ratingLabel!.frame.size.height*0.35)
+            self.ratingLabel!.text = String(rating.rating)
+            self.pfImageView.addSubview(self.ratingLabel!)
+        }
+        self.setFree()
     }
     
     func setBusy() {
@@ -115,5 +124,20 @@ class PublicPhotoCollectionViewCell: PFCollectionViewCell {
         // Drawing code
     }
     */
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        pfImageView.pressed()
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesEnded(touches, withEvent: event)
+        pfImageView.released()
+    }
+    
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        super.touchesCancelled(touches, withEvent: event)
+        pfImageView.released()
+    }
 
 }

@@ -40,6 +40,16 @@ class ActivityIndictator: UIView {
         self.center = CGPointMake(frame.width/2, frame.size.height/2)
         self.layer.cornerRadius = self.frame.size.width/2
         self.backgroundColor = color
+        
+//        let image = UIImage(named: "logo100.fw.png")
+//        let imageView = UIImageView(image: image)
+//        imageView.frame = self.bounds
+//        imageView.backgroundColor = Constants.primaryColor
+//        imageView.layer.cornerRadius = self.frame.size.width/2
+//        imageView.layer.borderColor = UIColor(netHex: 0x99FFC0).CGColor
+//        imageView.layer.borderWidth = 5
+//        self.addSubview(imageView)
+        
         activityIndicator.frame = self.bounds
         self.addSubview(activityIndicator)
         activityIndicator.hidesWhenStopped = true

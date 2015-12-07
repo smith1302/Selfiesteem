@@ -10,6 +10,7 @@ public class ImagePostCell : PFTableViewCell {
     @IBOutlet weak var rLabel: UILabel!
     var notification:UIView?
     var circleView:CircleView?
+    var circleViewUnder:CircleView?
     var rlView:UIView?
     var photo:Photo?
     
@@ -38,26 +39,29 @@ public class ImagePostCell : PFTableViewCell {
         postImage.layer.borderWidth = 5
         
         rLabel.layer.cornerRadius = rLabel.frame.size.height/2
-        rLabel.layer.borderColor = UIColor(white: 0.85, alpha: 1).CGColor
-        rLabel.layer.borderWidth = 6
         rLabel.text = String(photo.averageRating)
         
-        // Create a new CircleView
-        let percentage = 1.0 - (CGFloat(photo.averageRating)/10.0)
         let circleWidth:CGFloat = 6
+        let rLabelCenter = CGPointMake(rLabel.frame.size.width/2, rLabel.frame.size.height/2)
+        circleViewUnder?.removeFromSuperview()
+        circleViewUnder = CircleView(center:rLabelCenter, radius:rLabel.frame.size.width/2-circleWidth/2, percent: 0.00001, color: UIColor(white: 0.85, alpha: 1), width: circleWidth)
+        rLabel.addSubview(circleViewUnder!)
+        // Create a new CircleView
+        let percentage = photo.averageRating == 10 ? 0.000001 : (1 - (CGFloat(photo.averageRating)/10.0))
         circleView?.removeFromSuperview()
-        circleView = CircleView(center:rLabel.center, radius:rLabel.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
-        self.addSubview(circleView!)
+        circleView = CircleView(center:rLabelCenter, radius:rLabel.frame.size.width/2-circleWidth/2, percent: percentage, color: Constants.primaryColor, width: circleWidth)
+        rLabel.addSubview(circleView!)
         
         photo.hasUnreadRatings({
             (hasUnread:Bool) in
             if hasUnread {
                 // Set up seen notifier
+                self.notification?.removeFromSuperview()
                 let notifierSize:CGFloat = 17
                 let x = self.postImage.frame.origin.x + self.postImage.frame.size.width - notifierSize/2
                 let y = self.postImage.frame.origin.y + self.postImage.frame.size.width/2 - notifierSize/2
                 self.notification = UIView(frame: CGRectMake(x, y, notifierSize, notifierSize))
-                self.notification!.backgroundColor = UIColor.orangeColor()
+                self.notification!.backgroundColor = Constants.primaryColor
                 self.notification!.layer.cornerRadius = notifierSize/2
                 self.notification!.layer.borderWidth = 3
                 self.notification!.layer.borderColor = UIColor.whiteColor().CGColor
@@ -95,8 +99,8 @@ public class ImagePostCell : PFTableViewCell {
         }
         photo!.hasUnreadRatings({
             (hasUnread:Bool) in
-            if !hasUnread {
-                self.notification?.removeFromSuperview()
+            if !hasUnread && self.notification != nil {
+                self.notification!.removeFromSuperview()
             }
         })
     }

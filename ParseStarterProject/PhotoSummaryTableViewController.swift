@@ -22,7 +22,7 @@ class PhotoSummaryTableViewController: CustomPFQueryTableViewController {
         self.pullToRefreshEnabled = true
         self.paginationEnabled = false
         self.objectsPerPage = 25
-        
+        self.loadingViewEnabled = false
         self.parseClassName = "Ratings"
     }
     
@@ -39,8 +39,10 @@ class PhotoSummaryTableViewController: CustomPFQueryTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         self.tableView.backgroundColor = UIColor(white: 0.2, alpha: 0.85)
+        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.tableView.separatorColor = UIColor.clearColor()
     }
     
     override func didReceiveMemoryWarning() {

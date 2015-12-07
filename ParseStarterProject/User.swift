@@ -1,9 +1,12 @@
 import Parse
 
 class User : PFUser {
-    
-    private var ratingsHistory:[String:Rating]?
+    // Photo objectID : rating
+    var ratingsHistoryCache:[String:Rating] = [String:Rating]()
+    @NSManaged var ratings:PFRelation
     @NSManaged var unreadRatings: Int // So we dont have to load all the user's photos and child ratings just to get read state
+    @NSManaged var mostRecentSelfie:NSDate
+    @NSManaged var selfiesToday:Int
     
     override class func initialize() {
         struct Static {
@@ -23,26 +26,18 @@ class User : PFUser {
             callback(nil)
             return
         }
-        if ratingsHistory == nil { // Case were we need to update it from parse
-            getRatingsHistoryFromParse({
-                // Retrieved all ratings
-                // If we have our ratings history, lets return the rating
-                if self.ratingsHistory != nil {
-                    callback(self.ratingsHistory![photo!.objectId!])
-                } else {
-                    callback(nil)
-                }
-            })
-        } else { // Case where we just grab it straight from the cache
-            callback(self.ratingsHistory![photo!.objectId!])
-        }
+        let photoID = photo!.objectId!
+        let query = ratings.query()
+        query?.whereKey("photoID", equalTo: photoID)
+        query?.getFirstObjectInBackgroundWithBlock({
+            (rating:PFObject?, error:NSError?) in
+            callback(rating as? Rating)
+        })
     }
     
-    func addRatingToHistory(photoID:String,rating:Rating) {
-        if ratingsHistory == nil {
-            self.ratingsHistory = [String:Rating]()
-        }
-        ratingsHistory![photoID] = rating
+    func addRatingToHistory(rating:Rating) {
+        ratings.addObject(rating)
+        saveEventually()
     }
     
     func readRating(rating:Rating) {
@@ -61,6 +56,7 @@ class User : PFUser {
         }
         query?.whereKey("forUserID", equalTo: objectId!)
         query?.whereKey("seen", equalTo: false)
+        query?.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24*6))
         query?.findObjectsInBackgroundWithBlock({
             (objects:[PFObject]?, error:NSError?) in
             if objects == nil {
@@ -84,21 +80,21 @@ class User : PFUser {
         })
     }
     
-    private func getRatingsHistoryFromParse(callback:(Void)->Void) {
-        let oneDayAgo = NSDate(timeIntervalSinceNow: -60*60*24)
-        let query = PFQuery(className: "Ratings")
-        query.whereKey("rater", equalTo: User.currentUser()!.objectId!)
-        // Not necessary to get ratings that are old because the pic is expired anyways
-        query.whereKey("createdAt", greaterThanOrEqualTo: oneDayAgo)
-        query.findObjectsInBackgroundWithBlock({
-            (ratings:[PFObject]?, error:NSError?) in
-            self.ratingsHistory = [String:Rating]()
-            for rating in ratings as! [Rating] {
-                self.ratingsHistory![rating.photoID] = rating
-            }
-            callback()
-        })
-    }
+//    private func getRatingsHistoryFromParse(callback:(Void)->Void) {
+//        let oneDayAgo = NSDate(timeIntervalSinceNow: -60*60*24)
+//        let query = PFQuery(className: "Ratings")
+//        query.whereKey("rater", equalTo: User.currentUser()!.objectId!)
+//        // Not necessary to get ratings that are old because the pic is expired anyways
+//        query.whereKey("createdAt", greaterThanOrEqualTo: oneDayAgo)
+//        query.findObjectsInBackgroundWithBlock({
+//            (ratings:[PFObject]?, error:NSError?) in
+//            self.ratingsHistory = [String:Rating]()
+//            for rating in ratings as! [Rating] {
+//                self.ratingsHistory![rating.photoID] = rating
+//            }
+//            callback()
+//        })
+//    }
     
     override static func currentUser() -> User? {
         return PFUser.currentUser() as? User

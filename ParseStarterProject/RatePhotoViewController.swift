@@ -32,17 +32,14 @@ class RatePhotoViewController: UIViewController, UIPickerViewDataSource, UIPicke
         // Configure rater
         numberPicker.delegate = self
         numberPicker.dataSource = self
-        numberPicker.selectRow(1, inComponent: 0, animated: true)
+        numberPicker.selectRow(0, inComponent: 0, animated: true)
         numberPicker.layer.cornerRadius = numberPicker.frame.size.height/11
         rateButton.layer.cornerRadius = 8
         rateButton.layer.borderColor = UIColor.whiteColor().CGColor
         rateButton.layer.borderWidth = 3
         rateButton.backgroundColor = UIColor(white: 0.2, alpha: 0.75)
         rateButton.titleLabel?.textColor = UIColor.whiteColor()
-        // Configure next button
-        let image = UIImage(named: "Next-64.png")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        nextButton.setImage(image, forState: UIControlState.Normal)
-        nextButton.tintColor = UIColor.whiteColor()
+
         // Configure exit btn
         let attributedText = NSMutableAttributedString(string: "X", attributes: [
             NSFontAttributeName : exitButton.titleLabel!.font,

@@ -34,7 +34,7 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
         self.pullToRefreshEnabled = true
         self.paginationEnabled = true
         self.parseClassName = "_Users"
-        self.objectsPerPage = 6
+        self.objectsPerPage = 7
         self.loadingViewEnabled = false
     }
 
@@ -58,12 +58,12 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
     }
     override func queryForTable() -> PFQuery {
         let userID = PFUser.currentUser()?.objectId
-        //print(userID!)
 
         var query:PFQuery = PFQuery()
         
         query = PFQuery(className: "Photos")
         query.whereKey("userID", equalTo: userID!)
+        query.whereKey("createdAt", greaterThan: NSDate(timeIntervalSinceNow: -60*60*24*7))
         query.cachePolicy = PFCachePolicy.CacheThenNetwork
         if segmentControl.selectedSegmentIndex == kRecentIndex {
             query.orderByDescending("updatedAt")
@@ -72,10 +72,6 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
         }
         
         return query
-    }
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
     }
     
     override func objectAtIndexPath(indexPath: NSIndexPath?) -> PFObject? {
@@ -106,7 +102,7 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
             
             return cell
         } else {
-            defaultCell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as! PFTableViewCell
+            defaultCell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as? PFTableViewCell
             if hasFinishedInitialLoad {
                 defaultCell?.textLabel?.text = "You don't have any selfies yet!"
             }
@@ -121,10 +117,6 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
         } else {
             return 55
         }
-    }
-    
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -147,6 +139,14 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, cellForNextPageAtIndexPath indexPath: NSIndexPath) -> PFTableViewCell? {
+        let cell = tableView.dequeueReusableCellWithIdentifier("EmptyCell", forIndexPath: indexPath) as? PFTableViewCell
+        //cell!.textLabel!.text = "Loading..."
+        //cell!.textLabel?.textAlignment = .Center
+        cell?.hidden = true
+        return cell
+    }
+    
     func updateCellSeenStates() {
         for cell in tableView.visibleCells{
             if let imageCell = cell as? ImagePostCell {
@@ -166,7 +166,6 @@ class HistoryOfImagesViewController: CustomPFQueryTableViewController {
                 scrollingHitBottom = false
             }
         }
-        
     }
     
     //Clicked on a cell

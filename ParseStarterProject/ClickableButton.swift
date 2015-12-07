@@ -10,20 +10,6 @@ import UIKit
 
 class ClickableButton: UIButton {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        customInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        customInit()
-    }
-    
-    func customInit() {
-        
-    }
-    
     func pressed() {
         //self.backgroundColor = selectedColor
         self.transform = CGAffineTransformMakeScale(1.15, 1.15)

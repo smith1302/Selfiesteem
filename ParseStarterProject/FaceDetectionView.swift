@@ -33,8 +33,7 @@ class FaceDetectionView : UIView {
     func showAtFrame(frame:CGRect) {
         if untracked {
             self.frame = frame
-        }
-        if !untracked {
+        } else {
             UIView.animateWithDuration(0.1, animations: {
                 self.frame = frame
             })
@@ -42,7 +41,7 @@ class FaceDetectionView : UIView {
         }
         untracked = false
         alpha = 1
-        animateAlpha(0  , withDelay: 1)
+        animateAlpha(0  , withDelay: 0.7)
     }
     
     func didFrameChanged(newFrame:CGRect) -> Bool {
@@ -51,6 +50,7 @@ class FaceDetectionView : UIView {
     
     func hide() {
         untracked = true
+        isAnimating = false
         self.frame = CGRectZero
     }
     

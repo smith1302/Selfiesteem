@@ -56,6 +56,8 @@
 		F7B9C89E1C090899008E84AB /* ActivityIndictator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */; };
 		F7B9C8A01C091C71008E84AB /* NumberPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C89F1C091C71008E84AB /* NumberPickerCell.swift */; };
 		F7B9C8A21C0922B9008E84AB /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B9C8A11C0922B9008E84AB /* CustomPickerView.swift */; };
+		F7D673121C14BC95002D6930 /* PublicPhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D673111C14BC95002D6930 /* PublicPhotoImageView.swift */; };
+		F7D673141C14E7C1002D6930 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D673131C14E7C1002D6930 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +112,8 @@
 		F7B9C89D1C090899008E84AB /* ActivityIndictator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndictator.swift; sourceTree = "<group>"; };
 		F7B9C89F1C091C71008E84AB /* NumberPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberPickerCell.swift; sourceTree = "<group>"; };
 		F7B9C8A11C0922B9008E84AB /* CustomPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
+		F7D673111C14BC95002D6930 /* PublicPhotoImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicPhotoImageView.swift; sourceTree = "<group>"; };
+		F7D673131C14E7C1002D6930 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +290,8 @@
 			children = (
 				F75C45581BE8197100151A24 /* PublicPhotosViewController.swift */,
 				F75C455A1BE81CAE00151A24 /* PublicPhotoCollectionViewCell.swift */,
+				F7D673111C14BC95002D6930 /* PublicPhotoImageView.swift */,
+				F7D673131C14E7C1002D6930 /* HeaderView.swift */,
 			);
 			name = PublicPhotos;
 			sourceTree = "<group>";
@@ -429,12 +435,14 @@
 				F78C1E171BF564B0007EFBC5 /* Rating.swift in Sources */,
 				F72D40291C0AA65100AB1972 /* SegueFromLeft.swift in Sources */,
 				F7B9C89B1C078E97008E84AB /* CameraButton.swift in Sources */,
+				F7D673141C14E7C1002D6930 /* HeaderView.swift in Sources */,
 				F72D402D1C0AB0D900AB1972 /* SegueFromRight.swift in Sources */,
 				F78C1E191BF5AD2F007EFBC5 /* User.swift in Sources */,
 				F72D403F1C10CF3D00AB1972 /* CustomPFQueryTableViewController.swift in Sources */,
 				F7B9C8A01C091C71008E84AB /* NumberPickerCell.swift in Sources */,
 				F72D403B1C10116600AB1972 /* FaceDetectionView.swift in Sources */,
 				F78C1E151BF564A5007EFBC5 /* Photo.swift in Sources */,
+				F7D673121C14BC95002D6930 /* PublicPhotoImageView.swift in Sources */,
 				F7401F0D1BF41EBC0012512F /* UIRatingTextField.swift in Sources */,
 				F72D40271C0A569900AB1972 /* Helper.swift in Sources */,
 				C6494A061BED3A45004E966D /* HistoryOfImagesViewController.swift in Sources */,
